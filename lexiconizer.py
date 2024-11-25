@@ -5,7 +5,7 @@ class Word:
         self.spelling = spelling
         self.neighbours = []
         self.frequency = 1
-        self.here = 0 # Used in neighbours_same_1()
+        self.pointer = 0 # Used in neighbours_same_1()
 
     def __str__(self):
         return f"{self.spelling} {self.frequency} {self.neighbours}\n"
@@ -21,7 +21,7 @@ class AVLTree:
     def __init__(self):
         self.root = None
 
-    # Ciaran: Modified to increment data frequencyuency if data already in tree.
+    #         Modified to increment data frequencyuency if data already in tree.
     def insert_element(self, data):
         if self.root is None:
             self.root = AVLNode(Word(data))
@@ -113,13 +113,13 @@ class AVLTree:
                 local_root = self.left_rot(local_root)
         return local_root
 
-    # Ciaran: Traverses tree inorder and:
+    #         Traverses tree inorder and:
     #         1. Appends word to alphabetically 1 list
     #         2. Appends word to nested list in same_0 by word length, then char 0
     #         3. Appends word to nested list in same_1 by word length, then char 1, then char 0
-    def inorder_list(self, local_root, sorted_lst, same_0, same_1):
+    def traverse_inorder(self, local_root, sorted_lst, same_0, same_1):
         if local_root is not None:
-            self.inorder_list(local_root.left, sorted_lst, same_0, same_1)
+            self.traverse_inorder(local_root.left, sorted_lst, same_0, same_1)
             
             word = local_root.data
             spelling = word.spelling
@@ -134,12 +134,12 @@ class AVLTree:
                 idx_1 = g(spelling[1])
                 add_to_inner(word, same_1, length, idx_1, idx_0)
 
-            self.inorder_list(local_root.right, sorted_lst, same_0, same_1)
+            self.traverse_inorder(local_root.right, sorted_lst, same_0, same_1)
 
 def g(c):
     return ord(c) - ord('a')
 
-# Ciaran: Iteratively nests lists at each index in n, then appends word to deepest list.
+#         Iteratively nests lists at each index in n, then appends word to deepest list.
 #         Quite psychedelic.
 def add_to_inner(word, lst, *n):
     for i in n:
@@ -150,7 +150,7 @@ def add_to_inner(word, lst, *n):
             lst = lst[i]
     lst.append(word)
 
-# Ciaran: Reads data and inserts into AVLTree, or increments frequencyuency if data already present.
+#         Reads data and inserts into AVLTree, or increments frequencyuency if data already present.
 def read_data(lexicon, filename):
     with open(filename, "r") as infile:
         for line in infile:
@@ -160,7 +160,7 @@ def read_data(lexicon, filename):
                 if token != "":
                     lexicon.insert_element(token)
 
-# Ciaran: Returns True if words are neighbours, otherwise False.
+#         Returns True if words are neighbours, otherwise False.
 #         Only checks indices between start and end.
 def check_neighbours(word_1, word_2, start, end, diffs=0):
     for i in range(start, end):
@@ -170,7 +170,7 @@ def check_neighbours(word_1, word_2, start, end, diffs=0):
                 return False
     return True
 
-# Ciaran: Adds neighbours for words with only one char.
+#         Adds neighbours for words with only one char.
 #         check_neighbours() not required as all one-char words are neighbours (other than self).
 def neighbours_one_char(one_char):
     len_one_char = len(one_char)
@@ -188,7 +188,7 @@ def neighbours_one_char(one_char):
                     neighbours_1.append(spelling_2)
                     neighbours_2.append(spelling_1)
 
-# Ciaran: Adds neighbours for words of same length and with same first letter.
+#         Adds neighbours for words of same length and with same first letter.
 #         check_neighbours() begins after first letter, as it is always the same.
 def neighbours_same_0(same_0):
     for same_len in range(len(same_0)): # Words of same length
@@ -209,14 +209,15 @@ def neighbours_same_0(same_0):
                             neighbours_1.append(spelling_2)
                             neighbours_2.append(spelling_1)
 
-# Ciaran: Adds neighbours for words of same length and with same second letter.
-#         SKIPS words with same first letter (checked previously).
-#
-#         check_neighbours() begins after second letter, with 1 difference already counted.
-#         (First letter always different, second letter always same.)
-#
-#         spelling_1 inserted to neighbours_2 BEFORE all neighbours previously added in neighbours_same_0(), and AFTER all
-#         neighbours previously added in neighbours_same_1(). Word.here keeps count of this index for each Word object.
+# Adds neighbours for words of same length and with same second letter.
+# SKIPS words with same first letter (checked previously).
+
+# check_neighbours() begins after second letter, with 1 difference already counted.
+# (First letter always different, second letter always same.)
+
+# spelling_1 inserted to neighbours_2 BEFORE all neighbours previously added in neighbours_same_0(),
+# and AFTER all neighbours previously added in neighbours_same_1(). Word.pointer keeps count of this
+# index for each Word object.
 def neighbours_same_1(same_1):
     for same_len in range(len(same_1)): # Words of same length
 
@@ -239,8 +240,8 @@ def neighbours_same_1(same_1):
 
                             if check_neighbours(spelling_1, spelling_2, 2, same_len+1, 1):
                                 neighbours_1.append(spelling_2)
-                                neighbours_2.insert(word_2.here, spelling_1)
-                                word_2.here += 1
+                                neighbours_2.insert(word_2.pointer, spelling_1)
+                                word_2.pointer += 1
 
 def write_to_file(sorted_lst, filename):
     with open(filename, "w") as outfile:
@@ -255,9 +256,11 @@ def build_lexicon(input_filename, output_filename):
     read_data(lexicon, input_filename)
 
     # Populate lists
-    lexicon.inorder_list(lexicon.root, sorted_lst, same_0, same_1)
+    lexicon.traverse_inorder(lexicon.root, sorted_lst, same_0, same_1)
 
     # Add neighbours
+    print(same_0[0])
+    quit()
     neighbours_one_char(same_0[0])
     neighbours_same_0(same_0)
     neighbours_same_1(same_1)
