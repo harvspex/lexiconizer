@@ -25,3 +25,37 @@ If neither the 1<sup>st</sup> nor the 2<sup>nd</sup> letter match, then there ar
 - Start with 2 completely different letters
 
 The way these sublists are populated and used also preserves alphabetical order, eliminating the need for additional sorting.
+
+## Time Complexity
+- AVL insertion has a time complexity of O(log n)
+- AVL traversal has a time complexity of O(n)
+- Checking neighbours within each nested list has a time complexity of O(n(n-1)/2)
+    - This simplifies to O(n<sup>2</sup>)
+
+As checking neighbours has the largest time complexity, this is where the majority of optimisations occurred. By reducing the pool of candidate neighbour words as greatly as possible without making individual comparisons, the negative effects of quadratic time are greatly diminished.
+
+Consider the following "lexicon":
+`aa ab ac ba bb bc ca cc cb`
+
+The number of comparisons needed to check neighbours would be 36
+```
+n(n-1)/2 = 9(9-1)/2 = 36 comparisons
+```
+But by checking within subgroups:
+- Words with same first letter: `aa ab ac` `ba bb bc` `ca cc cb`
+- Words with same second letter: `aa ba ca` `ab bb cb` `ac bc cc`
+
+```
+  n(n-1)/2
+= 3(3-1)/2
+= 3 comparisons per subgroup
+
+3 comparisons * 6 subgroups = 18 total comparisons
+```
+
+<!-- Pick a larger number of words for a more interesting result. e.g. all 3 letter words -->
+The reduction scales based on the size of the lexicon relative to the size of subgroups. Assuming a complete set of 2 letter "words": `aa, ab, ac, ad... zx, zy, zz`
+- There are 676 words
+- The number of comparisons without subgroups is **228,150**
+- The number of comparisons with subgroups is **16,900**
+- In practice, this number is reduced even further by other logical optimisations
