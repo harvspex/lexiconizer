@@ -2,10 +2,6 @@ from dataclasses import dataclass
 from word_tree import WordTree, Word
 from typing import Callable
 
-# TODO: For all "neighbours" functions, take out exctract loops into common function/s
-# Check for 1 char neighbours thusly: combine all chars into a single list, then call the check
-# neighbours map method (used in map_to_nested_list) directly on that list
-
 @dataclass
 class Lexicon:
     word_tree = WordTree()
@@ -26,9 +22,7 @@ class Lexicon:
 
                 for token in tokens:
                     data = ''.join(c for c in token if c.isalpha())
-
-                    if data:
-                        self.word_tree.insert_element(data)
+                    if data: self.word_tree.insert_element(data)
 
     def map_to_nested_list(self, nested_list: list, map_function: Callable,
                            start: int=0, end: int=None):
@@ -57,13 +51,17 @@ class Lexicon:
             #   add_mutual_neighbours()
             pass
 
-    def word_is_neighbours(word_a, word_b, start, end, diffs=0):
+    def word_is_neighbours(word_a: Word, word_b: Word, start: int=0, end: int=None, diffs: int=0):
         """Returns True if words are neighbours, otherwise False.
         Only checks letter indices between start and end."""
+        spelling_a = word_a.spelling
+        spelling_b = word_b.spelling
+
+        if end is None: end = len(spelling_a)
 
         for i in range(start, end):
 
-            if word_a[i] != word_b[i]:
+            if spelling_a[i] != spelling_b[i]:
                 diffs += 1
 
                 if diffs > 1:
@@ -83,6 +81,7 @@ class Lexicon:
         self.add_neighbours_same_char_1()
 
     def add_neighbours_one_char():
+        # TODO: Check for 1 char neighbours thusly: combine all chars into a single list, then call the check
         pass
 
     def add_neighbours_same_char_0():
@@ -101,8 +100,7 @@ class Lexicon:
         self.read_data(input_filename)
 
         # Populate lists
-        self.word_tree.traverse_inorder(self.word_tree.root, self.sorted_list, 
-                                           self.same_char_0, self.same_char_1)
+        self.word_tree.traverse_inorder(self.word_tree.root, self.sorted_list, self.same_char_0, self.same_char_1)
 
         # Add neighbours
         self.add_all_neighbours()
