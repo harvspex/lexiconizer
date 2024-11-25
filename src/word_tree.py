@@ -8,6 +8,9 @@ class Word:
     frequency = 1
     pointer = 0 # Used in neighbours_same_1()
 
+    def add_neighbour(self, other):
+        self.neighbours.append(other.spelling)
+
     def __eq__(self, other):
         if isinstance(other, str):
             return self.spelling == other
@@ -29,8 +32,10 @@ class Word:
     def __str__(self):
         return f"{self.spelling} {self.frequency} {self.neighbours}\n"
 
-class LexiconTree(AVLTree):
+
+class WordTree(AVLTree):
     def insert_element(self, data):
+        """Inserts Word data into WordTree. Increments data frequency if data already in tree."""
         word_data = Word(data)
 
         if self.root is None:
@@ -59,35 +64,34 @@ class LexiconTree(AVLTree):
                 self.set_node_height(new_local_root)
                 break
 
-
-    # Traverses tree inorder and:
-    # 1. Appends word to alphabetically 1 list
-    # 2. Appends word to nested list in same_0 by word length, then char 0
-    # 3. Appends word to nested list in same_1 by word length, then char 1, then char 0
-    def traverse_inorder(self, local_root, sorted_lst, same_0, same_1):
+    def traverse_inorder(self, local_root, sorted_lst, same_char_0, same_char_1):
+        """Traverses tree inorder and:
+            1. Appends word to alphabetically sorted list
+            2. Appends word to list in same_char_0 nested by word length, then char 0
+            3. Appends word to list in same_char_1 nested by word length, then char 1, then char 0"""
 
         g = lambda c: ord(c) - ord('a')
 
         if local_root is not None:
-            self.traverse_inorder(local_root.left, sorted_lst, same_0, same_1)
+            self.traverse_inorder(local_root.left, sorted_lst, same_char_0, same_char_1)
             
             word = local_root.data
-            spelling = word
+            spelling = word.spelling
             length = len(spelling) - 1
             idx_0 = g(spelling[0])
 
             sorted_lst.append(word)    
 
-            self.add_to_inner(word, same_0, length, idx_0)
+            self.add_to_inner(word, same_char_0, length, idx_0)
 
             if length > 0:
                 idx_1 = g(spelling[1])
-                self.add_to_inner(word, same_1, length, idx_1, idx_0)
+                self.add_to_inner(word, same_char_1, length, idx_1, idx_0)
 
-            self.traverse_inorder(local_root.right, sorted_lst, same_0, same_1)
+            self.traverse_inorder(local_root.right, sorted_lst, same_char_0, same_char_1)
 
-    # Iteratively nests lists at each index in n, then appends word to deepest list.
     def add_to_inner(word, lst, *n):
+        """Iteratively nests lists at each index in n, then appends word to deepest list."""
         for i in n:
             try:
                 lst = lst[i]
