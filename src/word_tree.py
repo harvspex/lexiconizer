@@ -22,6 +22,8 @@ class WordTree(AVLTree):
     def insert_element(self, data):
         """Inserts Word data into WordTree. Increments data frequency if data already in tree."""
         # NOTE: Before extracting Word(data) to a common attribute, check impact on performance
+        # TODO: Could init WordTree with root note. This would remove the below comparison,
+        # and could make insert_element a static method (maybe faster?)
 
         if self.root is None:
             self.root = AVLNode(Word(data))
@@ -49,7 +51,8 @@ class WordTree(AVLTree):
                 self.set_node_height(new_local_root)
                 break
 
-    def traverse_inorder(self, local_root, sorted_lst, same_char_0, same_char_1):
+    @staticmethod
+    def traverse_inorder(local_root, sorted_lst, same_char_0, same_char_1):
         """Traverses tree inorder and:
             1. Appends word to alphabetically sorted list
             2. Appends word to list in same_char_0 nested by word length, then char 0
@@ -58,7 +61,7 @@ class WordTree(AVLTree):
         g = lambda c: ord(c) - ord('a')
 
         if local_root is not None:
-            self.traverse_inorder(local_root.left, sorted_lst, same_char_0, same_char_1)
+            WordTree.traverse_inorder(local_root.left, sorted_lst, same_char_0, same_char_1)
             
             word = local_root.data
             spelling = word.spelling
@@ -67,15 +70,16 @@ class WordTree(AVLTree):
 
             sorted_lst.append(word)    
 
-            self.add_to_inner(word, same_char_0, length, idx_0)
+            WordTree.add_to_inner(word, same_char_0, length, idx_0)
 
             if length > 0:
                 idx_1 = g(spelling[1])
-                self.add_to_inner(word, same_char_1, length, idx_1, idx_0)
+                WordTree.add_to_inner(word, same_char_1, length, idx_1, idx_0)
 
-            self.traverse_inorder(local_root.right, sorted_lst, same_char_0, same_char_1)
+            WordTree.traverse_inorder(local_root.right, sorted_lst, same_char_0, same_char_1)
 
-    def add_to_inner(self, word, lst, *n):
+    @staticmethod
+    def add_to_inner(word, lst, *n):
         """Iteratively nests lists at each index in n, then appends word to deepest list."""
         for i in n:
             try:

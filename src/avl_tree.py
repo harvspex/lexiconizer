@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
 # TODO: Add type hints
-# Most methods could be made static
+# TODO: Make most methods static
 
 class AVLNode:
     def __init__(self, data):
