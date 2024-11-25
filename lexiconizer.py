@@ -259,14 +259,38 @@ def build_lexicon(input_filename, output_filename):
     lexicon.traverse_inorder(lexicon.root, sorted_lst, same_0, same_1)
 
     # Add neighbours
-    print(same_0[0])
-    quit()
     neighbours_one_char(same_0[0])
     neighbours_same_0(same_0)
     neighbours_same_1(same_1)
 
+    # print(f'Number of words: {len(sorted_lst)}')
+    # print(f'Avg same 0: {get_average_same_0_len(same_0)}')
+    # print(f'Avg same 1: {get_average_same_1_len(same_1)}')
+    # print()
+
     # Write to file
     write_to_file(sorted_lst, output_filename)
+
+def get_average_same_0_len(same_0):
+    sum_total = 0
+    divisor = 0
+    for a in same_0:
+        for b in a:
+            sum_total += len(b)
+            divisor += 1
+
+    return sum_total / divisor
+
+def get_average_same_1_len(same_0):
+    sum_total = 0
+    divisor = 0
+    for a in same_0:
+        for b in a:
+            for c in b:
+                sum_total += len(b)
+                divisor += 1
+
+    return sum_total / divisor
 
 def time_build_lexicon(input_filename, output_filename, N_REPEATS=1):
     print("\nRunning...")
