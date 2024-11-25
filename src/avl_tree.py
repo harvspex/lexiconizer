@@ -1,32 +1,28 @@
-# TODO: Remove lexicon specific methods from AVL tree. Create a subclass that handles lexicons.
-# Alternatively make it more specific to lexicons (e.g., instead of data attribute, just have word attributs in AVLNode)
-# Add type hints for all args.
-# Make code more DRY.
-
-from dataclasses import dataclass
 from abc import ABC, abstractmethod
 
-@dataclass
-class AVLNode:
-    """A node for an AVL Tree."""
-    data: object # TODO: test this
-    left = None
-    right = None
-    height = 0
+# TODO: Add type hints
+# Most methods could be made static
 
-@dataclass
+class AVLNode:
+    def __init__(self, data):
+        self.data: object = data
+        self.left: AVLNode = None
+        self.right: AVLNode = None
+        self.height: int = 0
+
 class AVLTree(ABC):
     """An AVL tree. Contains methods to balance nodes."""
-    root = None
+    def __init__(self):
+        self.root: AVLNode = None
 
     # TODO: add args
     @abstractmethod
-    def insert_element(): pass
+    def insert_element(self, data): pass
 
     @abstractmethod
-    def traverse_inorder(): pass
+    def traverse_inorder(self, local_root, sorted_lst, same_char_0, same_char_1): pass
 
-    def set_node_height(self, local_root):
+    def set_node_height(self, local_root: AVLNode):
         left = local_root.left
         right = local_root.right
         left_height = -1 if left is None else left.height
@@ -37,7 +33,7 @@ class AVLTree(ABC):
         else:
             local_root.height = right_height + 1
 
-    def right_rotation(self, g):
+    def right_rotation(self, g: AVLNode):
         p = g.left
         rcp = p.right
         p.right = g
@@ -45,7 +41,7 @@ class AVLTree(ABC):
         self.set_node_height(g)
         return p
 
-    def left_rotation(self, g):
+    def left_rotation(self, g: AVLNode):
         p = g.right
         lcp = p.left
         p.left = g
@@ -53,17 +49,17 @@ class AVLTree(ABC):
         self.set_node_height(g)
         return p
 
-    def right_left_rotation(self, g):
+    def right_left_rotation(self, g: AVLNode):
         p = g.right
         g.right = self.right_rotation(p)
         return self.left_rotation(g)
 
-    def left_right_rotation(self, g):
+    def left_right_rotation(self, g: AVLNode):
         p = g.left
         g.left = self.left_rotation(p)
         return self.right_rotation(g)
 
-    def get_height_diff(self, node):
+    def get_height_diff(self, node: AVLNode):
         if node.left == None:
             left_height = -1
         else:

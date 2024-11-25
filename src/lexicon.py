@@ -1,14 +1,14 @@
-from dataclasses import dataclass
+
 from word_tree import WordTree, Word
 from typing import Callable
 
-@dataclass
 class Lexicon:
-    word_tree = WordTree()
-    sorted_list: list[Word]
-    same_char_0: list[Word] # Could potentially be list[str]
-    same_char_1: list[Word] # Could potentially be list[str]
-    # Add list for one char words?
+    def __init__(self):
+        self.word_tree = WordTree()
+        self.sorted_list: list[Word] = []
+        self.same_char_0: list[Word] = [] # Could potentially be list[str]
+        self.same_char_1: list[Word] = [] # Could potentially be list[str]
+        # Add list for one char words?
 
     # NOTE: It may be possible to get rid of same_char_0. This would save some memory, but
     # complicate checking same_char_0 slightly
@@ -24,7 +24,8 @@ class Lexicon:
                     data = ''.join(c for c in token if c.isalpha())
                     if data: self.word_tree.insert_element(data)
 
-    def map_to_nested_list(self, nested_list: list, map_function: Callable,
+    @staticmethod
+    def map_to_nested_list(nested_list: list, map_function: Callable,
                            start: int=0, end: int=None):
         """Explores nested lists. When a non-list element is found, applies map_function to element."""
 
@@ -34,22 +35,24 @@ class Lexicon:
             element = nested_list[i]
 
             if isinstance(element, list):
-                self.map_to_nested_list(element, map_function)
+                Lexicon.map_to_nested_list(element, map_function)
 
             else:
                 nested_list[i] = map_function(nested_list, i, end)
 
-    def check_neighbours(inner_list: list[Word], start: int, end: int):
+    def check_neighbours(self, inner_list: list[Word], start: int, end: int):
         """Compares word at inner_list[start] to words in inner_list[start+1:end].
         If words are neighbours, add neighbours to each word."""
 
         # TODO: Complete. This is the map_function that will be passed to map_to_nested_list
-        word = inner_list[start]
+        word_a = inner_list[start]
 
         for i in range(start+1, end):
-            # If word is neighbours:
-            #   add_mutual_neighbours()
-            pass
+            word_b = inner_list[i]
+            if self.word_is_neighbours(word_a, word_b, 1, len(word_a)):
+                # TODO: Check len(word_a) impact on runtime
+                # Refactor so this can work with same_1
+                self.add_mutual_neighbours(word_a, word_b)
 
     def word_is_neighbours(word_a: Word, word_b: Word, start: int=0, end: int=None, diffs: int=0):
         """Returns True if words are neighbours, otherwise False.
@@ -76,7 +79,7 @@ class Lexicon:
         word_b.add_neighbour(word_a)
 
     def add_all_neighbours(self):
-        self.add_neighbours_one_char()
+        # self.add_neighbours_one_char()
         self.add_neighbours_same_char_0()
         self.add_neighbours_same_char_1()
 
@@ -95,15 +98,19 @@ class Lexicon:
             for i in sorted_lst:
                 outfile.write(str(i))
 
-    def build_lexicon(self, input_filename, output_filename):
+    def build_lexicon(self, input_filename, output_filename='out.txt'):
+        print('Reading data...')
         # Generate AVL Tree
         self.read_data(input_filename)
 
+        print('Populating lists...')
         # Populate lists
         self.word_tree.traverse_inorder(self.word_tree.root, self.sorted_list, self.same_char_0, self.same_char_1)
 
+        print('Adding neighbours...')
         # Add neighbours
         self.add_all_neighbours()
 
+        print('Writing to file...')
         # Write to file
         self.write_to_file(self.sorted_list, output_filename)

@@ -1,70 +1,50 @@
 from avl_tree import AVLNode, AVLTree
-from dataclasses import dataclass
 
-@dataclass
 class Word:
-    """Word data class."""
+    """Word data class.
+    Comparison operator overloading not used as it had significant impact on runtime."""
+    def __init__(self, spelling):
+        self.spelling: str = spelling
+        self.neighbours: list[str] = []
+        self.frequency: int = 1
+        self.pointer: int = 0 # Used in neighbours_same_1()
 
-    spelling: str
-    neighbours = []
-    frequency = 1
-    pointer = 0 # Used in neighbours_same_1()
-
-    def add_neighbour(self, other):
-        self.neighbours.append(other.spelling)
-
-    def __eq__(self, other):
-        if isinstance(other, str):
-            return self.spelling == other
-
-        if isinstance(other, Word):
-            return self.spelling == other.spelling
-
-        return NotImplemented
-
-    def __lt__(self, other):
-        if isinstance(other, str):
-            return self.spelling < other
-
-        if isinstance(other, Word):
-            return self.spelling < other.spelling
-
-        return NotImplemented
-
-    def __str__(self):
+    def __str__(self) -> str:
         return f"{self.spelling} {self.frequency} {self.neighbours}\n"
-
 
 class WordTree(AVLTree):
     """Subclass of AVLTree containing specialised methods relating to the Word class.
     i.e. WordTree is used when AVLNode data is a Word object."""
 
+    def __init__(self):
+        super().__init__()
+
     def insert_element(self, data):
         """Inserts Word data into WordTree. Increments data frequency if data already in tree."""
-        word_data = Word(data)
+        # NOTE: Before extracting Word(data) to a common attribute, check impact on performance
 
         if self.root is None:
-            self.root = AVLNode(word_data)
+            self.root = AVLNode(Word(data))
             return
             
         p = self.root
         while True:
-            if word_data == p.data:
+            if data == p.data.spelling:
                 p.data.frequency += 1 # Increment data frequencey if data already in tree
                 break
-            elif p.left != None and word_data <= p.data:
+            elif p.left != None and data <= p.data.spelling:
                 p = p.left
                 continue
-            elif p.right != None and word_data > p.data:
+            elif p.right != None and data > p.data.spelling:
                 p = p.right
                 continue
-            elif word_data <= p.data:
-                p.left = AVLNode(word_data)
+            elif data <= p.data.spelling:
+                p.left = AVLNode(Word(data))
                 new_local_root = self.rebalance(p.left)
                 self.set_node_height(new_local_root)
                 break
             else:
-                p.right = AVLNode(word_data)
+                p.right = AVLNode(Word(data))
                 new_local_root = self.rebalance(p.right)
                 self.set_node_height(new_local_root)
                 break
@@ -95,7 +75,7 @@ class WordTree(AVLTree):
 
             self.traverse_inorder(local_root.right, sorted_lst, same_char_0, same_char_1)
 
-    def add_to_inner(word, lst, *n):
+    def add_to_inner(self, word, lst, *n):
         """Iteratively nests lists at each index in n, then appends word to deepest list."""
         for i in n:
             try:
