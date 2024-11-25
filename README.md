@@ -29,7 +29,7 @@ The way these sublists are populated and used also preserves alphabetical order,
 ## Time Complexity
 - AVL insertion has a time complexity of O(log n)
 - AVL traversal has a time complexity of O(n)
-- Checking neighbours within each nested list has a time complexity of O(n(n-1)/2)
+- Checking neighbours has a time complexity of O(n(n-1)/2)
     - This simplifies to O(n<sup>2</sup>)
 
 As checking neighbours has the largest time complexity, this is where the majority of optimisations occurred. By reducing the pool of candidate neighbour words as greatly as possible without making individual comparisons, the negative effects of quadratic time are greatly diminished.
