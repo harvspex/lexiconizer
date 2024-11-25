@@ -263,7 +263,7 @@ def build_lexicon(input_filename, output_filename):
     neighbours_same_0(same_0)
     neighbours_same_1(same_1)
 
-    # print(f'Number of words: {len(sorted_lst)}')
+    print(f'Number of words: {len(sorted_lst)}')
     # print(f'Avg same 0: {get_average_same_0_len(same_0)}')
     # print(f'Avg same 1: {get_average_same_1_len(same_1)}')
     # print()
