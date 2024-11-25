@@ -1,5 +1,6 @@
 *__pycache__
 /sample_outputs
+/misc
 in.txt
 out.txt
 out_builtin.txt
