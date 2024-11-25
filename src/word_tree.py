@@ -24,6 +24,7 @@ class WordTree(AVLTree):
         # NOTE: Before extracting Word(data) to a common attribute, check impact on performance
         # TODO: Could init WordTree with root note. This would remove the below comparison,
         # and could make insert_element a static method (maybe faster?)
+        # NOTE: Static may be slower. Do testing.
 
         if self.root is None:
             self.root = AVLNode(Word(data))

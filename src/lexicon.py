@@ -1,6 +1,8 @@
 from word_tree import WordTree, Word
 from typing import Callable
 
+# NOTE: Static may be slower. Do testing.
+
 class Lexicon:
     def __init__(self):
         self.word_tree = WordTree()
@@ -49,7 +51,7 @@ class Lexicon:
 
         for i in range(start+1, end):
             word_b = inner_list[i]
-            if Lexicon.word_is_neighbours(word_a, word_b, 1, len(word_a)):
+            if Lexicon.word_is_neighbours(word_a, word_b, 1, len(word_a.spelling)):
                 # TODO: Check len(word_a) impact on runtime
                 # Refactor so this can work with same_1
                 Lexicon.add_mutual_neighbours(word_a, word_b)
@@ -77,23 +79,21 @@ class Lexicon:
     def add_mutual_neighbours(word_a: Word, word_b: Word):
         # NOTE: This will have to be modified for same_char_1 words, because words will be inserted
         # to word_b's neighbour list (not appended)
-        word_a.add_neighbour(word_b)
-        word_b.add_neighbour(word_a)
+        word_a.neighbours.append(word_b)
+        word_b.neighbours.append(word_a)
 
-    @staticmethod
-    def add_all_neighbours():
+    def add_all_neighbours(self):
         # Lexicon.add_neighbours_one_char()
-        Lexicon.add_neighbours_same_char_0()
-        Lexicon.add_neighbours_same_char_1()
+        Lexicon.add_neighbours_same_char_0(self)
+        # Lexicon.add_neighbours_same_char_1()
 
     @staticmethod
     def add_neighbours_one_char():
         # TODO: Check for 1 char neighbours thusly: combine all chars into a single list, then call the check
         pass
 
-    @staticmethod
-    def add_neighbours_same_char_0():
-        pass
+    def add_neighbours_same_char_0(self):
+        Lexicon.map_to_nested_list(self.same_char_0, self.check_neighbours, 1)
 
     @staticmethod
     def add_neighbours_same_char_1():
