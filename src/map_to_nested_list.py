@@ -19,6 +19,7 @@ def add_subsequent_numbers(nested_list: list[int], start: int, end: int):
     element = nested_list[start]
 
     for i in range(start+1, end):
+        # TODO: Check that next element if of compatible type, else will crash
         element += nested_list[i]
 
     return element
