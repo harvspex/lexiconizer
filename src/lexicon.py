@@ -72,6 +72,8 @@ class Lexicon:
         return True
 
     def add_mutual_neighbours(word_a: Word, word_b: Word):
+        # NOTE: This will have to be modified for same_char_1 words, because words will be inserted
+        # to word_b's neighbour list (not appended)
         word_a.add_neighbour(word_b)
         word_b.add_neighbour(word_a)
 
