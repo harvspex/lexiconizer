@@ -9,7 +9,7 @@ A refactor of my solution for the following puzzle. Given a text input:
 ## AVL Tree
 Lexiconizer begins by inserting words into an [AVL tree](https://en.wikipedia.org/wiki/AVL_tree). If the word is already present, then its frequency counter is increased instead.
 
-After all words have been counted, the tree is traversed inorder, creating an ordered list of words. During traversal, words are also sorted into sublists. These sublists are then used for comparing if a word is "neighbours" with another word. The benefit of using sublists is that the number of comparisons between words is significantly reduced, resulting in a faster runtime.
+After all words have been counted, the tree is traversed inorder, creating an ordered list of words. During traversal, words are also sorted into sublists. These sublists are then used for checking if a word is "neighbours" with another word. The benefit of using sublists is that the number of comparisons between words is significantly reduced, resulting in a faster runtime.
 
 ## Nested lists
 The rationale behind using sublists is as follows:
@@ -24,4 +24,4 @@ If neither the 1<sup>st</sup> nor the 2<sup>nd</sup> letter match, then there ar
 - Are different lengths
 - Start with 2 completely different letters
 
-The way these sublists are populated and used preserves alphabetical order, eliminating the need for additional sorting.
+The way these sublists are populated and used also preserves alphabetical order, eliminating the need for additional sorting.
