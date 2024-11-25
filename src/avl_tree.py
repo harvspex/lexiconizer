@@ -78,18 +78,14 @@ class AVLTree(ABC):
         difference = self.get_height_diff(local_root)
 
         if difference == 2:
-
             if self.get_height_diff(local_root.left) == -1:
                 local_root = self.left_right_rotation(local_root)
-
             else:
                 local_root = self.right_rotation(local_root)
 
         elif difference == -2:
-
             if self.get_height_diff(local_root.right) == 1:
                 local_root = self.right_left_rotation(local_root)
-
             else:
                 local_root = self.left_rotation(local_root)
 
