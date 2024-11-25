@@ -8,6 +8,7 @@ from abc import ABC, abstractmethod
 
 @dataclass
 class AVLNode:
+    """A node for an AVL Tree."""
     data: object # TODO: test this
     left = None
     right = None
@@ -15,6 +16,7 @@ class AVLNode:
 
 @dataclass
 class AVLTree(ABC):
+    """An AVL tree. Contains methods to balance nodes."""
     root = None
 
     # TODO: add args

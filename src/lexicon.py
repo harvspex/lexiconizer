@@ -18,7 +18,7 @@ class Lexicon:
     # complicate checking same_char_0 slightly
 
     def read_data(self, filename):
-        # Reads data and inserts into Lexicon AVLTree
+        """Reads text data from filename and inserts into Lexicon AVLTree"""
 
         with open(filename, 'r') as infile:
             for line in infile:
@@ -32,6 +32,7 @@ class Lexicon:
 
     def map_to_nested_list(self, nested_list: list, map_function: Callable,
                            start: int=0, end: int=None):
+        """Explores nested lists. When a non-list element is found, applies map_function to element."""
 
         if end is None: end = len(nested_list)
 
@@ -45,7 +46,10 @@ class Lexicon:
                 nested_list[i] = map_function(nested_list, i, end)
 
     def check_neighbours(inner_list: list[Word], start: int, end: int):
-        # TODO: Complete
+        """Compares word at inner_list[start] to words in inner_list[start+1:end].
+        If words are neighbours, add neighbours to each word."""
+
+        # TODO: Complete. This is the map_function that will be passed to map_to_nested_list
         word = inner_list[start]
 
         for i in range(start+1, end):
@@ -55,7 +59,7 @@ class Lexicon:
 
     def word_is_neighbours(word_a, word_b, start, end, diffs=0):
         """Returns True if words are neighbours, otherwise False.
-        Only checks indices between start and end."""
+        Only checks letter indices between start and end."""
 
         for i in range(start, end):
 

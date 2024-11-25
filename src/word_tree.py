@@ -3,6 +3,8 @@ from dataclasses import dataclass
 
 @dataclass
 class Word:
+    """Word data class."""
+
     spelling: str
     neighbours = []
     frequency = 1
@@ -34,6 +36,9 @@ class Word:
 
 
 class WordTree(AVLTree):
+    """Subclass of AVLTree containing specialised methods relating to the Word class.
+    i.e. WordTree is used when AVLNode data is a Word object."""
+
     def insert_element(self, data):
         """Inserts Word data into WordTree. Increments data frequency if data already in tree."""
         word_data = Word(data)
