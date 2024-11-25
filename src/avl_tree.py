@@ -16,6 +16,7 @@ class AVLTree(ABC):
         self.root: AVLNode = None
 
     # TODO: add args
+    # NOTE: Plausibly slightly slower. Could get rid of the abstract methods
     @abstractmethod
     def insert_element(self, data): pass
 
