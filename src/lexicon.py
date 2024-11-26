@@ -4,6 +4,7 @@ from typing import Callable
 # NOTE: staticmethods may be slower. Do testing.
 # TODO: init with filename, and run build_lexicon on init?
 # TODO: Could add option to time build_lexicon subtasks individually
+# TODO: Finish adding type hints
 
 class Lexicon:
     def __init__(self):
