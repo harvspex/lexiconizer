@@ -53,5 +53,8 @@ class Lexicon:
 
     @staticmethod
     def add_neighbours_same_char_0(nested_list):
-        # TODO: Verify that this actually works
-        Lexicon.recursive_explore(nested_list, 1)
+        pass
+        # # TODO: This doesn't work
+        # # Probably easiest to make another (or reuse) compare_words method for same 0
+        # # Then change recursive_explore to behave differently based on same0 or same1
+        # Lexicon.recursive_explore(nested_list, 1)
