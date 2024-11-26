@@ -1,7 +1,7 @@
 from word_tree import WordTree, Word
 from typing import Callable
 
-# NOTE: Static may be slower. Do testing.
+# NOTE: staticmethods may be slower. Do testing.
 
 class Lexicon:
     def __init__(self):
@@ -38,15 +38,12 @@ class Lexicon:
             if isinstance(element, list):
                 Lexicon.map_to_nested_list(element, map_function)
 
-            else:
-                map_function(nested_list, i, end)
+            else: map_function(nested_list, i, end)
 
     @staticmethod
     def check_neighbours(inner_list: list[Word], start: int, end: int):
         """Compares word at inner_list[start] to words in inner_list[start+1:end].
         If words are neighbours, add neighbours to each word."""
-
-        # TODO: Complete. This is the map_function that will be passed to map_to_nested_list
         word_a = inner_list[start]
 
         for i in range(start+1, end):

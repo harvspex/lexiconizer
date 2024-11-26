@@ -1,6 +1,5 @@
 from avl_tree import AVLNode, AVLTree
 
-# TODO: Change this to named tuple to test speed
 class Word:
     """Word data class.
     Comparison operator overloading not used as it had significant impact on runtime."""
