@@ -124,6 +124,10 @@ class Lexicon:
         Lexicon.add_neighbours_same_char_0(self)
         # Lexicon.add_neighbours_same_char_1()
 
+        # Testing with methods from neighbours.py
+        from neighbours import Lexicon as L
+        L.add_neighbours_same_char_1(self.same_char_1)
+
     def add_neighbours_one_char(self):
         # TODO: Check for 1 char neighbours thusly: combine all chars into a single list, then call the check
         pass
