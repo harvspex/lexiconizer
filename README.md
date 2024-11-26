@@ -4,7 +4,7 @@ A refactor of my solution for the following puzzle. Given a text input:
 - Find each word's list of "neighbours". A neighbour is any other word of the same length, which differs by only one character.
 - Write this information to file. The lexicon and neighbour-lists must each be in alphabetical order.
 - The goal is to get the fastest possible runtime.
-- To increase the difficulty, **built-in sorting methods were not allowed.**
+- To increase the difficulty, **built-in sorting methods and data structures were not allowed.**
 
 ## AVL Tree
 Lexiconizer begins by inserting words into an [AVL tree](https://en.wikipedia.org/wiki/AVL_tree). If the word is already present, then its frequency counter is increased instead.
@@ -57,4 +57,8 @@ The reduction scales based on the size of the lexicon relative to the size of su
 - There are 676 words
 - The number of comparisons without subgroups is **228,150**
 - The number of comparisons with subgroups is **16,900**
-- In practice, this number is reduced even further by other logical optimisations
+
+In practice, this number is reduced even further. After the first pass (checking words with the same 1<sup>st</sup> letter), the second pass only checks words with the same 2<sup>nd</sup> letter, and a 1<sup>st</sup> letter after that of the word being checked.
+
+e.g. `abc` is checked against `bba, bbc, bbd ... zzx, zzy, zzz`<br>
+But skips checking `aba, abb, abc ... abx, aby, abz`
