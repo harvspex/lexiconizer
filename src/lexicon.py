@@ -151,7 +151,16 @@ class Lexicon:
         else:
             word_b.neighbours.append(word_a.spelling)
 
-    def build_lexicon(self, input_filename, output_filename='out.txt'):
+    def reset(self):
+        self.word_tree = WordTree()
+        self.sorted_list.clear()
+        self.same_char_0.clear()
+        self.same_char_1.clear()
+
+    def build_lexicon(self, input_filename, output_filename='out.txt', reset=True):
+
+        if reset: self.reset()
+
         print('Reading data...')
         # Generate AVL Tree
         self.read_data(input_filename)
@@ -167,3 +176,5 @@ class Lexicon:
         print('Writing to file...')
         # Write to file
         self.write_to_file(output_filename)
+
+        print('Finished!\n')
