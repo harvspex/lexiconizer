@@ -28,7 +28,8 @@ class Lexicon:
     @staticmethod
     def map_to_nested_list(nested_list: list, map_function: Callable,
                            start: int=0, end: int=None):
-        """Explores nested lists. When a non-list element is found, applies map_function to element."""
+        """Explores nested lists. When a non-list element is found, applies map_function to element.
+        Only checks indices between start and end."""
 
         if end is None: end = len(nested_list)
 
@@ -38,9 +39,24 @@ class Lexicon:
             if isinstance(element, list):
                 Lexicon.map_to_nested_list(element, map_function)
 
-            else: map_function(nested_list, i, end)
+            else:
+                map_function(nested_list, i, end)
 
     @staticmethod
+    # NOTE: As-is, this only compares words within the same list. For checking same idx 1
+    # neighbours, the comparisons occur between sublists at different nesting depths.
+    #
+    # e.g.:
+    # for word_a in same_1:
+    #     for word_b in same_0: (starting after word_a)
+    #         compare(word_a, word_b)
+    #
+    # Possible solution:
+    # - Make map_to_nested() stop at a certain nesting depth (or when sublist contains non-sublists)
+    # - Make another version of check_neighbours() that checks all words in sublist A against all
+    #   all words in sublist B, C, D... N
+    # - New check_neighbours() should operate on sublists containing words (not words directly)
+    #
     def check_neighbours(inner_list: list[Word], start: int, end: int):
         """Compares word at inner_list[start] to words in inner_list[start+1:end].
         If words are neighbours, add neighbours to each word."""
@@ -48,11 +64,12 @@ class Lexicon:
 
         for i in range(start+1, end):
             word_b = inner_list[i]
+
             if Lexicon.word_is_neighbours(word_a, word_b, 1, len(word_a.spelling)):
                 Lexicon.add_mutual_neighbours(word_a, word_b)
 
+                # TODO: Refactor so this can work with same_1
                 # TODO: Check len(word_a) impact on runtime
-                # Refactor so this can work with same_1
 
     @staticmethod
     def word_is_neighbours(word_a: Word, word_b: Word, start: int=0, end: int=None, diffs: int=0):
@@ -90,7 +107,7 @@ class Lexicon:
         pass
 
     def add_neighbours_same_char_0(self):
-        Lexicon.map_to_nested_list(self.same_char_0, self.check_neighbours, 1)
+        Lexicon.map_to_nested_list(self.same_char_0, self.check_neighbours, start=1)
 
     def add_neighbours_same_char_1(self):
         pass
