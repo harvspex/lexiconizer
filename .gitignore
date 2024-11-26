@@ -1,4 +1,5 @@
 *__pycache__
+*.json
 /sample_outputs
 /misc
 in.txt
