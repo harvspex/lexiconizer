@@ -121,11 +121,15 @@ class Lexicon:
 
     def add_all_neighbours(self):
         # Lexicon.add_neighbours_one_char()
-        Lexicon.add_neighbours_same_char_0(self)
+        # Lexicon.add_neighbours_same_char_0(self)
         # Lexicon.add_neighbours_same_char_1()
 
         # Testing with methods from neighbours.py
         from neighbours import Lexicon as L
+        print('Same 0')
+        L.add_neighbours_same_char_0(self.same_char_0)
+
+        print('Same 1')
         L.add_neighbours_same_char_1(self.same_char_1)
 
     def add_neighbours_one_char(self):
