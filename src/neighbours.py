@@ -1,6 +1,10 @@
 from typing import Callable
 from word_tree import Word
 
+# TODO: Problems:
+#   - Not all neighbours are added
+#   - Neighbours not added in order            
+
 class Lexicon:
     # @staticmethod
     # def OLD_add_neighbours_same_char_1(nested_list):
@@ -43,33 +47,36 @@ class Lexicon:
 
     @staticmethod
     def compare_words_char_1(nested_list: list):
-        for word_a, word_b in Lexicon.compare_words_char_1_helper(nested_list):
-            print(f'A: {word_a.spelling}')
-            for _ in word_b:
+        for word_a, other_words in Lexicon.compare_words_char_1_helper(nested_list):
+            # print(f'A: {word_a.spelling}')
+            for word_b in other_words:
+
+                # print(f'B: {_.spelling}')
                 # TODO: This is where is_neighbour() is called
-                print(f'B: {_.spelling}')
-            print()
+
+                if Lexicon.word_is_neighbours(word_a, word_b, start=2, end=len(word_a.spelling), diffs=1):
+                    Lexicon.add_mutual_neighbours(word_a, word_b)
 
     @staticmethod
     def compare_words_char_0(inner_list: list[Word], start: int=0, end: int=None):
         """Compares word at inner_list[start] to words in inner_list[start+1:end].
         If words are neighbours, add neighbours to each word."""
 
-        if end is None: end = len(inner_list)
+        if end is None:
+            end = len(inner_list)
 
         if end == 1:
             return
 
-        word_a = inner_list[start]
+        for a in range(start, end):
+            word_a = inner_list[a]
 
-        for i in range(start+1, end):
-            word_b = inner_list[i]
+            for b in range(a+1, end):
+                word_b = inner_list[b]
 
-            # if Lexicon.word_is_neighbours(word_a, word_b, 1, len(word_a.spelling)):
-            #     Lexicon.add_mutual_neighbours(word_a, word_b)
-            #     # TODO: Check len(word_a) impact on runtime
-            print(f'A: {word_a.spelling}')
-            print(f'B: {word_b.spelling}')
+                # TODO: Check len(word_a) impact on runtime
+                if Lexicon.word_is_neighbours(word_a, word_b, start=1):
+                    Lexicon.add_mutual_neighbours(word_a, word_b)
 
     @staticmethod
     def add_neighbours_same_char_1(nested_list):
@@ -77,7 +84,40 @@ class Lexicon:
 
     @staticmethod
     def add_neighbours_same_char_0(nested_list):
-        # # TODO: This doesn't work
-        # # Probably easiest to make another (or reuse) compare_words method for same 0
-        # # Then change recursive_explore to behave differently based on same0 or same1
+        # TODO: This doesn't work
+        # Probably easiest to make another (or reuse) compare_words method for same 0
+        # Then change recursive_explore to behave differently based on same0 or same1
         Lexicon.recursive_explore(nested_list[1:], 2, char_0_mode=True)
+
+    @staticmethod
+    def word_is_neighbours(word_a: Word, word_b: Word, start: int=0, end: int=None, diffs: int=0):
+        """Returns True if words are neighbours, otherwise False.
+        Only checks letter indices between start and end."""
+        spelling_a = word_a.spelling
+        spelling_b = word_b.spelling
+
+        if end is None: end = len(spelling_a)
+
+        for i in range(start, end):
+
+            if spelling_a[i] != spelling_b[i]:
+                diffs += 1
+
+                if diffs > 1:
+                    return False
+
+        return True
+
+    @staticmethod
+    def add_mutual_neighbours(word_a: Word, word_b: Word, inserting: bool=False):
+        # NOTE: This will have to be modified for same_char_1 words, because words will be inserted
+        # to word_b's neighbour list (not appended)
+        word_a.neighbours.append(word_b.spelling)
+
+        if inserting:
+            # TODO: This doesn't always insert in order
+            word_b.neighbours.insert(word_b.pointer, word_a.spelling)
+            word_b.pointer += 1
+
+        else:
+            word_b.neighbours.append(word_a.spelling)
