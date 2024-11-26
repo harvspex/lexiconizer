@@ -4,7 +4,7 @@ A refactor of my solution for the following puzzle. Given a text input:
 - Find each word's list of "neighbours". A neighbour is any other word of the same length, which differs by only one character.
 - Write this information to file. The lexicon and neighbour-lists must each be in alphabetical order.
 - The goal is to get the fastest possible runtime.
-- To increase the difficulty, **built-in sorting methods and data structures were not allowed.**
+- To increase the difficulty, **built-in sorting methods were not allowed.**
 
 ## AVL Tree
 Lexiconizer begins by inserting words into an [AVL tree](https://en.wikipedia.org/wiki/AVL_tree). If the word is already present, then its frequency counter is increased instead.
