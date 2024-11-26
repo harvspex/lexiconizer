@@ -52,9 +52,10 @@ class Lexicon:
         for i in range(start+1, end):
             word_b = inner_list[i]
             if Lexicon.word_is_neighbours(word_a, word_b, 1, len(word_a.spelling)):
+                Lexicon.add_mutual_neighbours(word_a, word_b)
+
                 # TODO: Check len(word_a) impact on runtime
                 # Refactor so this can work with same_1
-                Lexicon.add_mutual_neighbours(word_a, word_b)
 
     @staticmethod
     def word_is_neighbours(word_a: Word, word_b: Word, start: int=0, end: int=None, diffs: int=0):
@@ -87,16 +88,14 @@ class Lexicon:
         Lexicon.add_neighbours_same_char_0(self)
         # Lexicon.add_neighbours_same_char_1()
 
-    @staticmethod
-    def add_neighbours_one_char():
+    def add_neighbours_one_char(self):
         # TODO: Check for 1 char neighbours thusly: combine all chars into a single list, then call the check
         pass
 
     def add_neighbours_same_char_0(self):
         Lexicon.map_to_nested_list(self.same_char_0, self.check_neighbours, 1)
 
-    @staticmethod
-    def add_neighbours_same_char_1():
+    def add_neighbours_same_char_1(self):
         pass
 
     def write_to_file(self, filename):

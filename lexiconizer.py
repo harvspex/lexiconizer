@@ -126,7 +126,7 @@ class AVLTree:
             length = len(spelling) - 1
             idx_0 = g(spelling[0])
 
-            sorted_lst.append(word)    
+            sorted_lst.append(word)
 
             add_to_inner(word, same_0, length, idx_0)
 

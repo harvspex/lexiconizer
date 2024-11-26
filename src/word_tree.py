@@ -1,5 +1,6 @@
 from avl_tree import AVLNode, AVLTree
 
+# TODO: Change this to named tuple to test speed
 class Word:
     """Word data class.
     Comparison operator overloading not used as it had significant impact on runtime."""
@@ -19,8 +20,9 @@ class WordTree(AVLTree):
     def __init__(self):
         super().__init__()
 
-    def insert_element(self, data):
+    def insert_element(self, data: str):
         """Inserts Word data into WordTree. Increments data frequency if data already in tree."""
+
         # NOTE: Before extracting Word(data) to a common attribute, check impact on performance
         # TODO: Could init WordTree with root note. This would remove the below comparison,
         # and could make insert_element a static method (maybe faster?)
@@ -53,13 +55,15 @@ class WordTree(AVLTree):
                 break
 
     @staticmethod
-    def traverse_inorder(local_root, sorted_lst, same_char_0, same_char_1):
+    def g(c):
+        return ord(c) - ord('a')
+
+    @staticmethod
+    def traverse_inorder(local_root: AVLNode, sorted_lst: list[Word], same_char_0: list, same_char_1: list):
         """Traverses tree inorder and:
             1. Appends word to alphabetically sorted list
             2. Appends word to list in same_char_0 nested by word length, then char 0
             3. Appends word to list in same_char_1 nested by word length, then char 1, then char 0"""
-
-        g = lambda c: ord(c) - ord('a')
 
         if local_root is not None:
             WordTree.traverse_inorder(local_root.left, sorted_lst, same_char_0, same_char_1)
@@ -67,14 +71,14 @@ class WordTree(AVLTree):
             word = local_root.data
             spelling = word.spelling
             length = len(spelling) - 1
-            idx_0 = g(spelling[0])
+            idx_0 = WordTree.g(spelling[0])
 
-            sorted_lst.append(word)    
+            sorted_lst.append(word)
 
             WordTree.add_to_inner(word, same_char_0, length, idx_0)
 
             if length > 0:
-                idx_1 = g(spelling[1])
+                idx_1 = WordTree.g(spelling[1])
                 WordTree.add_to_inner(word, same_char_1, length, idx_1, idx_0)
 
             WordTree.traverse_inorder(local_root.right, sorted_lst, same_char_0, same_char_1)
