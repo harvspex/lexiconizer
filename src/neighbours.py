@@ -55,7 +55,7 @@ class Lexicon:
                 # TODO: This is where is_neighbour() is called
 
                 if Lexicon.word_is_neighbours(word_a, word_b, start=2, end=len(word_a.spelling), diffs=1):
-                    Lexicon.add_mutual_neighbours(word_a, word_b)
+                    Lexicon.add_mutual_neighbours(word_a, word_b, inserting=True)
 
     @staticmethod
     def compare_words_char_0(inner_list: list[Word], start: int=0, end: int=None):
@@ -76,7 +76,7 @@ class Lexicon:
 
                 # TODO: Check len(word_a) impact on runtime
                 if Lexicon.word_is_neighbours(word_a, word_b, start=1):
-                    Lexicon.add_mutual_neighbours(word_a, word_b)
+                    Lexicon.add_mutual_neighbours(word_a, word_b, inserting=False)
 
     @staticmethod
     def add_neighbours_same_char_1(nested_list):
