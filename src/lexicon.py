@@ -38,6 +38,14 @@ class Lexicon:
         for i in range(start, end):
             element = nested_list[i]
 
+            # Could have something like:
+            #
+            # if max_nesting_depth:
+            #   max_nesting_depth -= 1
+            #
+            #   if max_nesting_depth == 0:
+            #       ...
+
             if isinstance(element, list):
                 Lexicon.map_to_nested_list(element, map_function)
 
@@ -52,11 +60,22 @@ class Lexicon:
     #     for word_b in same_0: (starting after word_a)
     #         compare(word_a, word_b)
     #
-    # Possible solution:
+    # Possible solution part 1:
     # - Make map_to_nested() stop at a certain nesting depth (or when sublist contains non-sublists)
     # - Make another version of check_neighbours() that checks all words in sublist A against all
     #   all words in sublist B, C, D... N
     # - New check_neighbours() should operate on sublists containing words (not words directly)
+    #
+    # Possible solution part 2:
+    # Don't call add_mutual_neighbours. Pass in a map function as an argument.
+    #
+    # For same 0, pass in:
+    # def map_fun():
+    #    if word is neighbours():
+    #       add_mutual_neighbours()
+    #
+    # For same 1, pass in a function that iterates through sublists as required, then makes
+    # comparisons on the words within
     #
     # NOTE: This is a map function
     @staticmethod
