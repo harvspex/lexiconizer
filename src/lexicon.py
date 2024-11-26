@@ -167,7 +167,3 @@ class Lexicon:
         print('Writing to file...')
         # Write to file
         self.write_to_file(output_filename)
-
-if __name__ == '__main__':
-    lexicon = Lexicon()
-    lexicon.build_lexicon('in.txt')
