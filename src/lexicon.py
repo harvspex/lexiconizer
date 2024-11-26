@@ -2,6 +2,8 @@ from word_tree import WordTree, Word
 from typing import Callable
 
 # NOTE: staticmethods may be slower. Do testing.
+# TODO: init with filename, and run build_lexicon on init?
+# TODO: Could add option to time build_lexicon subtasks individually
 
 class Lexicon:
     def __init__(self):
@@ -42,7 +44,6 @@ class Lexicon:
             else:
                 map_function(nested_list, i, end)
 
-    @staticmethod
     # NOTE: As-is, this only compares words within the same list. For checking same idx 1
     # neighbours, the comparisons occur between sublists at different nesting depths.
     #
@@ -57,6 +58,8 @@ class Lexicon:
     #   all words in sublist B, C, D... N
     # - New check_neighbours() should operate on sublists containing words (not words directly)
     #
+    # NOTE: This is a map function
+    @staticmethod
     def check_neighbours(inner_list: list[Word], start: int, end: int):
         """Compares word at inner_list[start] to words in inner_list[start+1:end].
         If words are neighbours, add neighbours to each word."""
