@@ -2,15 +2,15 @@ from typing import Callable
 from word_tree import Word
 
 class Lexicon:
-    @staticmethod
-    def OLD_add_neighbours_same_char_1(nested_list):
-        for same_len in nested_list: # Words of same len
-            for same_1 in same_len: # Words with same char at index 1
-                for list_a_idx in range(len(same_1)):
-                    for word_a in same_1[list_a_idx]:
-                        for list_b_idx in range(list_a_idx+1, len(same_1)):
-                            for word_b in same_1[list_b_idx]:
-                                print(f'{word_a.spelling} {word_b.spelling}')
+    # @staticmethod
+    # def OLD_add_neighbours_same_char_1(nested_list):
+    #     for same_len in nested_list: # Words of same len
+    #         for same_1 in same_len: # Words with same char at index 1
+    #             for list_a_idx in range(len(same_1)):
+    #                 for word_a in same_1[list_a_idx]:
+    #                     for list_b_idx in range(list_a_idx+1, len(same_1)):
+    #                         for word_b in same_1[list_b_idx]:
+    #                             print(f'{word_a.spelling} {word_b.spelling}')
 
     @staticmethod
     def recursive_explore(nested_list: list, target_level: int, level: int=0):
@@ -28,13 +28,30 @@ class Lexicon:
                 Lexicon.recursive_explore(sublist, target_level, level+1)
 
     @staticmethod
+    def compare_words_helper(nested_list: list, start: int=0, end: int=None, recursive=True):
+        if end is None: end = len(nested_list)
+
+        for list_idx in range(start, end):
+            for word in nested_list[list_idx]:
+                if recursive:
+                    yield word, Lexicon.compare_words_helper(nested_list, list_idx+1, end, recursive=False)
+                else:
+                    yield word
+
+    @staticmethod
     def compare_words(nested_list: list):
-        for list_a_idx in range(len(nested_list)):
-            for word_a in nested_list[list_a_idx]:
-                for list_b_idx in range(list_a_idx+1, len(nested_list)):
-                    for word_b in nested_list[list_b_idx]:
-                        print(f'Word a: {word_a.spelling} Word b: {word_b.spelling}')
+        for word_a, word_b in Lexicon.compare_words_helper(nested_list):
+            print(f'A: {word_a.spelling}')
+            for _ in word_b:
+                # TODO: This is where is_neighbour() is called
+                print(f'B: {_.spelling}')
+            print()
 
     @staticmethod
     def add_neighbours_same_char_1(nested_list):
-        Lexicon.recursive_explore(nested_list, 2) # 2 ???
+        Lexicon.recursive_explore(nested_list, 2)
+
+    @staticmethod
+    def add_neighbours_same_char_0(nested_list):
+        # TODO: Verify that this actually works
+        Lexicon.recursive_explore(nested_list, 1)
