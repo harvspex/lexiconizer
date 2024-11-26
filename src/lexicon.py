@@ -39,7 +39,7 @@ class Lexicon:
                 Lexicon.map_to_nested_list(element, map_function)
 
             else:
-                nested_list[i] = map_function(nested_list, i, end)
+                map_function(nested_list, i, end)
 
     @staticmethod
     def check_neighbours(inner_list: list[Word], start: int, end: int):
@@ -80,8 +80,8 @@ class Lexicon:
     def add_mutual_neighbours(word_a: Word, word_b: Word):
         # NOTE: This will have to be modified for same_char_1 words, because words will be inserted
         # to word_b's neighbour list (not appended)
-        word_a.neighbours.append(word_b)
-        word_b.neighbours.append(word_a)
+        word_a.neighbours.append(word_b.spelling)
+        word_b.neighbours.append(word_a.spelling)
 
     def add_all_neighbours(self):
         # Lexicon.add_neighbours_one_char()
@@ -101,7 +101,7 @@ class Lexicon:
     def write_to_file(self, filename):
         with open(filename, 'w') as outfile:
             for i in self.sorted_list:
-                outfile.write(str(i)) # TODO: ensure this works (rather than str(i))
+                outfile.write(str(i))
 
     def build_lexicon(self, input_filename, output_filename='out.txt'):
         print('Reading data...')
