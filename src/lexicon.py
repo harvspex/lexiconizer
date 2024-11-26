@@ -28,72 +28,6 @@ class Lexicon:
                     if data: self.word_tree.insert_element(data)
 
     @staticmethod
-    def map_to_nested_list(nested_list: list, map_function: Callable,
-                           start: int=0, end: int=None):
-        """Explores nested lists. When a non-list element is found, applies map_function to element.
-        Only checks indices between start and end."""
-
-        if end is None: end = len(nested_list)
-
-        for i in range(start, end):
-            element = nested_list[i]
-
-            # Could have something like:
-            #
-            # if max_nesting_depth:
-            #   max_nesting_depth -= 1
-            #
-            #   if max_nesting_depth == 0:
-            #       ...
-
-            if isinstance(element, list):
-                Lexicon.map_to_nested_list(element, map_function)
-
-            else:
-                map_function(nested_list, i, end)
-
-    # NOTE: As-is, this only compares words within the same list. For checking same idx 1
-    # neighbours, the comparisons occur between sublists at different nesting depths.
-    #
-    # e.g.:
-    # for word_a in same_1:
-    #     for word_b in same_0: (starting after word_a)
-    #         compare(word_a, word_b)
-    #
-    # Possible solution part 1:
-    # - Make map_to_nested() stop at a certain nesting depth (or when sublist contains non-sublists)
-    # - Make another version of check_neighbours() that checks all words in sublist A against all
-    #   all words in sublist B, C, D... N
-    # - New check_neighbours() should operate on sublists containing words (not words directly)
-    #
-    # Possible solution part 2:
-    # Don't call add_mutual_neighbours. Pass in a map function as an argument.
-    #
-    # For same 0, pass in:
-    # def map_fun():
-    #    if word is neighbours():
-    #       add_mutual_neighbours()
-    #
-    # For same 1, pass in a function that iterates through sublists as required, then makes
-    # comparisons on the words within
-    #
-    # NOTE: This is a map function
-    @staticmethod
-    def check_neighbours(inner_list: list[Word], start: int, end: int):
-        """Compares word at inner_list[start] to words in inner_list[start+1:end].
-        If words are neighbours, add neighbours to each word."""
-        word_a = inner_list[start]
-
-        for i in range(start+1, end):
-            word_b = inner_list[i]
-
-            if Lexicon.word_is_neighbours(word_a, word_b, 1, len(word_a.spelling)):
-                Lexicon.add_mutual_neighbours(word_a, word_b)
-
-                # TODO: Refactor so this can work with same_1
-                # TODO: Check len(word_a) impact on runtime
-
-    @staticmethod
     def word_is_neighbours(word_a: Word, word_b: Word, start: int=0, end: int=None, diffs: int=0):
         """Returns True if words are neighbours, otherwise False.
         Only checks letter indices between start and end."""
@@ -113,34 +47,93 @@ class Lexicon:
         return True
 
     @staticmethod
-    def add_mutual_neighbours(word_a: Word, word_b: Word):
+    def add_mutual_neighbours(word_a: Word, word_b: Word, inserting: bool=False):
         # NOTE: This will have to be modified for same_char_1 words, because words will be inserted
         # to word_b's neighbour list (not appended)
         word_a.neighbours.append(word_b.spelling)
-        word_b.neighbours.append(word_a.spelling)
 
-    def add_all_neighbours(self):
-        # Lexicon.add_neighbours_one_char()
-        # Lexicon.add_neighbours_same_char_0(self)
-        # Lexicon.add_neighbours_same_char_1()
+        if inserting:
+            # TODO: This doesn't always insert in order
+            word_b.neighbours.insert(word_b.pointer, word_a.spelling)
+            word_b.pointer += 1
 
-        # Testing with methods from neighbours.py
-        from neighbours import Lexicon as L
-        print('Same 0')
-        L.add_neighbours_same_char_0(self.same_char_0)
-
-        print('Same 1')
-        L.add_neighbours_same_char_1(self.same_char_1)
+        else:
+            word_b.neighbours.append(word_a.spelling)
 
     def add_neighbours_one_char(self):
         # TODO: Check for 1 char neighbours thusly: combine all chars into a single list, then call the check
-        pass
+        one_char_list = self.same_char_0[0]
 
-    def add_neighbours_same_char_0(self):
-        Lexicon.map_to_nested_list(self.same_char_0, self.check_neighbours, start=1)
+    @staticmethod
+    def add_neighbours_same_char_0(nested_list):
+        Lexicon.recursive_explore(nested_list[1:], 2, char_0_mode=True)
 
-    def add_neighbours_same_char_1(self):
-        pass
+    @staticmethod
+    def add_neighbours_same_char_1(nested_list):
+        Lexicon.recursive_explore(nested_list, 2, char_0_mode=False)
+
+    def add_all_neighbours(self):
+        # # TODO: Still have to solve one_char neighbours
+        # Lexicon.add_neighbours_one_char()
+        Lexicon.add_neighbours_same_char_0(self.same_char_0)
+        Lexicon.add_neighbours_same_char_1(self.same_char_1)
+
+    @staticmethod
+    def recursive_explore(nested_list: list, target_level: int, level: int=0, char_0_mode: bool=True):
+        # TODO: Could use a bit of refactoring
+
+        if level == target_level:
+            if char_0_mode:
+                Lexicon.compare_words_char_0(nested_list)
+            else:
+                Lexicon.compare_words_char_1(nested_list)
+
+        # This shouldn't happen
+        elif level < 0 or level > target_level:
+            return
+    
+        elif level < target_level:
+            for sublist in nested_list:
+                Lexicon.recursive_explore(sublist, target_level, level+1, char_0_mode)
+
+    @staticmethod
+    def compare_words_char_1_helper(nested_list: list, start: int=0, end: int=None, recursive=True):
+        if end is None: end = len(nested_list)
+
+        for list_idx in range(start, end):
+            for word in nested_list[list_idx]:
+                if recursive:
+                    yield word, Lexicon.compare_words_char_1_helper(nested_list, list_idx+1, end, recursive=False)
+                else:
+                    yield word
+
+    @staticmethod
+    def compare_words_char_1(nested_list: list):
+        for word_a, other_words in Lexicon.compare_words_char_1_helper(nested_list):
+            for word_b in other_words:
+                if Lexicon.word_is_neighbours(word_a, word_b, start=2, end=len(word_a.spelling), diffs=1):
+                    Lexicon.add_mutual_neighbours(word_a, word_b, inserting=True)
+
+    @staticmethod
+    def compare_words_char_0(inner_list: list[Word], start: int=0, end: int=None):
+        """Compares word at inner_list[start] to words in inner_list[start+1:end].
+        If words are neighbours, add neighbours to each word."""
+
+        if end is None:
+            end = len(inner_list)
+
+        if end == 1:
+            return
+
+        for a in range(start, end):
+            word_a = inner_list[a]
+
+            for b in range(a+1, end):
+                word_b = inner_list[b]
+
+                # TODO: Check len(word_a) impact on runtime
+                if Lexicon.word_is_neighbours(word_a, word_b, start=1):
+                    Lexicon.add_mutual_neighbours(word_a, word_b, inserting=False)
 
     def write_to_file(self, filename):
         with open(filename, 'w') as outfile:
