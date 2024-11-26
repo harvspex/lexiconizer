@@ -31,18 +31,20 @@ The way these sublists are populated and used also preserves alphabetical order,
 - AVL traversal has a time complexity of O(n)
 - Checking neighbours has a time complexity of O(n(n-1)/2). This simplifies to O(n<sup>2</sup>)
 
-As checking neighbours has the largest time complexity, this is where the majority of optimisations occurred. By reducing the pool of candidate neighbour words as greatly as possible without making individual comparisons, the negative effects of quadratic time are greatly diminished.
+As checking neighbours has the largest time complexity, this is where the majority of optimisations occurred. These optimisations have resulted in insertion being the slowest part! Therefore, the overall, simplified time complexity is **O(log n)**
 
-Consider the following "lexicon":
+By reducing the pool of candidate neighbour words as greatly as possible, the negative effects of quadratic time are greatly diminished. Consider the following "lexicon":
 `aa ab ac ba bb bc ca cc cb`
 
 The number of comparisons needed to check neighbours would be 36
 ```
-n(n-1)/2 = 9(9-1)/2 = 36 comparisons
+  n(n-1)/2
+= 9(9-1)/2
+= 36 comparisons
 ```
 But by checking within subgroups:
-- Words with same first letter: `aa ab ac` `ba bb bc` `ca cc cb`
-- Words with same second letter: `aa ba ca` `ab bb cb` `ac bc cc`
+- Words with same first letter subgroups: `aa ab ac` `ba bb bc` `ca cc cb`
+- Words with same second letter subgroups: `aa ba ca` `ab bb cb` `ac bc cc`
 
 ```
   n(n-1)/2
@@ -58,7 +60,12 @@ The reduction scales based on the size of the lexicon relative to the size of su
 - The number of comparisons without subgroups is **228,150**
 - The number of comparisons with subgroups is **16,900**
 
-In practice, this number is reduced even further. After the first pass (checking words with the same 1<sup>st</sup> letter), the second pass only checks words with the same 2<sup>nd</sup> letter, and a 1<sup>st</sup> letter after that of the word being checked.
+In practice, this number is reduced **even further.** After the first pass (checking words with the same 1<sup>st</sup> letter), the second pass only checks words with the same 2<sup>nd</sup> letter, and a 1<sup>st</sup> letter after that of the word being checked.
 
-e.g. `abc` is checked against `bba, bbc, bbd ... zzx, zzy, zzz`<br>
+e.g. `abc` is checked against `bba, bbc, bbd ... zbx, zby, zbz`<br>
 But skips checking `aba, abb, abc ... abx, aby, abz`
+
+Because we already know that the first letter is different, and the second letter is the same, we only need to compare the remaining letters (until a difference is found). This reduces comparisons even further.
+
+## Refactor
+The original solution was submitted in a Jupyter Notebook. Compared to the original, the refactor makes greater use of inheritance, and traversal of subgroups (for neighbour comparisons) have been reworked into more DRY recursive solutions. The core ideas and time complexity remain unchanged.
