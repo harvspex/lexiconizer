@@ -11,8 +11,7 @@ def time_build_lexicon(lexicon: Lexicon, input_filename: str, output_filename: s
 def main():
     filename = 'in.txt'
     lexicon = Lexicon()
-    # TODO: for N_REPEATS > 1 out recounts the lexicon and extends the output. Fix that
-    time_build_lexicon(lexicon, filename, 'out.txt', 1)
+    time_build_lexicon(lexicon, filename, 'out.txt', 10)
 
 if __name__ == '__main__':
     main()
