@@ -4,5 +4,5 @@
 /misc
 in.txt
 out.txt
-out_builtin.txt
+out_test.txt
 file_checker.py
