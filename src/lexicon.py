@@ -1,5 +1,4 @@
 from word_tree import WordTree, Word
-from typing import Callable
 
 # NOTE: staticmethods may be slower. Do testing.
 # TODO: init with filename, and run build_lexicon on init?
@@ -36,15 +35,18 @@ class Lexicon:
                 outfile.write(str(i))
 
     def add_neighbours_one_char(self):
-        # TODO: Check for 1 char neighbours thusly: combine all chars into a single list, then call the check
-        # TODO: Add error handling for insufficient lists
-        one_char_list = self.same_char_0[0]
-        Lexicon.compare_words_different_lists(one_char_list, one_char_mode=True)
+        try:
+            one_char_list = self.same_char_0[0]
+            Lexicon.compare_words_different_lists(one_char_list, one_char_mode=True)
+        except IndexError:
+            return
 
     def add_neighbours_same_char_0(self):
-        # TODO: Add error handling for insufficient lists
-        same_char_0 = self.same_char_0[1:]
-        Lexicon.recursive_explore(same_char_0, mode=0, target_level=2)
+        try:
+            same_char_0 = self.same_char_0[1:]
+            Lexicon.recursive_explore(same_char_0, mode=0, target_level=2)
+        except IndexError:
+            return
 
     def add_neighbours_same_char_1(self):
         Lexicon.recursive_explore(self.same_char_1, mode=1, target_level=2)
@@ -93,7 +95,6 @@ class Lexicon:
             for b in range(a+1, end):
                 word_b = inner_list[b]
 
-                # TODO: Check len(word_a) impact on runtime
                 if Lexicon.word_is_neighbours(word_a, word_b, start=1):
                     Lexicon.add_mutual_neighbours(word_a, word_b, inserting=False)
 
@@ -126,6 +127,8 @@ class Lexicon:
         spelling_a = word_a.spelling
         spelling_b = word_b.spelling
 
+
+        # TODO: Check len(spelling_a) impact on runtime
         if end is None: end = len(spelling_a)
 
         for i in range(start, end):
@@ -140,12 +143,9 @@ class Lexicon:
 
     @staticmethod
     def add_mutual_neighbours(word_a: Word, word_b: Word, inserting: bool=False):
-        # NOTE: This will have to be modified for same_char_1 words, because words will be inserted
-        # to word_b's neighbour list (not appended)
         word_a.neighbours.append(word_b.spelling)
 
         if inserting:
-            # TODO: This doesn't always insert in order
             word_b.neighbours.insert(word_b.pointer, word_a.spelling)
             word_b.pointer += 1
 
@@ -162,20 +162,20 @@ class Lexicon:
 
         if reset: self.reset()
 
-        print('Reading data...')
         # Generate AVL Tree
+        print('Inserting data into AVL Tree...')
         self.read_data(input_filename)
 
-        print('Populating lists...')
         # Populate lists
+        print('Populating lists...')
         self.word_tree.traverse_inorder(self.word_tree.root, self.sorted_list, self.same_char_0, self.same_char_1)
 
-        print('Adding neighbours...')
         # Add neighbours
+        print('Adding neighbours...')
         self.add_all_neighbours()
 
-        print('Writing to file...')
         # Write to file
+        print('Writing to file...')
         self.write_to_file(output_filename)
 
         print('Finished!\n')
