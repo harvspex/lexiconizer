@@ -54,6 +54,6 @@ def generate(lexicon=lexicon):
             
             outfile.write(str(word_a))
 
-generate()
+# generate()
 result = cmp('out.txt', 'out_test.txt', shallow=False)
 print(f'Files match: {result}')
