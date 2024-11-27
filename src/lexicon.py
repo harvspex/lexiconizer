@@ -5,6 +5,8 @@ from word_tree import WordTree, Word
 # TODO: Could add option to time build_lexicon subtasks individually
 # TODO: Finish adding type hints
 
+# TODO: Remove same_chars_0. Replace with list for one_char words
+
 class Lexicon:
     """
     A class for managing a lexicon of words stored in an AVL Tree structure.
