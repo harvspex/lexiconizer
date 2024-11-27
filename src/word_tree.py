@@ -32,6 +32,8 @@ class WordTree(AVLTree):
             return
             
         p = self.root
+
+        # TODO: Consider not useing while True
         while True:
             if data == p.data.spelling:
                 p.data.frequency += 1 # Increment data frequencey if data already in tree
@@ -58,21 +60,21 @@ class WordTree(AVLTree):
         return ord(c) - ord('a')
 
     @staticmethod
-    def traverse_inorder(local_root: AVLNode, sorted_lst: list[Word], same_char_0: list, same_char_1: list):
+    def traverse_inorder(local_root: AVLNode, sorted_list: list[Word], same_char_0: list, same_char_1: list):
         """Traverses tree inorder and:
             1. Appends word to alphabetically sorted list
             2. Appends word to list in same_char_0 nested by word length, then char 0
             3. Appends word to list in same_char_1 nested by word length, then char 1, then char 0"""
 
         if local_root is not None:
-            WordTree.traverse_inorder(local_root.left, sorted_lst, same_char_0, same_char_1)
+            WordTree.traverse_inorder(local_root.left, sorted_list, same_char_0, same_char_1)
             
             word = local_root.data
             spelling = word.spelling
             length = len(spelling) - 1
             idx_0 = WordTree.g(spelling[0])
 
-            sorted_lst.append(word)
+            sorted_list.append(word)
 
             WordTree.add_to_inner(word, same_char_0, length, idx_0)
 
@@ -80,7 +82,7 @@ class WordTree(AVLTree):
                 idx_1 = WordTree.g(spelling[1])
                 WordTree.add_to_inner(word, same_char_1, length, idx_1, idx_0)
 
-            WordTree.traverse_inorder(local_root.right, sorted_lst, same_char_0, same_char_1)
+            WordTree.traverse_inorder(local_root.right, sorted_list, same_char_0, same_char_1)
 
     @staticmethod
     def add_to_inner(word, lst, *n):
@@ -88,8 +90,10 @@ class WordTree(AVLTree):
         for i in n:
             try:
                 lst = lst[i]
+
             except IndexError:
                 for _ in range(len(lst), i+1):
                     lst.append([])
                 lst = lst[i]
+
         lst.append(word)
