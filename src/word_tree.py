@@ -1,4 +1,4 @@
-from avl_tree import AVLNode, AVLTree
+from src.avl_tree import AVLNode, AVLTree
 
 class Word:
     """Word data class.

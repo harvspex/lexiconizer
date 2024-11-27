@@ -1,4 +1,4 @@
-from lexicon import Lexicon
+from src.lexicon import Lexicon
 from timeit import timeit
 
 def time_build_lexicon(lexicon: Lexicon, input_filename: str, output_filename: str='out.txt', N_REPEATS: int=1):
