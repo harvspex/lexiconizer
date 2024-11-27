@@ -87,11 +87,13 @@ class Lexicon:
         Operates on the `same_char_0` list.
         """
 
-        try:
-            same_char_0 = self.same_char_0[1:]
-            Lexicon.recursive_explore(same_char_0, mode=0, target_level=2)
-        except IndexError:
-            return
+        # try:
+        #     same_char_0 = self.same_char_0[1:]
+        #     Lexicon.recursive_explore(same_char_0, mode=0, target_level=2)
+        # except IndexError:
+        #     return
+
+        Lexicon.compare_same_0(self.same_char_1)
 
     def add_neighbours_same_char_1(self):
         """
@@ -182,7 +184,7 @@ class Lexicon:
     @staticmethod
     def yield_lists(nested_list: list, start: int=0, end: int=None, recursive=True):
         """
-        Yields items and their sublists from a nested list.
+        Yields items and their sublists from a nested list. # TODO: Reword
 
         Args:
             nested_list (list): The nested list to process.
@@ -314,3 +316,47 @@ class Lexicon:
         self.write_to_file(output_filename)
 
         print('Finished!\n')
+
+    # NOTE: FUBAR ZONE START
+    @staticmethod
+    def compare_same_0(nested_list: list):
+        counter: int = 0
+
+        for same_len_list in nested_list:
+            counter = 0
+
+            while True:
+                lists = Lexicon.yield_lists_same_0(same_len_list, counter)
+                combined = []
+
+                try:
+                    for sublist in lists:
+                        combined += sublist
+
+                except TypeError:
+                    break
+
+                # TODO: Check if this works
+                Lexicon.compare_words_same_list(combined)
+
+                counter += 1
+
+    @staticmethod
+    def yield_lists_same_0(same_len_list: list, char_0_idx):
+
+        # TODO: This takes a list of same_len words
+        # It then digs 1 level into each sublist (of same_char_1 words)
+        # It then yields a sublist at the specified yield_idx
+        # Once no sublists remain, all are yielded
+
+        out_of_range: int = 0
+
+        for same_char_1 in same_len_list:
+            try:
+                yield same_char_1[char_0_idx]
+
+            except IndexError:
+                out_of_range += 1
+
+        if out_of_range == len(same_len_list):
+            yield None
