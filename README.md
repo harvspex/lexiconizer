@@ -67,5 +67,17 @@ But skips checking `aba, abb, abc ... abx, aby, abz`
 
 Because we already know that the first letter is different, and the second letter is the same, we only need to compare the remaining letters (until a difference is found). This reduces comparisons even further.
 
+## EAFP
+*"Easier to Ask for Forgiveness than Permission"*
+
+Lexiconizer frequently "asks for forgiveness" (using try/except blocks) rather than "permission" (using comparisons). This is done for conditional statements that are reached infrequently.
+
+Rather than running a comparison every time, Lexiconizer assumes the more likely condition, and handles the unlikely conditions using raised exception.
+
 ## Refactor
-The original solution was submitted in a Jupyter Notebook. Compared to the original, the refactor makes greater use of inheritance, and traversal of subgroups (for neighbour comparisons) have been reworked into more DRY recursive solutions. The core ideas and time complexity remain unchanged.
+Compared to the original, the refactor:
+- Makes greater use of inheritance
+- Makes more efficient use of data/memory (i.e. the same nested list is used for checking neighbours at index 0 and index 1, with more sophisticated traversal routines)
+- Traversal of subgroups (for neighbour comparisons) have been reworked into concise recursive solutions
+
+The core ideas and time complexity remain unchanged.
