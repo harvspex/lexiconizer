@@ -6,7 +6,12 @@ from timeit import timeit
 #   1. Calling it from cli with args `lexiconizer (infile) (outfile)`
 #   2. Interactive CLI version using cmd library
 
-def time_build_lexicon(lexicon: Lexicon, input_filename: str, output_filename: str='out.txt', N_REPEATS: int=1):
+def time_build_lexicon(
+    lexicon: Lexicon,
+    input_filename: str,
+    output_filename: str='out.txt',
+    N_REPEATS: int=1
+):
     print("\nRunning...")
     total_execution_time = timeit(lambda: lexicon.build_lexicon(input_filename, output_filename), globals=globals(), number=N_REPEATS)
     average_time = total_execution_time / N_REPEATS

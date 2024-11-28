@@ -67,7 +67,12 @@ class WordTree(AVLTree):
         return ord(c) - ord('a')
 
     @staticmethod
-    def traverse_inorder(local_root: AVLNode, sorted_list: list[Word], one_char_words: list[Word], nested_word_lists: list):
+    def traverse_inorder(
+        local_root: AVLNode,
+        sorted_list: list[Word],
+        one_char_words: list[Word],
+        nested_word_lists: list
+    ):
         """
         Traverses tree inorder and:
             1. Appends word to alphabetically sorted list

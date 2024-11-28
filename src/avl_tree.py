@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 
 # TODO: Add type hints
 # TODO: Could refactor some methods for elegance/readability
+# TODO: Could make most methods static
 
 class AVLNode:
     def __init__(self, data: object):
@@ -15,13 +16,18 @@ class AVLTree(ABC):
     def __init__(self):
         self.root: AVLNode = None
 
-    # TODO: add args
+    # TODO: add args/type hints
     # NOTE: Plausibly slightly slower. Could get rid of the abstract methods
     @abstractmethod
     def insert_element(self, data): pass
 
     @abstractmethod
-    def traverse_inorder(self, local_root, sorted_lst, same_char_0, same_char_1): pass
+    def traverse_inorder(
+        local_root,
+        sorted_list,
+        one_char_words,
+        nested_word_lists
+    ): pass
 
     def set_node_height(self, local_root):
         left = local_root.left
@@ -71,6 +77,8 @@ class AVLTree(ABC):
         return left_height - right_height
     
     def rebalance(self, local_root):
+        # TODO: Refactor?
+
         difference = AVLTree.get_height_diff(local_root)
 
         if difference == 2:
