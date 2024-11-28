@@ -60,30 +60,27 @@ class AVLTree(ABC):
         g.left = self.left_rot(p)
         return self.right_rot(g)
 
-    def get_height_diff(self, node):
-        if node.left == None:
-            left_height = -1
-        else:
-            left_height = node.left.height
-        
-        if node.right == None:
-            right_height = -1
-        else:
-            right_height = node.right.height
-        
+    @staticmethod
+    def get_height(subtree: AVLNode):
+        return -1 if subtree == None else subtree.height
+
+    @staticmethod
+    def get_height_diff(node: AVLNode):
+        left_height = AVLTree.get_height(node.left)
+        right_height = AVLTree.get_height(node.right)
         return left_height - right_height
     
     def rebalance(self, local_root):
-        difference = self.get_height_diff(local_root)
+        difference = AVLTree.get_height_diff(local_root)
 
         if difference == 2:
-            if self.get_height_diff(local_root.left) == -1:
+            if AVLTree.get_height_diff(local_root.left) == -1:
                 local_root = self.left_right_rotation(local_root)
             else:
                 local_root = self.right_rotation(local_root)
 
         elif difference == -2:
-            if self.get_height_diff(local_root.right) == 1:
+            if AVLTree.get_height_diff(local_root.right) == 1:
                 local_root = self.right_left_rotation(local_root)
             else:
                 local_root = self.left_rotation(local_root)
