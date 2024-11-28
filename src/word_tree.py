@@ -1,5 +1,7 @@
 from src.avl_tree import AVLNode, AVLTree
 
+# TODO: Add docstrings
+
 class Word:
     """
     Word data class.
@@ -10,7 +12,7 @@ class Word:
         self.frequency: int = 1
         self.pointer: int = 0 # Used for inserting words alphabetically into self.neighbours
     
-    # Comparison operator overloading not used as it had significant impact on runtime.
+    # Operator overloading not used as it had significant impact on runtime
 
     def __str__(self) -> str:
         return f"{self.spelling} {self.frequency} {self.neighbours}\n"

@@ -1,6 +1,8 @@
 from dataclasses import dataclass, field
 from filecmp import cmp
 
+# TODO: Add docstrings
+
 @dataclass
 class Word:
     spelling: str

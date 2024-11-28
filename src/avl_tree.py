@@ -3,6 +3,7 @@ from abc import ABC, abstractmethod
 # TODO: Add type hints
 # TODO: Could refactor some methods for elegance/readability
 # TODO: Could make most methods static
+# TODO: Add docstrings
 
 class AVLNode:
     def __init__(self, data: object):
