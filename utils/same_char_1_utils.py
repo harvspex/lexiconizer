@@ -10,25 +10,26 @@ def add_neighbours(nested_word_lists: list):
 
 def recursive_explore(nested_list: list, target_level: int, level: int=0):
     """
-    Recursively explores a nested list to a specific depth and processes its contents.
+    Recursively explores a nested list to a specific depth.
+    Once target depth is reached, checks for neighbours using `compare_words_different_lists`.
 
     Args:
         nested_list (list): The list to explore.
         target_level (int): The depth to explore in the nested list.
         level (int): The current depth (default: 0).
     """
-    # TODO: Could use a bit of refactoring
-
     if level == target_level:
         compare_words_different_lists(nested_list)
 
-    # NOTE: This condition shouldn't happen
-    elif level < 0 or level > target_level:
-        return
-
+    # Could be faster but less safe by skipping this elif.
     elif level < target_level:
         for sublist in nested_list:
             recursive_explore(sublist, target_level, level+1)
+
+    # This condition shouldn't happen. Guards against bad `level` value.
+    elif level < 0 or level > target_level:
+        return
+
 
 def compare_words_different_lists(nested_list: list):
     """
@@ -37,7 +38,8 @@ def compare_words_different_lists(nested_list: list):
     Args:
         nested_list (list): The nested list of words.
 
-    Adds mutual neighbors based on comparison criteria.
+    This compares every word in word_a to every word in other_words.
+    Words within word_a don't need to be compared, as they have been checked by `same_char_0_utils`.
     """
     # TODO: Can end be passed into word_is_neighbours via the index of the current list?
 

@@ -40,7 +40,7 @@ class WordTree(AVLTree):
             self.root = AVLNode(Word(data))
             return
             
-        p = self.root
+        p: AVLNode = self.root
 
         # TODO: Consider not useing while True
         while True:
@@ -65,8 +65,7 @@ class WordTree(AVLTree):
                 break
 
     @staticmethod
-    def g(c):
-        return ord(c) - ord('a')
+    def g(c): return ord(c) - ord('a')
 
     @staticmethod
     def traverse_inorder(

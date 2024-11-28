@@ -17,7 +17,6 @@ def word_is_neighbours(word_a: Word, word_b: Word, start: int=0, end: int=None, 
     spelling_a = word_a.spelling
     spelling_b = word_b.spelling
 
-
     # TODO: Check len(spelling_a) impact on runtime
     if end is None: end = len(spelling_a)
 
@@ -38,7 +37,7 @@ def add_mutual_neighbours(word_a: Word, word_b: Word, inserting: bool=False):
     Args:
         word_a (Word): The first word.
         word_b (Word): The second word.
-        inserting (bool): Whether to insert the neighbor into a specific position (default: False).
+        inserting (bool): Whether to insert word_b's neighbor into a specific position (default: False).
     """
     word_a.neighbours.append(word_b.spelling)
 

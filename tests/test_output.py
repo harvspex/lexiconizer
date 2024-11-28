@@ -29,8 +29,10 @@ lexicon = {}
 with open('in.txt', 'r') as infile:
     for line in infile:
         tokens = line.lower().strip().split()
+
         for token in tokens:
             word = ''.join(_ for _ in token if _.isalpha())
+
             if word:
                 try:
                     lexicon[word].freq += 1

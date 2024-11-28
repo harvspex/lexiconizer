@@ -99,7 +99,12 @@ class Lexicon:
 
         # Populate lists
         print('Populating lists...')
-        self.word_tree.traverse_inorder(self.word_tree.root, self.sorted_list, self.one_char_words, self.nested_word_lists)
+        self.word_tree.traverse_inorder(
+            self.word_tree.root,
+            self.sorted_list,
+            self.one_char_words,
+            self.nested_word_lists
+        )
 
         # Add neighbours
         print('Adding neighbours...')
