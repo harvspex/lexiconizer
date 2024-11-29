@@ -19,9 +19,11 @@ def time_build_lexicon(
     print(f'\nAverage execution time: {average_time:.2f}s across {N_REPEATS} runs')
 
 def main():
-    filename = 'in.txt'
-    lexicon = Lexicon()
-    time_build_lexicon(lexicon, filename, 'out.txt', 1)
+    input_filename: str = 'in.txt'
+    output_filename: str = 'out.txt'
+    repeats: int = 20
+    lexicon: Lexicon = Lexicon()
+    time_build_lexicon(lexicon, input_filename, output_filename, repeats)
 
 if __name__ == '__main__':
     main()

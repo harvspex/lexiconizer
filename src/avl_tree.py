@@ -17,17 +17,15 @@ class AVLTree(ABC):
     def __init__(self):
         self.root: AVLNode = None
 
-    # TODO: add args/type hints
-    # NOTE: Plausibly slightly slower. Could get rid of the abstract methods
     @abstractmethod
-    def insert_element(self, data): pass
+    def insert_element(self, data: str): pass
 
     @abstractmethod
     def traverse_inorder(
-        local_root,
-        sorted_list,
-        one_char_words,
-        nested_word_lists
+        local_root: AVLNode,
+        sorted_list: list,
+        one_char_words: list,
+        nested_word_lists: list
     ): pass
 
     def set_node_height(self, local_root):
