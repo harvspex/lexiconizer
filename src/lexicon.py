@@ -6,7 +6,7 @@ import utils.same_char_1_utils as same_char_1_utils
 # NOTE: staticmethods may be slower. Do testing.
 # TODO: init with filename, and run build_lexicon on init?
 # TODO: Could add option to time build_lexicon subtasks individually
-# TODO: Finish adding type hints
+# TODO: Handle IOError if files cannot be read
 
 class Lexicon:
     """
@@ -20,14 +20,13 @@ class Lexicon:
         one_char_words (list[Word]): A sorted list of one-letter words.
         nested_word_lists (list): A list of words nested by: word length, then char 1, then char 0.
     """
-
     def __init__(self):
         self.word_tree = WordTree()
         self.sorted_list: list[Word] = []
         self.one_char_words: list[Word] = [] # Could potentially be list[str]
         self.nested_word_lists: list = []
 
-    def read_data(self, filename):
+    def read_data(self, filename: str):
         """
         Reads text data from a file and inserts it into the Lexicon's AVL Tree.
 
@@ -37,7 +36,6 @@ class Lexicon:
         Raises:
             IOError: If the file cannot be read.
         """
-        # TODO: actually raise the error
         with open(filename, 'r') as infile:
             for line in infile:
                 tokens = line.lower().strip().split()
@@ -48,7 +46,7 @@ class Lexicon:
                     if data:
                         self.word_tree.insert_element(data)
 
-    def write_to_file(self, filename):
+    def write_to_file(self, filename: str):
         """
         Writes the sorted list of words to a file.
 
@@ -58,7 +56,6 @@ class Lexicon:
         Raises:
             IOError: If the file cannot be written.
         """
-        # TODO: Actually raise the error
         with open(filename, 'w') as outfile:
             for i in self.sorted_list:
                 outfile.write(str(i))
@@ -81,7 +78,7 @@ class Lexicon:
         self.one_char_words.clear()
         self.nested_word_lists.clear()
 
-    def build_lexicon(self, input_filename, output_filename='out.txt', reset=True):
+    def build_lexicon(self, input_filename: str, output_filename: str='out.txt', reset: bool=True):
         """
         Builds the Lexicon by processing an input file, identifying neighbors, and saving results.
 
