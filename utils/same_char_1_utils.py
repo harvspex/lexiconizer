@@ -1,17 +1,21 @@
 import utils.neighbours_utils as nb_utils
+"""
+Utility functions to add neighbors for words with same second letter (char 1).
+"""
 
 def add_neighbours(nested_word_lists: list):
     """
-    Identifies and adds neighbors for words sharing the same second 
-    character.
-    
+    Finds and adds neighbors for words sharing the same second character.
+
     Operates on the `nested_word_lists` list.
     """
-    recursive_explore(nested_word_lists, target_level=2)
+    TARGET_LEVEL: int  = 2
+    recursive_explore(nested_word_lists, target_level=TARGET_LEVEL)
 
 def recursive_explore(nested_list: list, target_level: int, level: int=0):
     """
     Recursively explores a nested list to a specific depth.
+
     Once target depth is reached, checks for neighbours using 
     `compare_words_different_lists`.
 
@@ -37,12 +41,12 @@ def compare_words_different_lists(nested_list: list):
     """
     Compares words across different lists to find neighbors.
 
+    This compares every word in word_a to every other word in other_words.
+    Words within word_a don't need to be compared, as they have been checked
+    previously by `same_char_0_utils`.
+
     Args:
         nested_list (list): The nested list of words.
-
-    This compares every word in word_a to every word in other_words. Words 
-    within word_a don't need to be compared, as they have been checked by 
-    `same_char_0_utils`.
     """
     # TODO: Can end be passed into word_is_neighbours via the index of the
     # current list?
@@ -55,7 +59,7 @@ def compare_words_different_lists(nested_list: list):
 def yield_lists(nested_list: list, start: int=0, end: int=None, recursive=True):
     # TODO: Reword
     """
-    Yields items and their sublists from a nested list.
+    Yields a list and a list generator from a nested list.
 
     Args:
         nested_list (list): The nested list to process.
@@ -66,7 +70,9 @@ def yield_lists(nested_list: list, start: int=0, end: int=None, recursive=True):
             (default: True).
 
     Yields:
-        tuple: A tuple containing an item and its sublist generator.
+        tuple: A tuple containing:
+            - A single sublist
+            - A sublist generator
     """
     if end is None: end = len(nested_list)
 

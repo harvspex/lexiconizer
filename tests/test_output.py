@@ -1,49 +1,32 @@
+import filecmp
 from dataclasses import dataclass, field
-from filecmp import cmp
+import utils.neighbours_utils as neighbours_utils
+from src.word_tree import Word
+"""
+Contains methods to generate and compare a control lexicon against the one created by Lexiconizer.
 
+NOTE: Generating a control lexicon for large files is pretty slow!
+"""
+# TODO: Fix error
 # TODO: Add docstrings
-# TODO: Generally tidy up
+def read_data(lexicon: dict[str,Word], input_filename='in.txt') -> dict[str,Word]:
+    with open(input_filename, 'r') as infile:
+        for line in infile:
+            tokens = line.lower().strip().split()
 
-@dataclass
-class Word:
-    spelling: str
-    freq: int=1
-    neighbours: list[str] = field(default_factory=list[str])
+            for token in tokens:
+                word = ''.join(_ for _ in token if _.isalpha())
 
-    def __str__(self):
-        return f'{self.spelling} {self.freq} {self.neighbours}\n'
+                if word:
+                    try:
+                        lexicon[word].freq += 1
+                    except:
+                        lexicon[word] = Word(word)
 
-def is_neighbours(word, other_word):
-    if len(word) != len(other_word):
-        return False
+    return dict(sorted(lexicon.items()))
 
-    diffs = 0
-
-    for i in range(len(word)):
-        if word[i] != other_word[i]:
-            diffs += 1
-
-    return diffs == 1
-
-lexicon = {}
-
-with open('in.txt', 'r') as infile:
-    for line in infile:
-        tokens = line.lower().strip().split()
-
-        for token in tokens:
-            word = ''.join(_ for _ in token if _.isalpha())
-
-            if word:
-                try:
-                    lexicon[word].freq += 1
-                except:
-                    lexicon[word] = Word(word)
-
-lexicon = dict(sorted(lexicon.items()))
-
-def generate(lexicon=lexicon):
-    with open('out_test.txt', 'w') as outfile:
+def generate(lexicon: dict[str,Word], output_filename='lexicon_test.txt'):
+    with open(output_filename, 'w') as outfile:
         keys = [k for k in lexicon.keys()]
         len_keys = len(keys)
 
@@ -53,19 +36,19 @@ def generate(lexicon=lexicon):
             for b in range(a+1, len_keys):
                 word_b = lexicon[keys[b]]
 
-                if is_neighbours(word_a.spelling, word_b.spelling):
-                    word_a.neighbours.append(word_b.spelling)
-                    word_b.neighbours.append(word_a.spelling)
+                if neighbours_utils.word_is_neighbours(word_a, word_b):
+                    neighbours_utils.add_mutual_neighbours(word_a, word_b)
             
             outfile.write(str(word_a))
 
 def compare(
-    test_filename: str='out.txt',
-    control_filename:str='out_test.txt',
+    test_filename: str='lexicon.txt',
+    control_filename:str='lexicon_test.txt',
     shallow=False
-):
-    result = cmp(test_filename, control_filename, shallow=shallow)
+) -> bool:
+    result = filecmp.cmp(test_filename, control_filename, shallow=shallow)
     print(f'Files match: {result}')
+    return result
 
 def main():
     generate()

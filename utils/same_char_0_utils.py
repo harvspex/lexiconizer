@@ -1,9 +1,11 @@
 import utils.neighbours_utils as nb_utils
+"""
+Utility functions to add neighbors for words with same first letter (char 0).
+"""
 
 def add_neighbours(nested_word_lists: list):
     """
-    Identifies and adds neighbors for words sharing the same first 
-    character.
+    Finds and adds neighbors for words sharing the same first character.
 
     Operates on the `nested_word_lists` list.
     """
@@ -11,8 +13,7 @@ def add_neighbours(nested_word_lists: list):
 
 def compare_same_char_0_words(nested_word_lists: list):
     """
-    Compares words with same char 0 (i.e. same first letter) to find 
-    neighbours.
+    Compares words withsame first letter (char 0) to find neighbours.
 
     Args:
         nested_word_lists (list): A list of words nested by:

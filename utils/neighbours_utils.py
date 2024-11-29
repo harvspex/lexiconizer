@@ -1,27 +1,10 @@
 from src.word_tree import Word
 """
-neighbours_utils.py
+This module provides utility functions for finding and adding neighbors.
 
-This module provides utility functions for finding and adding word
-neighbors.
-
-The functions in this module are designed to help identify, process, 
-and manage neighboring words based on various criteria such as 
-character differences, alphabetical order, or word lengths.
-
-Typical Use Cases:
-- Identifying words that differ by one character.
-- Managing lists of neighboring words.
-- Providing helper methods for word-based operations in the WordTree.
-
-Functions:
-    is_neighbor(word1: str, word2: str) -> bool
-        Determines if two words are neighbors by differing in only one
-        character.
-    sort_neighbors(neighbors: list[str]) -> list[str]
-        Sorts a list of neighbors alphabetically.
-    find_neighbors(word: str, word_list: list[str]) -> list[str]
-        Finds all neighbors of a given word in a provided word list.
+The functions in this module help identify, process, and manage 
+neighboring words based on various criteria such as character 
+differences, alphabetical order, or word lengths.
 """
 
 def word_is_neighbours(
@@ -30,7 +13,7 @@ def word_is_neighbours(
     start: int=0,
     end: int=None,
     diffs: int=0
-):
+) -> bool:
     """
     Determines if two words are neighbors based on character differences.
 
