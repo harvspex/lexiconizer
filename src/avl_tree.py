@@ -1,8 +1,6 @@
 from abc import ABC, abstractmethod
 
-# TODO: Add type hints
 # TODO: Could refactor some methods for elegance/readability
-# TODO: Could make most methods static
 # TODO: Add docstrings
 
 class AVLNode:
@@ -13,7 +11,14 @@ class AVLNode:
         self.height: int = 0
 
 class AVLTree(ABC):
-    """An AVL tree. Contains methods to balance nodes."""
+    """
+    An AVL tree. Contains methods to balance nodes.
+
+    Variable name shorthand:
+        g: grandparent node
+        p: parent node
+        c: child node
+    """
     def __init__(self):
         self.root: AVLNode = None
 
@@ -28,7 +33,8 @@ class AVLTree(ABC):
         nested_word_lists: list
     ): pass
 
-    def set_node_height(self, local_root):
+    @staticmethod
+    def set_node_height(local_root: AVLNode):
         left = local_root.left
         right = local_root.right
         left_height = -1 if left is None else left.height
@@ -39,31 +45,35 @@ class AVLTree(ABC):
         else:
             local_root.height = right_height + 1
 
-    def right_rotation(self, g):
+    @staticmethod
+    def right_rotation(g: AVLNode):
         p = g.left
-        rcp = p.right
+        rc = p.right
         p.right = g
-        g.left = rcp
-        self.set_node_height(g)
+        g.left = rc
+        AVLTree.set_node_height(g)
         return p
 
-    def left_rotation(self, g):
+    @staticmethod
+    def left_rotation(g: AVLNode):
         p = g.right
-        lcp = p.left
+        lc = p.left
         p.left = g
-        g.right = lcp
-        self.set_node_height(g)
+        g.right = lc
+        AVLTree.set_node_height(g)
         return p
 
-    def right_left_rotation(self, g):
+    @staticmethod
+    def right_left_rotation(g: AVLNode):
         p = g.right
-        g.right = self.right_rot(p)
-        return self.left_rot(g)
+        g.right = AVLTree.right_rot(p)
+        return AVLTree.left_rot(g)
 
-    def left_right_rotation(self, g):
+    @staticmethod
+    def left_right_rotation(g: AVLNode):
         p = g.left
-        g.left = self.left_rot(p)
-        return self.right_rot(g)
+        g.left = AVLTree.left_rot(p)
+        return AVLTree.right_rot(g)
 
     @staticmethod
     def get_height(subtree: AVLNode):
@@ -74,22 +84,21 @@ class AVLTree(ABC):
         left_height = AVLTree.get_height(node.left)
         right_height = AVLTree.get_height(node.right)
         return left_height - right_height
-    
-    def rebalance(self, local_root):
-        # TODO: Refactor?
 
+    @staticmethod
+    def rebalance(local_root: AVLNode):
         difference = AVLTree.get_height_diff(local_root)
 
         if difference == 2:
             if AVLTree.get_height_diff(local_root.left) == -1:
-                local_root = self.left_right_rotation(local_root)
+                local_root = AVLTree.left_right_rotation(local_root)
             else:
-                local_root = self.right_rotation(local_root)
+                local_root = AVLTree.right_rotation(local_root)
 
         elif difference == -2:
             if AVLTree.get_height_diff(local_root.right) == 1:
-                local_root = self.right_left_rotation(local_root)
+                local_root = AVLTree.right_left_rotation(local_root)
             else:
-                local_root = self.left_rotation(local_root)
+                local_root = AVLTree.left_rotation(local_root)
 
         return local_root
