@@ -2,6 +2,7 @@ from dataclasses import dataclass, field
 from filecmp import cmp
 
 # TODO: Add docstrings
+# TODO: Generally tidy up
 
 @dataclass
 class Word:
@@ -58,7 +59,11 @@ def generate(lexicon=lexicon):
             
             outfile.write(str(word_a))
 
-def compare(test_filename: str='out.txt', control_filename:str='out_test.txt', shallow=False):
+def compare(
+    test_filename: str='out.txt',
+    control_filename:str='out_test.txt',
+    shallow=False
+):
     result = cmp(test_filename, control_filename, shallow=shallow)
     print(f'Files match: {result}')
 
