@@ -21,14 +21,14 @@ def time_build_lexicon(
     print(f'\nAverage execution time: {average_time:.2f}s across {N_REPEATS} runs')
 
     if compare_files:
-        compare(input_filename, output_filename)
+        compare(test_filename=output_filename)
 
 def main():
     input_filename: str = 'in.txt'
     output_filename: str = 'out.txt'
     repeats: int = 20
     lexicon: Lexicon = Lexicon()
-    time_build_lexicon(lexicon, input_filename, output_filename, repeats)
+    time_build_lexicon(lexicon, input_filename, output_filename, repeats, compare_files=True)
 
 if __name__ == '__main__':
     main()

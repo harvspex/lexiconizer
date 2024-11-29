@@ -58,8 +58,8 @@ def generate(lexicon=lexicon):
             
             outfile.write(str(word_a))
 
-def compare(in_filename: str='out.txt', out_filename:str='out_test.txt', shallow=False):
-    result = cmp(in_filename, out_filename, shallow=shallow)
+def compare(test_filename: str='out.txt', control_filename:str='out_test.txt', shallow=False):
+    result = cmp(test_filename, control_filename, shallow=shallow)
     print(f'Files match: {result}')
 
 def main():
