@@ -6,8 +6,8 @@ class Word:
 
     Attributes:
         spelling (str): The word's spelling.
-        neighbours (list[str]): A list of neighboring words (e.g. words 
-            that differ by one character).
+        neighbours (list[str]): A list of neighboring words (e.g. words that
+            differ by one character).
         frequency (int): The frequency of the word's occurrence.
         pointer (int): Used for inserting words alphabetically into the 
             `neighbours` list.
@@ -23,16 +23,18 @@ class Word:
 
     def __str__(self) -> str:
         """
+        Returns a string representation of a Word.
+
         Returns:
             A string representation of the word, including its spelling, 
-            frequency, and list of neighbors.
-            e.g. "cat 6 ['bat', 'cab', 'cut']"
+            frequency, and list of neighbors. e.g. "cat 6 ['bat', 'cab', 'cut']"
         """
         return f"{self.spelling} {self.frequency} {self.neighbours}\n"
 
 class WordTree(AVLTree):
     """
     Specialized AVLTree subclass for storing and managing Word objects.
+
     A WordTree is used when AVLNode data is a Word object.
     """
 
@@ -41,8 +43,7 @@ class WordTree(AVLTree):
 
     def insert_element(self, data: str):
         """
-        Inserts Word data into WordTree. Increments Word frequency if 
-        Word already in tree.
+        Inserts Word data into WordTree. Increments frequency if already in tree.
 
         Args:
             data (str): The word to insert.
@@ -50,9 +51,9 @@ class WordTree(AVLTree):
         Behavior:
             - If the tree is empty, creates the root node with the word.
             - If the word already exists in the tree, its frequency is 
-              incremented.
-            - Otherwise, adds the word as a new node in the correct 
-              position and rebalances the tree.
+                incremented.
+            - Otherwise, adds the word as a new node in the correct position and
+                rebalances the tree.
         """
         if self.root is None:
             self.root = AVLNode(Word(data))
@@ -107,17 +108,17 @@ class WordTree(AVLTree):
 
         During traversal, it:
             1. Appends each word to an alphabetically sorted list.
-            2. Appends word to nested_word_lists nested by: word length,
-               then char 1, then char 0
+            2. Appends word to nested_word_lists nested by: word length, 
+            then char 1, then char 0
             3. Appends one char words to one_char_words
 
         Args:
             local_root (AVLNode): The current node in the traversal.
-            sorted_list (list[Word]): A list to hold all words in 
-                alphabetical order.
-            one_char_words (list[Word]): A list to hold single-character
-                words.
-            nested_word_lists (list): A nested list to organize words by length and characters.
+            sorted_list (list[Word]): A list to hold all words in alphabetical 
+                order.
+            one_char_words (list[Word]): A list to hold single-character words.
+            nested_word_lists (list): A nested list to organize words by length 
+                and characters.
         """
 
         if local_root is not None:
@@ -146,7 +147,7 @@ class WordTree(AVLTree):
     @staticmethod
     def add_to_inner(word: Word, lst: list, *n: int):
         """
-        Iteratively nests lists at each index in n, then appends word to deepest list.
+        Iteratively nests lists at each index in n, appending word to deepest list.
 
         Args:
             word (Word): The Word object to add.

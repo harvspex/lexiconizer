@@ -11,8 +11,9 @@ import utils.same_char_1_utils as same_char_1_utils
 class Lexicon:
     """
     A class for managing a lexicon of words stored in an AVL Tree structure.
-    The Lexicon supports reading words from files, finding neighboring words,
-    and saving results to an output file.
+
+    The Lexicon supports reading words from files, finding neighboring 
+    words, and saving results to an output file.
 
     Attributes:
         word_tree (WordTree): The AVL Tree storing words.
@@ -80,12 +81,14 @@ class Lexicon:
 
     def build_lexicon(self, input_filename: str, output_filename: str='out.txt', reset: bool=True):
         """
-        Builds the Lexicon by processing an input file, identifying neighbors, and saving results.
+        Builds the Lexicon. Processes input, adds neighbors, and saves results.
 
         Args:
             input_filename (str): The path to the input file containing words.
-            output_filename (str): The path to the output file (default: 'out.txt').
-            reset (bool): Whether to reset the Lexicon before building (default: True).
+            output_filename (str): The path to the output file
+                (default: 'out.txt').
+            reset (bool): Whether to reset the Lexicon before building
+                (default: True).
         """
 
         if reset: self.reset()

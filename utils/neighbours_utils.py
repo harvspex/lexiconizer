@@ -32,16 +32,15 @@ def word_is_neighbours(
     diffs: int=0
 ):
     """
-    Determines if two words are neighbors based on character 
-    differences.
+    Determines if two words are neighbors based on character differences.
 
     Args:
         word_a (Word): The first word.
         word_b (Word): The second word.
         start (int): The starting index for comparison (default: 0).
-        end (int): The ending index for comparison (default: None,
-            meaning the length of the word).
-        diffs (int): The initial number of character differences
+        end (int): The ending index for comparison (default: None, meaning 
+            the length of the word).
+        diffs (int): The initial number of character differences 
             (default: 0).
 
     Returns:
@@ -65,8 +64,7 @@ def word_is_neighbours(
 
 def add_mutual_neighbours(word_a: Word, word_b: Word, inserting: bool=False):
     """
-    Adds two words as mutual neighbors in their respective neighbor 
-    lists.
+    Adds two words as mutual neighbors in their respective neighbor lists.
 
     Args:
         word_a (Word): The first word.
@@ -90,8 +88,8 @@ def compare_words_same_list(word_list: list[Word], start: int=0, end: int=None):
     Args:
         inner_list (list[Word]): The list of words to compare.
         start (int): The starting index for comparison (default: 0).
-        end (int): The ending index for comparison (default: None, 
-            meaning the end of the list).
+        end (int): The ending index for comparison (default: None, meaning 
+            the end of the list).
 
     Adds mutual neighbors for each word that matches criteria.
     """

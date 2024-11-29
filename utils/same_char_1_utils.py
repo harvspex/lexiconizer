@@ -40,9 +40,9 @@ def compare_words_different_lists(nested_list: list):
     Args:
         nested_list (list): The nested list of words.
 
-    This compares every word in word_a to every word in other_words.
-    Words within word_a don't need to be compared, as they have been 
-    checked by `same_char_0_utils`.
+    This compares every word in word_a to every word in other_words. Words 
+    within word_a don't need to be compared, as they have been checked by 
+    `same_char_0_utils`.
     """
     # TODO: Can end be passed into word_is_neighbours via the index of the
     # current list?
@@ -60,8 +60,8 @@ def yield_lists(nested_list: list, start: int=0, end: int=None, recursive=True):
     Args:
         nested_list (list): The nested list to process.
         start (int): The starting index (default: 0).
-        end (int): The ending index (default: None, meaning the end of 
-            the list).
+        end (int): The ending index (default: None, meaning the end of the 
+            list).
         recursive (bool): Whether to yield recursively through sublists 
             (default: True).
 
