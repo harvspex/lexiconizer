@@ -79,14 +79,13 @@ class Lexicon:
         self.one_char_words.clear()
         self.nested_word_lists.clear()
 
-    def build_lexicon(self, input_filename: str, output_filename: str='out.txt', reset: bool=True):
+    def build_lexicon(self, input_filename: str, output_filename: str, reset: bool=True):
         """
         Builds the Lexicon. Processes input, adds neighbors, and saves results.
 
         Args:
             input_filename (str): The path to the input file containing words.
-            output_filename (str): The path to the output file
-                (default: 'out.txt').
+            output_filename (str): The path to the output file.
             reset (bool): Whether to reset the Lexicon before building
                 (default: True).
         """

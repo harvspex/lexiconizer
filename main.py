@@ -22,8 +22,7 @@ def time_build_lexicon(
     )
     average_time = total_execution_time / N_REPEATS
     print("COMPLETE.")
-    print(f'\nAverage execution time: {average_time:.2f}s 
-          across {N_REPEATS} runs')
+    print(f'\nAverage execution time: {average_time:.2f}s across {N_REPEATS} runs')
 
     if compare_files:
         compare(test_filename=output_filename)
