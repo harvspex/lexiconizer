@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 
 # TODO: Could refactor some methods for elegance/readability
 # TODO: Add docstrings
+# TODO: Using Typing.Any for some variables?
 
 class AVLNode:
     def __init__(self, data: object):

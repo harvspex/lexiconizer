@@ -65,7 +65,7 @@ class WordTree(AVLTree):
                 break
 
     @staticmethod
-    def g(c): return ord(c) - ord('a')
+    def g(c: str): return ord(c[0]) - ord('a')
 
     @staticmethod
     def traverse_inorder(
@@ -105,7 +105,7 @@ class WordTree(AVLTree):
             WordTree.traverse_inorder(local_root.right, sorted_list, one_char_words, nested_word_lists)
 
     @staticmethod
-    def add_to_inner(word, lst, *n):
+    def add_to_inner(word: Word, lst: list, *n: int):
         """Iteratively nests lists at each index in n, then appends word to deepest list."""
         for i in n:
             try:
