@@ -58,6 +58,13 @@ def generate(lexicon=lexicon):
             
             outfile.write(str(word_a))
 
-# generate()
-result = cmp('out.txt', 'out_test.txt', shallow=False)
-print(f'Files match: {result}')
+def compare(in_filename: str='out.txt', out_filename:str='out_test.txt', shallow=False):
+    result = cmp(in_filename, out_filename, shallow=shallow)
+    print(f'Files match: {result}')
+
+def main():
+    generate()
+    compare()
+
+if __name__ == '__main__':
+    main()
