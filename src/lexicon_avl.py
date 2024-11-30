@@ -1,5 +1,5 @@
 from src.lexicon import Lexicon
-from src.word_tree import WordTree, Word
+from src.word_tree import WordTree
 
 # TODO: Rewrite docstrings
 
@@ -19,9 +19,8 @@ class LexiconAVL(Lexicon):
     def __init__(self):
         super().__init__()
         self.word_tree = WordTree()
-        self.sorted_list: list[Word] = []
 
-    def insert_element(self, data):
+    def insert_element(self, data: str):
         self.word_tree.insert_element(data)
 
     def populate_lists(self):
@@ -35,5 +34,4 @@ class LexiconAVL(Lexicon):
     def reset(self):
         """Resets the LexiconAVL."""
         self.word_tree = WordTree()
-        self.sorted_list.clear()
         super().reset()

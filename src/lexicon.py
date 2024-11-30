@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from src.word_tree import Word
+from src.word import Word
 import utils.one_char_utils as one_char_utils
 import utils.same_char_0_utils as same_char_0_utils
 import utils.same_char_1_utils as same_char_1_utils
@@ -11,11 +11,9 @@ import utils.same_char_1_utils as same_char_1_utils
 
 class Lexicon(ABC):
     def __init__(self):
-        self.one_char_words: list[Word] = []
+        self.sorted_list: list = []
         self.nested_word_lists: list = []
-
-    # @abstractmethod
-    # def read_data(self, filename: str): pass
+        self.one_char_words: list[Word] = []
 
     @abstractmethod
     def insert_element(self, data: str): pass
@@ -40,8 +38,7 @@ class Lexicon(ABC):
                 for token in tokens:
                     data = ''.join(c for c in token if c.isalpha())
 
-                    if data:
-                        self.insert_element(data)
+                    if data: self.insert_element(data)
 
     def write_to_file(self, filename: str):
         """
@@ -70,6 +67,7 @@ class Lexicon(ABC):
 
     def reset(self):
         """Resets the lexicon."""
+        self.sorted_list.clear()
         self.one_char_words.clear()
         self.nested_word_lists.clear()
 

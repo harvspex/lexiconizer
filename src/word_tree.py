@@ -1,36 +1,6 @@
 from src.avl_tree import AVLNode, AVLTree
-
-# TODO: Extract word into separate file
-class Word:
-    """
-    Represents a word and its associated data.
-
-    Attributes:
-        spelling (str): The word's spelling.
-        neighbours (list[str]): A list of neighboring words (e.g. words that
-            differ by one character).
-        frequency (int): The frequency of the word's occurrence.
-        pointer (int): Used for inserting words alphabetically into the 
-            `neighbours` list.
-    """
-    def __init__(self, spelling):
-        self.spelling: str = spelling
-        self.neighbours: list[str] = []
-        self.frequency: int = 1
-        self.pointer: int = 0
-    
-    # NOTE: Operator overloading not used as it has significant impact 
-    # on runtime.
-
-    def __str__(self) -> str:
-        """
-        Returns a string representation of a Word.
-
-        Returns:
-            A string representation of the word, including its spelling, 
-            frequency, and list of neighbors. e.g. "cat 6 ['bat', 'cab', 'cut']"
-        """
-        return f"{self.spelling} {self.frequency} {self.neighbours}\n"
+from src.word import Word
+from utils.neighbours_utils import add_to_inner
 
 class WordTree(AVLTree):
     """
@@ -136,7 +106,7 @@ class WordTree(AVLTree):
             try:
                 # Add word to nested_word_lists
                 idx_1 = WordTree.g(spelling[1])
-                WordTree.add_to_inner(word, nested_word_lists, length, idx_1, idx_0)
+                add_to_inner(word, nested_word_lists, length, idx_1, idx_0)
             
             except IndexError:
                 # If word is one char, add word to one_char_words
@@ -144,29 +114,3 @@ class WordTree(AVLTree):
                     one_char_words.append(word)
 
             WordTree.traverse_inorder(local_root.right, sorted_list, one_char_words, nested_word_lists)
-
-    @staticmethod
-    def add_to_inner(word: Word, lst: list, *n: int):
-        """
-        Iteratively nests lists at each index in n, appending word to deepest list.
-
-        Args:
-            word (Word): The Word object to add.
-            lst (list): The outermost list to which the word will be added.
-            *n (int): A sequence of indices specifying the nested structure.
-
-        Behavior:
-            - Navigates the nested structure according to the indices in `n`.
-            - Creates intermediate lists as needed if they do not exist.
-            - Appends the word to the deepest list specified by `n`.
-        """
-        for i in n:
-            try:
-                lst = lst[i]
-
-            except IndexError:
-                for _ in range(len(lst), i+1):
-                    lst.append([])
-                lst = lst[i]
-
-        lst.append(word)

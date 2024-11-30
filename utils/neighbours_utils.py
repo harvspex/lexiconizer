@@ -93,3 +93,28 @@ def compare_words_same_list(word_list: list[Word], start: int=0, end: int=None):
 
             if word_is_neighbours(word_a, word_b, start=1):
                 add_mutual_neighbours(word_a, word_b, inserting=False)
+
+def add_to_inner(word: Word, lst: list, *n: int):
+    """
+    Iteratively nests lists at each index in n, appending word to deepest list.
+
+    Args:
+        word (Word): The Word object to add.
+        lst (list): The outermost list to which the word will be added.
+        *n (int): A sequence of indices specifying the nested structure.
+
+    Behavior:
+        - Navigates the nested structure according to the indices in `n`.
+        - Creates intermediate lists as needed if they do not exist.
+        - Appends the word to the deepest list specified by `n`.
+    """
+    for i in n:
+        try:
+            lst = lst[i]
+
+        except IndexError:
+            for _ in range(len(lst), i+1):
+                lst.append([])
+            lst = lst[i]
+
+    lst.append(word)
