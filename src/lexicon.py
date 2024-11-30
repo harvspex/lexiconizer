@@ -1,4 +1,4 @@
-from src.word_tree import WordTree, Word
+from src.word_tree import Word
 import utils.one_char_utils as one_char_utils
 import utils.same_char_0_utils as same_char_0_utils
 import utils.same_char_1_utils as same_char_1_utils
