@@ -1,3 +1,5 @@
+# TODO: Docstrings?
+
 class ControlWord:
     def __init__(self, spelling):
         self.spelling: str = spelling
@@ -129,8 +131,3 @@ class ControlLexicon:
             for word_b in word_list:
                 if ControlLexicon.word_is_neighbours(word_a, word_b):
                     word_a.neighbours.append(word_b.spelling)
-
-# TODO: Remove
-if __name__ == '__main__':
-    lexicon = ControlLexicon()
-    lexicon.build_lexicon()
