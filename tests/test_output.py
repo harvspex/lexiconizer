@@ -7,9 +7,10 @@ Contains methods to generate and compare a control lexicon against the one creat
 
 NOTE: Generating a control lexicon for large files is pretty slow!
 """
-# TODO: Fix error
+# TODO: Fix error. Currently run with: python3 -m tests.test_output
 # TODO: Add docstrings
-def read_data(lexicon: dict[str,Word], input_filename='in.txt') -> dict[str,Word]:
+def read_data(lexicon: dict[str,Word]={}, input_filename='in.txt') -> dict[str,Word]:
+    print('Reading and inserting data...')
     with open(input_filename, 'r') as infile:
         for line in infile:
             tokens = line.lower().strip().split()
@@ -19,24 +20,45 @@ def read_data(lexicon: dict[str,Word], input_filename='in.txt') -> dict[str,Word
 
                 if word:
                     try:
-                        lexicon[word].freq += 1
+                        lexicon[word].frequency += 1
                     except:
                         lexicon[word] = Word(word)
 
     return dict(sorted(lexicon.items()))
 
+def chars_match(spelling_a: str, spelling_b: str, index: int):
+    return spelling_a[index] == spelling_b[index]
+
+def is_neighbours_candidate(spelling_a: str, spelling_b: str) -> bool:
+    if len(spelling_a) != len(spelling_b):
+        return False
+
+    elif len(spelling_a) == 1:
+        return True
+
+    return (
+        chars_match(spelling_a, spelling_b, index=0)
+        or chars_match(spelling_a, spelling_b, index=1)
+    )
+
 def generate(lexicon: dict[str,Word], output_filename='lexicon_test.txt'):
+    print('Adding neighbours and writing to file (SLOW)...')
     with open(output_filename, 'w') as outfile:
         keys = [k for k in lexicon.keys()]
         len_keys = len(keys)
 
         for a in range(len_keys):
-            word_a = lexicon[keys[a]]
+            spelling_a = keys[a]
+            word_a = lexicon[spelling_a]
 
             for b in range(a+1, len_keys):
-                word_b = lexicon[keys[b]]
+                spelling_b = keys[b]
+                word_b = lexicon[spelling_b]
 
-                if neighbours_utils.word_is_neighbours(word_a, word_b):
+                if not is_neighbours_candidate(spelling_a, spelling_b):
+                    continue
+
+                elif neighbours_utils.word_is_neighbours(word_a, word_b):
                     neighbours_utils.add_mutual_neighbours(word_a, word_b)
             
             outfile.write(str(word_a))
@@ -51,7 +73,8 @@ def compare(
     return result
 
 def main():
-    generate()
+    lexicon: dict[str,Word] = read_data()
+    generate(lexicon)
     compare()
 
 if __name__ == '__main__':
