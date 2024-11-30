@@ -11,6 +11,7 @@
     - Create CLI versions
         - CLI flags (e.g. dict mode, AVL mode, flags for tests)
     - Delete main.py
+    - Move timeit stuff somewhere else
 
 ## Testing
 - Unit test cases (e.g. check neighbours)

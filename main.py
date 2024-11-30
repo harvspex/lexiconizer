@@ -8,6 +8,7 @@ from timeit import timeit
 #   1. Calling it from cli with args `lexiconizer (infile) (outfile)`
 #   2. Interactive CLI version using cmd library
 
+# TODO: Move this somewhere else
 def time_build_lexicon(
     lexicon: LexiconAVL,
     input_filename: str,
