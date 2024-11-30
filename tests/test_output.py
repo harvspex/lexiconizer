@@ -1,12 +1,12 @@
 import filecmp
-from dataclasses import dataclass, field
 import utils.neighbours_utils as neighbours_utils
-from src.word_tree import Word
+from src.word import Word
 """
 Contains methods to generate and compare a control lexicon against the one created by Lexiconizer.
 
 NOTE: Generating a control lexicon for large files is pretty slow!
 """
+# NOTE: This has also been made somewhat redundant, due to `LexiconDict` 
 # TODO: Fix error. Currently run with: python3 -m tests.test_output
 # TODO: Add docstrings
 def read_data(lexicon: dict[str,Word]={}, input_filename='in.txt') -> dict[str,Word]:

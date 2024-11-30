@@ -1,4 +1,4 @@
-from src.word_tree import Word
+from src.word import Word
 from typing import Any
 """
 This module provides utility functions for finding and adding neighbors.

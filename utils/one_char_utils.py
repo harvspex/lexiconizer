@@ -1,4 +1,4 @@
-from src.word_tree import Word
+from src.word import Word
 import utils.neighbours_utils as nb_utils
 """
 This module implements `add_neighbours` method for one letter words.
