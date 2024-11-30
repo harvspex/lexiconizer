@@ -1,6 +1,6 @@
 # from src.lexicon import Lexicon
 from src.lexicon_avl import LexiconAVL
-from tests.test_output import compare
+from tests.compare_lexicons import compare
 from timeit import timeit
 
 # TODO: Put in /src ?
