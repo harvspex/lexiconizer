@@ -131,3 +131,10 @@ class ControlLexicon:
             for word_b in word_list:
                 if ControlLexicon.word_is_neighbours(word_a, word_b):
                     word_a.neighbours.append(word_b.spelling)
+
+def main():
+    lexicon = ControlLexicon()
+    lexicon.build_lexicon()
+
+if __name__ == '__main__':
+    main()
