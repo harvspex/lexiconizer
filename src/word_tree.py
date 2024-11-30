@@ -1,5 +1,6 @@
 from src.avl_tree import AVLNode, AVLTree
 
+# TODO: Extract word into separate file
 class Word:
     """
     Represents a word and its associated data.

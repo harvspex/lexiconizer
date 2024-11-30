@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 
+# TODO: Extract AVLNode into separate file
 class AVLNode:
     """
     A node for an AVL tree.

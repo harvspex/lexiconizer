@@ -1,4 +1,5 @@
-from src.lexicon import Lexicon
+# from src.lexicon import Lexicon
+from src.lexicon_avl import LexiconAVL
 from tests.test_output import compare
 from timeit import timeit
 
@@ -8,7 +9,7 @@ from timeit import timeit
 #   2. Interactive CLI version using cmd library
 
 def time_build_lexicon(
-    lexicon: Lexicon,
+    lexicon: LexiconAVL,
     input_filename: str,
     output_filename: str='lexicon.txt',
     N_REPEATS: int=1,
@@ -30,8 +31,9 @@ def time_build_lexicon(
 def main():
     input_filename: str = 'in.txt'
     output_filename: str = 'lexicon.txt'
-    repeats: int = 1
-    lexicon: Lexicon = Lexicon()
+    repeats: int = 10
+    lexicon: LexiconAVL = LexiconAVL()
+
     time_build_lexicon(
         lexicon,
         input_filename,

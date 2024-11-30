@@ -30,9 +30,11 @@ If neither the 1<sup>st</sup> nor the 2<sup>nd</sup> letter match, then there ar
 The way these sublists are populated and used preserves alphabetical order, eliminating the need for additional sorting.
 
 ## Time Complexity (Note: big O notation requires correction. Or delete this section)
-- AVL insertion has a time complexity of O(log n)
-- AVL traversal has a time complexity of O(n)
+- AVL insertion has a time complexity of O(log n) [n log n for n data points]
+- AVL traversal has a time complexity of O(n) [or is it O(log n) ???]
 - Checking neighbours has a time complexity of O(n(n-1)/2) [simplifies to O(n<sup>2</sup>)]
+
+<!-- Talk about why AVL insertion is worth it due to lack of need for sorting -->
 
 As checking neighbours has the largest time complexity, this is where the majority of optimisations occurred. These optimisations have resulted in insertion being the slowest part! Therefore, the overall, simplified time complexity is **O(log n)**
 
