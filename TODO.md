@@ -1,7 +1,7 @@
 # TODO
 
 ## Lexicon
-- init with filename
+- init with filename?
     - for control lexicon too
 - add option to time individual methods
 - Handle IOError if files cannot be read
