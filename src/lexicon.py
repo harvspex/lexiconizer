@@ -1,21 +1,47 @@
+from abc import ABC, abstractmethod
 from src.word_tree import Word
 import utils.one_char_utils as one_char_utils
 import utils.same_char_0_utils as same_char_0_utils
 import utils.same_char_1_utils as same_char_1_utils
 
-# NOTE: staticmethods may be slower. Do testing.
 # TODO: init with filename, and run build_lexicon on init?
-# TODO: Could add option to time build_lexicon subtasks individually
+# TODO: Add option to time build_lexicon subtasks individually
 # TODO: Handle IOError if files cannot be read
+# TODO: Write docstrings
 
-# TODO: Change to superclass for lexicon_dict and lexicon_avl
-
-class Lexicon:
+class Lexicon(ABC):
     def __init__(self):
         self.one_char_words: list[Word] = []
         self.nested_word_lists: list = []
 
-    def read_data(self, filename: str): pass
+    # @abstractmethod
+    # def read_data(self, filename: str): pass
+
+    @abstractmethod
+    def insert_element(self, data: str): pass
+
+    @abstractmethod
+    def populate_lists(self): pass
+
+    def read_data(self, filename: str):
+        """
+        Reads text data from a file and inserts it into the Lexicon's AVL Tree.
+
+        Args:
+            filename (str): The path to the input file containing words.
+
+        Raises:
+            IOError: If the file cannot be read.
+        """
+        with open(filename, 'r') as infile:
+            for line in infile:
+                tokens = line.lower().strip().split()
+
+                for token in tokens:
+                    data = ''.join(c for c in token if c.isalpha())
+
+                    if data:
+                        self.insert_element(data)
 
     def write_to_file(self, filename: str):
         """
@@ -47,13 +73,27 @@ class Lexicon:
         self.one_char_words.clear()
         self.nested_word_lists.clear()
 
-    def build_lexicon(self, input_filename: str, output_filename: str):
+    def build_lexicon(self, input_filename: str, output_filename: str, reset: bool=True):
+        """
+        Builds the Lexicon. Processes input, adds neighbors, and saves results.
 
-        # Add neighbours
+        Args:
+            input_filename (str): The path to the input file containing words.
+            output_filename (str): The path to the output file.
+            reset (bool): Whether to reset the Lexicon before building
+                (default: True).
+        """
+        if reset: self.reset()
+
+        print('Reading and inserting data...')
+        self.read_data(input_filename)
+
+        print('Populating lists...')
+        self.populate_lists()
+
         print('Adding neighbours...')
         self.add_all_neighbours()
 
-        # Write to file
         print('Writing to file...')
         self.write_to_file(output_filename)
 

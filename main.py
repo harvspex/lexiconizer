@@ -31,7 +31,7 @@ def time_build_lexicon(
 def main():
     input_filename: str = 'in.txt'
     output_filename: str = 'lexicon.txt'
-    repeats: int = 10
+    repeats: int = 1
     lexicon: LexiconAVL = LexiconAVL()
 
     time_build_lexicon(
