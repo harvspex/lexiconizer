@@ -1,10 +1,16 @@
 # Lexiconizer
-A refactor of my solution for the following puzzle. Given a text input:
+A refactor of my solution for the following requirements. Given a text input:
 - Count the number of occurrences of each word.
 - Find each word's list of "neighbours". A neighbour is any other word of the same length, which differs by only one character.
-- Write this information to file. The lexicon and neighbour-lists must each be in alphabetical order.
-- The goal is to get the fastest possible runtime.
+- Write this information to file. Both the lexicon and neighbour-lists must each be in alphabetical order.
+- Reduce the runtime as greatly as possible.
 - To increase the difficulty, **built-in sorting methods and data structures were not allowed.**
+  - The optimisations still greatly enhance speed when using built-ins. A built-in version is provided for comparison.
+
+## At a glance
+- Data is inserted into an AVL Tree (or a dictionary in the built-in version).
+- The tree is traversed in order. Words are categorised based on length, and the first two letters.
+- These categories are used to greatly minimize the number of comparisons needed to identify neighbours. 
 
 ## AVL Tree
 Lexiconizer begins by inserting words into an [AVL tree](https://en.wikipedia.org/wiki/AVL_tree). If the word is already present, then its frequency counter is increased instead.
@@ -19,17 +25,14 @@ The rationale behind using sublists is as follows:
     - Start with the same letter
     - Or have the same 2<sup>nd</sup> letter
 
-If neither the 1<sup>st</sup> nor the 2<sup>nd</sup> letter match, then there are more than one different characters, meaning the words are not neighbours. Therefore, we can avoid time-consuming comparisons between words that:
+If neither the 1<sup>st</sup> nor the 2<sup>nd</sup> letter match, then there are more than one different characters, meaning the words are not neighbours. Therefore, we can avoid time-consuming comparisons between a large number of words.
 
-- Are different lengths
-- Start with 2 completely different letters
+The way these sublists are populated and used preserves alphabetical order, eliminating the need for additional sorting.
 
-The way these sublists are populated and used also preserves alphabetical order, eliminating the need for additional sorting.
-
-## Time Complexity
+## Time Complexity (Note: big O notation requires correction. Or delete this section)
 - AVL insertion has a time complexity of O(log n)
 - AVL traversal has a time complexity of O(n)
-- Checking neighbours has a time complexity of O(n(n-1)/2). This simplifies to O(n<sup>2</sup>)
+- Checking neighbours has a time complexity of O(n(n-1)/2) [simplifies to O(n<sup>2</sup>)]
 
 As checking neighbours has the largest time complexity, this is where the majority of optimisations occurred. These optimisations have resulted in insertion being the slowest part! Therefore, the overall, simplified time complexity is **O(log n)**
 
