@@ -7,8 +7,6 @@ import utils.same_char_1_utils as same_char_1_utils
 # TODO: init with filename, and run build_lexicon on init?
 # TODO: Could add option to time build_lexicon subtasks individually
 # TODO: Handle IOError if files cannot be read
-# TODO: Could restructer nested_words_list to index by len, then char 0, then char 1
-#       Would require inverting char 0 and char 1 neighbour methods.
 
 class Lexicon:
     """
