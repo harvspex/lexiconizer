@@ -11,9 +11,9 @@ import utils.same_char_1_utils as same_char_1_utils
 
 class Lexicon(ABC):
     def __init__(self):
-        self.sorted_list: list = []
-        self.nested_word_lists: list = []
+        self.sorted_list: list[Word] = []
         self.one_char_words: list[Word] = []
+        self.nested_word_list: list = []
 
     @abstractmethod
     def insert_element(self, data: str): pass
@@ -62,14 +62,14 @@ class Lexicon(ABC):
             `same_char_1_utils.add_neighbours`
         """
         one_char_utils.add_neighbours(self.one_char_words)
-        same_char_0_utils.add_neighbours(self.nested_word_lists)
-        same_char_1_utils.add_neighbours(self.nested_word_lists)
+        same_char_0_utils.add_neighbours(self.nested_word_list)
+        same_char_1_utils.add_neighbours(self.nested_word_list)
 
     def reset(self):
         """Resets the lexicon."""
         self.sorted_list.clear()
         self.one_char_words.clear()
-        self.nested_word_lists.clear()
+        self.nested_word_list.clear()
 
     def build_lexicon(self, input_filename: str, output_filename: str, reset: bool=True):
         """

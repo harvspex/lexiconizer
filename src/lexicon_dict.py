@@ -1,6 +1,6 @@
 from src.lexicon import Lexicon
 from src.word import Word
-from utils.neighbours_utils import add_to_inner
+from utils.neighbours_utils import add_word_to_nested_list
 
 # TODO: Write docstrings
 
@@ -17,7 +17,10 @@ class LexiconDict(Lexicon):
 
     def populate_lists(self):
         self.dictionary = dict(sorted(self.dictionary.items()))
-        self.sorted_list = [_ for _ in self.dictionary.values()]
+        self.sorted_list = self.dictionary.values()
+
+        for word in self.sorted_list:
+            add_word_to_nested_list(word, self.nested_word_list, self.one_char_words)
 
     def reset(self):
         """Resets the LexiconDict."""

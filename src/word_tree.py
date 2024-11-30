@@ -1,6 +1,6 @@
 from src.avl_tree import AVLNode, AVLTree
 from src.word import Word
-from utils.neighbours_utils import add_to_inner
+from utils.neighbours_utils import add_word_to_nested_list
 
 class WordTree(AVLTree):
     """
@@ -55,24 +55,11 @@ class WordTree(AVLTree):
                 break
 
     @staticmethod
-    def g(c: str):
-        """
-        Calculates the alphabetical index of a character relative to 'a'
-
-        Args:
-            c (str): A single character.
-
-        Returns:
-            int: The index of the character (0 for 'a', 1 for 'b', etc.)
-        """
-        return ord(c[0]) - ord('a')
-
-    @staticmethod
     def traverse_inorder(
         local_root: AVLNode,
         sorted_list: list[Word],
         one_char_words: list[Word],
-        nested_word_lists: list
+        nested_word_list: list
     ):
         """
         Performs an inorder traversal of the WordTree.
@@ -93,24 +80,14 @@ class WordTree(AVLTree):
         """
 
         if local_root is not None:
-            WordTree.traverse_inorder(local_root.left, sorted_list, one_char_words, nested_word_lists)
+            WordTree.traverse_inorder(local_root.left, sorted_list, one_char_words, nested_word_list)
             
             word = local_root.data
-            spelling = word.spelling
-            length = len(spelling) - 1
-            idx_0 = WordTree.g(spelling[0])
 
             # Add word to sorted_list
             sorted_list.append(word)
 
-            try:
-                # Add word to nested_word_lists
-                idx_1 = WordTree.g(spelling[1])
-                add_to_inner(word, nested_word_lists, length, idx_1, idx_0)
-            
-            except IndexError:
-                # If word is one char, add word to one_char_words
-                if len(spelling) == 1: # Should always be true
-                    one_char_words.append(word)
+            # Add word to nested_word_lists
+            add_word_to_nested_list(word, nested_word_list, one_char_words)
 
-            WordTree.traverse_inorder(local_root.right, sorted_list, one_char_words, nested_word_lists)
+            WordTree.traverse_inorder(local_root.right, sorted_list, one_char_words, nested_word_list)

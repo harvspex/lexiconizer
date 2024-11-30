@@ -28,7 +28,7 @@ class LexiconAVL(Lexicon):
             self.word_tree.root,
             self.sorted_list,
             self.one_char_words,
-            self.nested_word_lists
+            self.nested_word_list
         )
 
     def reset(self):

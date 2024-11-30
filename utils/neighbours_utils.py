@@ -1,4 +1,5 @@
 from src.word_tree import Word
+from typing import Any
 """
 This module provides utility functions for finding and adding neighbors.
 
@@ -94,19 +95,46 @@ def compare_words_same_list(word_list: list[Word], start: int=0, end: int=None):
             if word_is_neighbours(word_a, word_b, start=1):
                 add_mutual_neighbours(word_a, word_b, inserting=False)
 
-def add_to_inner(word: Word, lst: list, *n: int):
+def add_word_to_nested_list(word: Word, nested_word_list: list, one_char_words: list):
+    spelling = word.spelling
+
+    try:
+        # Add word to nested_word_list
+        length = len(spelling) - 1
+        i1 = get_index(spelling[1])
+        i0 = get_index(spelling[0])
+        add_to_nested_list(word, nested_word_list, length, i1, i0)
+
+    except IndexError:
+        # If word is one char, add word to one_char_words
+        if len(spelling) == 1: # Should always be true
+            one_char_words.append(word)
+
+def get_index(c: str) -> int:
     """
-    Iteratively nests lists at each index in n, appending word to deepest list.
+    Calculates the alphabetical index of a character relative to 'a'
 
     Args:
-        word (Word): The Word object to add.
+        c (str): A single character.
+
+    Returns:
+        int: The index of the character (0 for 'a', 1 for 'b', etc.)
+    """
+    return ord(c[0]) - ord('a')
+
+def add_to_nested_list(element: Any, lst: list, *n: int):
+    """
+    Iteratively nests lists at each index in n, appending element to deepest list.
+
+    Args:
+        element (Any): The Word object to add.
         lst (list): The outermost list to which the word will be added.
         *n (int): A sequence of indices specifying the nested structure.
 
     Behavior:
         - Navigates the nested structure according to the indices in `n`.
         - Creates intermediate lists as needed if they do not exist.
-        - Appends the word to the deepest list specified by `n`.
+        - Appends the element to the deepest list specified by `n`.
     """
     for i in n:
         try:
@@ -117,4 +145,4 @@ def add_to_inner(word: Word, lst: list, *n: int):
                 lst.append([])
             lst = lst[i]
 
-    lst.append(word)
+    lst.append(element)
