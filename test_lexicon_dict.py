@@ -1,6 +1,7 @@
 from src.lexicon_dict import LexiconDict
-
 from tests.test_output import compare
+
+# TODO: Merge functionality into lexizonizer.py
 
 input_filename: str = 'in.txt'
 output_filename: str = 'lexicon.txt'
