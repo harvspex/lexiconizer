@@ -1,10 +1,6 @@
 *__pycache__
 *.json
+*.txt
+
 /sample_outputs
 /misc
-in.txt
-out.txt
-out_test.txt
-lexicon.txt
-lexicon_test.txt
-file_checker.py
