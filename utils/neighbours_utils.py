@@ -96,6 +96,19 @@ def compare_words_same_list(word_list: list[Word], start: int=0, end: int=None):
                 add_mutual_neighbours(word_a, word_b, inserting=False)
 
 def add_word_to_nested_list(word: Word, nested_word_list: list, one_char_words: list):
+    """
+    Adds word to nested list, or to different list if word is one letter.
+
+    Args:
+        word (Word): The Word object to add.
+        nested_word_list (list): The nested word list
+        one_char_words (list): The list of one letter words
+
+    Behavior:
+        - Attemps to add word to `nested_word_list`, nested by: length,
+          then char 1, then char 0
+        - If word is one char, adds to `one_char_words`
+    """
     spelling = word.spelling
 
     try:
@@ -127,7 +140,7 @@ def add_to_nested_list(element: Any, lst: list, *n: int):
     Iteratively nests lists at each index in n, appending element to deepest list.
 
     Args:
-        element (Any): The Word object to add.
+        element (Any): The element to add.
         lst (list): The outermost list to which the word will be added.
         *n (int): A sequence of indices specifying the nested structure.
 
