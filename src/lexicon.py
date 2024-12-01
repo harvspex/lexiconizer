@@ -93,12 +93,10 @@ class Lexicon(ABC):
             time_method(
                 self.build_lexicon_helper,
 
-                input_filename,
-                output_filename,
-                reset,
-                time,
-                verbose,
+                # args for `build_lexicon_helper`
+                input_filename, output_filename, reset, time, verbose,
 
+                # kwargs for `time_method``
                 n_repeats=n_repeats,
                 verbose=verbose,
             )
@@ -140,6 +138,5 @@ class Lexicon(ABC):
             else:
                 f.name(*f.args, **f.kwargs)
 
-        # TODO: Print only if time != verbose
         if time != verbose:
             print('Finished!')
