@@ -77,10 +77,9 @@ class Lexicon(ABC):
         output_filename: str,
         reset: bool=True,
         time: bool=False,
-        n_repeats: int=1,
         verbose: bool=False
     ):
-        # TODO: REword
+        # TODO: Reword
         """
         Builds the Lexicon. Processes input, adds neighbors, and saves results.
 
@@ -90,38 +89,12 @@ class Lexicon(ABC):
             reset (bool): Whether to reset the Lexicon before building
                 (default: True).
         """
-
-        # TODO: This works but isn't great
-        # Try timing the whole "build lexicon" elsewhere, e.g. in lexiconizer.py
-        args = input_filename, output_filename, reset, time, verbose
-
-        if time:
-            time_method(
-                self.build_lexicon_helper,
-                *args,
-                n_repeats=n_repeats,
-                verbose=verbose,
-            )
-
-        else:
-            self.build_lexicon_helper(*args)
-
-    def build_lexicon_helper(
-        self,
-        input_filename: str,
-        output_filename: str,
-        reset: bool=True,
-        time: bool=False,
-        verbose: bool=False
-    ):
         funcs = [
             FuncClass(self.read_data, 'Reading and inserting data...', input_filename),
             FuncClass(self.populate_lists, 'Populating lists...'),
             FuncClass(self.add_all_neighbours, 'Adding neighbours...'),
             FuncClass(self.write_to_file, 'Writing to file...', output_filename)
         ]
-
-        print(f'time={time} verbose={verbose}')
 
         if reset: self.reset()
 
@@ -134,5 +107,5 @@ class Lexicon(ABC):
             else:
                 f.name(*f.args, **f.kwargs)
 
-        if time != verbose:
+        if time or verbose:
             print('Finished!')
