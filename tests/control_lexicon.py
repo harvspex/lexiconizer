@@ -11,22 +11,15 @@ class ControlWord:
         return f"{self.spelling} {self.frequency} {self.neighbours}\n"
 
 class ControlLexicon:
-    def __init__(self, input_filename='in.txt', output_filename='control_lexicon.txt'):
-        self.input_filename = input_filename
-        self.output_filename = output_filename
+    def __init__(self):
         self.lexicon: dict[str, ControlWord] = {}
 
     def build_lexicon (
-        self,
-        input_filename: str=None,
-        output_filename: str=None,
+        self, input_filename: str,
+        output_filename: str,
         reset: bool=True,
         slow_mode: bool=False
     ):
-        # TODO: This is pretty unnecessary
-        if input_filename is None: input_filename = self.input_filename
-        if output_filename is None: output_filename = self.output_filename
-
         if reset: self.lexicon.clear()
 
         print('Reading and inserting data...')
