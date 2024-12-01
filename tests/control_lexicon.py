@@ -20,10 +20,10 @@ class ControlLexicon:
         self,
         input_filename: str,
         output_filename: str,
-        reset: bool=True,
         slow_mode: bool=False,
         time: bool=False,
-        verbose: bool=False
+        verbose: bool=False,
+        reset: bool=True
     ):
         funcs = [
             FuncClass(self.read_data, 'Reading and inserting data...', input_filename),

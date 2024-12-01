@@ -75,9 +75,9 @@ class Lexicon(ABC):
         self,
         input_filename: str,
         output_filename: str,
-        reset: bool=True,
         time: bool=False,
-        verbose: bool=False
+        verbose: bool=False,
+        reset: bool=True
     ):
         # TODO: Reword
         """
