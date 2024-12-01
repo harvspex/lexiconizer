@@ -4,6 +4,7 @@
 - init with filename?
     - for control lexicon too
 - add option to time individual methods
+- add verbose option
 - Handle IOError if files cannot be read
 
 ## CLI
