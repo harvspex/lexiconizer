@@ -6,6 +6,7 @@
 - add option to time individual methods
 - add verbose option
 - Handle IOError if files cannot be read
+- fix *args hacky thing
 
 ## CLI
 - Move main method stuff to lexiconizer

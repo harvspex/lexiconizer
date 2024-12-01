@@ -80,6 +80,7 @@ class Lexicon(ABC):
         n_repeats: int=1,
         verbose: bool=False
     ):
+        # TODO: REword
         """
         Builds the Lexicon. Processes input, adds neighbors, and saves results.
 
@@ -89,26 +90,21 @@ class Lexicon(ABC):
             reset (bool): Whether to reset the Lexicon before building
                 (default: True).
         """
+
+        # TODO: This works but isn't great
+        # Try timing the whole "build lexicon" elsewhere, e.g. in lexiconizer.py
+        args = input_filename, output_filename, reset, time, verbose
+
         if time:
             time_method(
                 self.build_lexicon_helper,
-
-                # args for `build_lexicon_helper`
-                input_filename, output_filename, reset, time, verbose,
-
-                # kwargs for `time_method``
+                *args,
                 n_repeats=n_repeats,
                 verbose=verbose,
             )
 
         else:
-            self.build_lexicon_helper(
-                input_filename=input_filename,
-                output_filename=output_filename,
-                reset=reset,
-                time=time,
-                verbose=verbose
-            )
+            self.build_lexicon_helper(*args)
 
     def build_lexicon_helper(
         self,
