@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+
+
 import argparse
 from src.lexicon_avl import LexiconAVL
 from src.lexicon_dict import LexiconDict

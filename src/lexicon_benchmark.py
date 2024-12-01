@@ -1,17 +1,14 @@
-# TODO: Docstrings
-
 from src.lexicon_dict import LexiconDict
 from src.func_class import FuncClass
 from src.word import Word
 import utils.neighbours_utils as neighbour_utils
 
+# TODO: Docstrings
+
 class LexiconBenchmark(LexiconDict):
     def __init__(self, slow_mode: int=False):
         super().__init__()
         self.slow_mode = slow_mode
-
-    def build_lexicon(self, input_filename, output_filename, time = False, verbose = False, reset = True):
-        return super().build_lexicon(input_filename, output_filename, time, verbose, reset)
 
     def get_build_lexicon_funcs(self, input_filename: str, output_filename: str):
         funcs = [
