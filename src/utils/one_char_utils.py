@@ -1,5 +1,5 @@
-from src.word import Word
-import utils.neighbours_utils as nb_utils
+from src.shared.word import Word
+import src.utils.neighbours_utils as nb_utils
 """
 This module implements `add_neighbours` method for one letter words.
 

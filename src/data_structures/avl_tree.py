@@ -1,4 +1,4 @@
-from src.avl_node import AVLNode
+from src.data_structures.avl_node import AVLNode
 from abc import ABC, abstractmethod
 
 class AVLTree(ABC):

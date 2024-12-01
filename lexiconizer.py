@@ -1,13 +1,12 @@
 #!/usr/bin/env python3
 
-
+# TODO: Move to /src
 
 import argparse
-from src.lexicon_avl import LexiconAVL
-from src.lexicon_dict import LexiconDict
-from src.lexicon_benchmark import LexiconBenchmark
-from utils.test_utils import time_method
-
+from src.lexicon.lexicon_avl import LexiconAVL
+from src.lexicon.lexicon_dict import LexiconDict
+from src.lexicon.lexicon_benchmark import LexiconBenchmark
+from src.utils.test_utils import time_method
 
 def get_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(

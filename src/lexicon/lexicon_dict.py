@@ -1,6 +1,6 @@
-from src.lexicon import Lexicon
-from src.word import Word
-from utils.neighbours_utils import add_word_to_nested_list
+from src.lexicon.lexicon import Lexicon
+from src.shared.word import Word
+from src.utils.neighbours_utils import add_word_to_nested_list
 
 # TODO: Write docstrings
 

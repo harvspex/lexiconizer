@@ -1,7 +1,7 @@
-from src.lexicon_dict import LexiconDict
-from src.func_class import FuncClass
-from src.word import Word
-import utils.neighbours_utils as neighbour_utils
+from src.lexicon.lexicon_dict import LexiconDict
+from src.shared.func_class import FuncClass
+from src.shared.word import Word
+import src.utils.neighbours_utils as neighbour_utils
 
 # TODO: Docstrings
 

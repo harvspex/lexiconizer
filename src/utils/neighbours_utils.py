@@ -1,4 +1,4 @@
-from src.word import Word
+from src.shared.word import Word
 from typing import Any
 """
 This module provides utility functions for finding and adding neighbors.

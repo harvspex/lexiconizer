@@ -1,5 +1,5 @@
-from src.lexicon import Lexicon
-from src.word_tree import WordTree
+from src.lexicon.lexicon import Lexicon
+from src.data_structures.word_tree import WordTree
 
 # TODO: Rewrite docstrings
 

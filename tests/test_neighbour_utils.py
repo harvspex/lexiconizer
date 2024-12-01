@@ -1,5 +1,5 @@
-from utils.neighbours_utils import *
-from src.word import Word
+from src.utils.neighbours_utils import *
+from src.shared.word import Word
 
 def test_word_is_neighbours():
     get_word_list = lambda word_list: [Word(word) for word in word_list.split()]
