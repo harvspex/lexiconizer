@@ -89,12 +89,7 @@ class Lexicon(ABC):
             reset (bool): Whether to reset the Lexicon before building
                 (default: True).
         """
-        funcs = [
-            FuncClass(self.read_data, 'Reading and inserting data...', input_filename),
-            FuncClass(self.populate_lists, 'Populating lists...'),
-            FuncClass(self.add_all_neighbours, 'Adding neighbours...'),
-            FuncClass(self.write_to_file, 'Writing to file...', output_filename)
-        ]
+        funcs = self.get_build_lexicon_funcs(input_filename, output_filename)
 
         if reset: self.reset()
 
@@ -109,3 +104,12 @@ class Lexicon(ABC):
 
         if time or verbose:
             print('Finished!')
+
+    def get_build_lexicon_funcs(self, input_filename: str, output_filename: str,):
+        funcs = [
+            FuncClass(self.read_data, 'Reading and inserting data...', input_filename),
+            FuncClass(self.populate_lists, 'Populating lists...'),
+            FuncClass(self.add_all_neighbours, 'Adding neighbours...'),
+            FuncClass(self.write_to_file, 'Writing to file...', output_filename)
+        ]
+        return funcs

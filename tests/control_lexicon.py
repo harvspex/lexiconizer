@@ -1,4 +1,4 @@
-# TODO: Docstrings?
+# TODO: Delete
 from src.func_class import FuncClass
 from utils.test_utils import time_method
 
@@ -20,10 +20,10 @@ class ControlLexicon:
         self,
         input_filename: str,
         output_filename: str,
-        slow_mode: bool=False,
         time: bool=False,
         verbose: bool=False,
-        reset: bool=True
+        reset: bool=True,
+        slow_mode: bool=False
     ):
         funcs = [
             FuncClass(self.read_data, 'Reading and inserting data...', input_filename),

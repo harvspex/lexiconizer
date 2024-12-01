@@ -16,8 +16,8 @@ class Word:
         self.frequency: int = 1
         self.pointer: int = 0
     
-    # NOTE: Operator overloading not used as it has significant impact 
-    # on runtime.
+    # NOTE: Operator overloading not used for comparison, as it has 
+    # significant impact on runtime.
 
     def __str__(self) -> str:
         """

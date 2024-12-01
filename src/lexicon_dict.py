@@ -15,8 +15,12 @@ class LexiconDict(Lexicon):
         except:
             self.dictionary[data] = Word(data)
 
-    def populate_lists(self):
+    def sort_dictionary(self):
         self.dictionary = dict(sorted(self.dictionary.items()))
+
+    def populate_lists(self):
+        # self.dictionary = dict(sorted(self.dictionary.items()))
+        self.sort_dictionary()
         self.sorted_list = list(self.dictionary.values())
 
         for word in self.sorted_list:

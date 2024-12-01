@@ -11,6 +11,11 @@ dictionary
 time
 verbose
 
+t + v = everything
+t = just build lexicon
+v = ???
+_ = totally slient
+
 ## Lexicon
 - init with filename?
     - for control lexicon too

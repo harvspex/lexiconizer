@@ -3,7 +3,8 @@
 import argparse
 from src.lexicon_avl import LexiconAVL
 from src.lexicon_dict import LexiconDict
-from tests.control_lexicon import ControlLexicon
+from src.lexicon_benchmark import LexiconBenchmark
+from utils.test_utils import time_method
 
 
 def get_parser() -> argparse.ArgumentParser:
@@ -39,29 +40,29 @@ def get_parser() -> argparse.ArgumentParser:
         help='Increases the amount of printed text',
         action='store_true'
     )
-    # gen control lexicon
+    # gen benchmark lexicon
     parser.add_argument(
-        # TODO: Add option to specify control lexicon filename
-        '-g', '--generate', '--gen',
-        help='Generate a control lexicon',
+        # TODO: Add option to specify benchmark lexicon filename
+        '-b', '--benchmark',
+        help='Generate a benchmark lexicon',
         action='store_true'
     )
     # parser.add_argument(
-    #     'control_file',
+    #     'benchmark_file',
     #     nargs='?',
-    #     help='Optional filename for control lexicon'
+    #     help='Optional filename for benchmark lexicon'
     # )
     # slow mode
     parser.add_argument(
         '-s', '--slow',
-        help='Generates control lexicon even slower',
+        help='Generates benchmark lexicon even slower',
         action='store_true'
     )
     # compare
     parser.add_argument(
-        # TODO: Add option to specify control lexicon filename
+        # TODO: Add option to specify benchmark lexicon filename
         '-c', '--compare', '--comp --cmp',
-        help='Compares lexicon against control lexicon',
+        help='Compares lexicon against benchmark lexicon',
         action='store_true'
     )
 
@@ -69,31 +70,30 @@ def get_parser() -> argparse.ArgumentParser:
 
 
 def handle_args(args: argparse.Namespace):
-    lexicon_args = [args.input_file, args.output_file, args.time, args.verbose]
+    # TODO: Ugly, fix
+    if args.time and not args.verbose:
+        lexicon_args = [args.input_file, args.output_file, args.verbose]
+    else:
+        lexicon_args = [args.input_file, args.output_file, args.time, args.verbose]
 
-    print(args.control_file)
+    # TODO: This can now be improved, because LexiconBenchmark can be treated as a Lexicon
 
-    # Generate control lexicon
-    if args.generate:
-        control_lexicon = ControlLexicon()
-        control_lexicon_args = lexicon_args.append(args.slow)
-        control_lexicon.build_lexicon(*control_lexicon_args)
+    # Generate benchmark lexicon
+    if args.benchmark:
+        lexicon_benchmark = LexiconBenchmark(slow_mode=args.slow)
+        lexicon_benchmark.build_lexicon(*lexicon_args)
 
     # Build lexicon
     lexicon_type = LexiconDict if args.dictionary else LexiconAVL
     lexicon = lexicon_type()
-    lexicon.build_lexicon(*lexicon_args)
+
+    if args.time:
+        time_method(lexicon.build_lexicon, *lexicon_args) # TODO: add N repeats from args.time
+    else:
+        lexicon.build_lexicon(*lexicon_args)
 
     if args.compare:
         pass
-
-
-# TODO: Delete
-def handle_control_lexicon(input_filename: str, output_filename: str, slow_mode: bool):
-    from tests.control_lexicon import ControlLexicon
-    lexicon = ControlLexicon()
-    lexicon.build_lexicon(input_filename, output_filename, slow_mode=slow_mode)
-
 
 # Example use:
 #
@@ -112,20 +112,17 @@ def handle_control_lexicon(input_filename: str, output_filename: str, slow_mode:
 
 def main():
     parser = get_parser()
-
-    # Might be a way to individually parse -c, -g (etc.) first
-
-    args = parser.parse_args(['input_file', 'output_file'])
-    print(args)
-
     args = parser.parse_args()
-    print(args)
+    handle_args(args)
 
-    quit()
-    return
+    # # Might be a way to individually parse -c, -g (etc.) first
+
+    # args = parser.parse_args(['input_file', 'output_file'])
+    # print(args)
 
     # args = parser.parse_args()
-    # handle_args(args)
+    # print(args)
+
 
 
 if __name__ == '__main__':
