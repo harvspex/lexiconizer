@@ -12,6 +12,7 @@
         - CLI flags (e.g. dict mode, AVL mode, flags for tests)
     - Delete main.py
     - Move timeit stuff somewhere else
+- Could make interactive CLI version if no args provided
 
 ## Testing
 - Unit test cases (e.g. check neighbours)

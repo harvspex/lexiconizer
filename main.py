@@ -3,10 +3,7 @@ from src.lexicon_avl import LexiconAVL
 from tests.compare_lexicons import compare
 from timeit import timeit
 
-# TODO: Put in /src ?
-# TODO: Make lexiconizer usable in one or both of these ways:
-#   1. Calling it from cli with args `lexiconizer (infile) (outfile)`
-#   2. Interactive CLI version using cmd library
+# TODO: Move methods and delete this file
 
 # TODO: Move this somewhere else
 def time_build_lexicon(
