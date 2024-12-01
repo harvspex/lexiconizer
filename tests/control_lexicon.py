@@ -1,4 +1,6 @@
 # TODO: Docstrings?
+from src.func_class import FuncClass
+from utils.test_utils import time_method
 
 class ControlWord:
     def __init__(self, spelling):
@@ -15,26 +17,32 @@ class ControlLexicon:
         self.lexicon: dict[str, ControlWord] = {}
 
     def build_lexicon (
-        self, input_filename: str,
+        self,
+        input_filename: str,
         output_filename: str,
         reset: bool=True,
-        slow_mode: bool=False
+        slow_mode: bool=False,
+        time: bool=False,
+        verbose: bool=False
     ):
+        funcs = [
+            FuncClass(self.read_data, 'Reading and inserting data...', input_filename),
+            FuncClass(self.sort_lexicon, 'Sorting lexicon...'),
+            FuncClass(self.add_all_neighbours, 'Adding neighbours...', slow_mode),
+            FuncClass(self.write_to_file, 'Writing to file...', output_filename)
+        ]
+
         if reset: self.lexicon.clear()
 
-        print('Reading and inserting data...')
-        self.read_data(input_filename)
+        for f in funcs:
+            if verbose: print(f.description)
+            if time: time_method(f.name, *f.args, **f.kwargs)
+            else: f.name(*f.args, **f.kwargs)
 
-        print('Sorting lexicon...')
+        if verbose: print('Finished!\n')
+
+    def sort_lexicon(self):
         self.lexicon = dict(sorted(self.lexicon.items()))
-
-        print('Adding neighbours...')
-        self.add_all_neighbours(slow_mode=slow_mode)
-
-        print('Writing to file...')
-        self.write_to_file(output_filename)
-
-        print('Finished!\n')
 
     def read_data(self, input_filename: str):
         with open(input_filename, 'r') as infile:
