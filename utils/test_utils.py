@@ -9,7 +9,7 @@ def compare(test_filename: str, control_filename: str, shallow=False) -> bool:
     return result
 
 def time_method(
-        build_lexicon: Callable,
+        method: Callable,
         *args,
         n_repeats: int=1,
         verbose: bool=False,
@@ -48,9 +48,9 @@ def time_method(
         Running example_function 5 times...
         COMPLETE. Average execution time: 0.00s across 5 runs
     """
-    if verbose: print(f'Running {build_lexicon.__name__} {n_repeats} times...')
+    if verbose: print(f'Running {method.__name__} {n_repeats} times...')
 
-    total_execution_time = timeit(lambda: build_lexicon(*args, **kwargs), number=n_repeats)
+    total_execution_time = timeit(lambda: method(*args, **kwargs), number=n_repeats)
     average_time = f'{total_execution_time / n_repeats:.2f}s'
 
     if verbose: print(f'COMPLETE. Average execution time: {average_time} across {n_repeats} runs')
