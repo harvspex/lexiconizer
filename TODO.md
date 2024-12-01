@@ -1,5 +1,16 @@
 # TODO
 
+## Notes
+Current args:
+input_file
+output_file
+generate (control lexicon)
+compare
+slow
+dictionary
+time
+verbose
+
 ## Lexicon
 - init with filename?
     - for control lexicon too
