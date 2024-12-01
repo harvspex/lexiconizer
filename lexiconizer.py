@@ -2,6 +2,22 @@
 
 import argparse
 
+# Example use:
+#
+# lexiconizer in.txt out.txt -g out_control.txt -s -c -t 10 -v -d
+#
+# This should:
+#   - Read in.txt
+#   - Build a LexiconDict in verbose mode
+#   - Write to out.txt
+#   - Repeat the above 10 times, timing each method
+#
+# Then:
+#   - Build a control dict with slow, verbose, and timed modes (only once)
+#   - Write control dict to out_control.txt
+#   - compare out.txt to out_control.txt
+
+
 def get_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description='Lexiconizer: Count words and find neighbours'
