@@ -2,6 +2,19 @@
 
 # TODO: Move to /src
 
+# -t and -v interaction:
+#
+# t + v = everything
+# t = just build lexicon
+# v = ???
+# _ = totally slient
+#
+# Here's how I want it to work:
+# -a -b -d: generates AVL, Benchmark, and Dict
+# -a filename -b filename -d filename: same but with custom filenames
+#
+# If none of -a -b -d present: make an AVL
+
 import argparse
 from src.lexicon.lexicon_avl import LexiconAVL
 from src.lexicon.lexicon_dict import LexiconDict
