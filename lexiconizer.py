@@ -1,19 +1,8 @@
 #!/usr/bin/env python3
 
 import argparse
-import sys
 
-# TODO: Move main method stuff here?
-
-def process_file(input_file, output_file, flags):
-    print(f'Processing file: {input_file}')
-    print(f'Output will be saved to: {output_file}')
-    print(f'Using flags: {flags}')
-    # Add your file processing logic here
-    print('Processing complete!')
-
-
-def main():
+def get_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description='Lexiconizer: Count words and find neighbours'
     )
@@ -55,15 +44,9 @@ def main():
 
     # time
     parser.add_argument(
+        # TODO: Take an int as num of repeats
         '-t', '--time',
         help='Shows runtime',
-        action='store_true'
-    )
-
-    # repeat
-    parser.add_argument(
-        '-r', '--repeat',
-        help='Repeats lexicon generation n times',
         action='store_true'
     )
 
@@ -74,6 +57,35 @@ def main():
         action='store_true'
     )
 
+    return parser
+
+
+def handle_lexicon(input_filename: str, output_filename: str, dict_mode: bool):
+    from src.lexicon_avl import LexiconAVL
+    from src.lexicon_dict import LexiconDict
+
+    lexicon_type = LexiconDict if dict_mode else LexiconAVL
+
+    lexicon = lexicon_type()
+    lexicon.build_lexicon(input_filename, output_filename)
+
+
+def handle_control_lexicon(input_filename: str, output_filename: str, slow_mode: bool):
+    from tests.control_lexicon import ControlLexicon
+    lexicon = ControlLexicon()
+    lexicon.build_lexicon(input_filename, output_filename, slow_mode=slow_mode)
+
+
+def handle_compare():
+    pass
+
+
+def handle_time():
+    pass
+
+
+def main():
+    parser = get_parser()
     args = parser.parse_args()
     print(args)
     print(args.input_file)
