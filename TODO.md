@@ -14,6 +14,7 @@
     - Delete main.py
     - Move timeit stuff somewhere else
 - Could make interactive CLI version if no args provided
+- add a "no reset" flag
 
 ## Testing
 - Unit test cases (e.g. check neighbours)
@@ -32,6 +33,7 @@
 - control_lexicon.py
 - same_char_1_utils.py
 - test utils
+- func class
 
 ## Performance
 - neighbour_utils.py
