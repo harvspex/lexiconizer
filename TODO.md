@@ -31,6 +31,7 @@
 - lexicon.py
 - control_lexicon.py
 - same_char_1_utils.py
+- test utils
 
 ## Performance
 - neighbour_utils.py

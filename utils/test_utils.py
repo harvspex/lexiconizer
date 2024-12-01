@@ -1,5 +1,12 @@
 from timeit import timeit
 from typing import Callable
+import filecmp
+
+# TODO: Docstring
+def compare(test_filename: str, control_filename: str, shallow=False) -> bool:
+    result = filecmp.cmp(test_filename, control_filename, shallow=shallow)
+    print(f'Files match: {result}')
+    return result
 
 def time_method(
         build_lexicon: Callable,
@@ -7,7 +14,7 @@ def time_method(
         n_repeats: int=1,
         verbose: bool=False,
         **kwargs
-    ):
+):
     """
     Measure the runtime of a callable function over multiple repeats.
 
