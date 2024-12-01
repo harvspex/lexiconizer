@@ -1,11 +1,11 @@
 from abc import ABC, abstractmethod
 from src.word import Word
+from src.func_class import FuncClass
+from utils.test_utils import time_method
 import utils.one_char_utils as one_char_utils
 import utils.same_char_0_utils as same_char_0_utils
 import utils.same_char_1_utils as same_char_1_utils
 
-# TODO: init with filename, and run build_lexicon on init?
-# TODO: Add option to time build_lexicon subtasks individually
 # TODO: Handle IOError if files cannot be read
 # TODO: Write docstrings
 
@@ -71,7 +71,15 @@ class Lexicon(ABC):
         self.one_char_words.clear()
         self.nested_word_list.clear()
 
-    def build_lexicon(self, input_filename: str, output_filename: str, reset: bool=True):
+    def build_lexicon(
+        self,
+        input_filename: str,
+        output_filename: str,
+        reset: bool=True,
+        time: bool=False,
+        n_repeats: int=1,
+        verbose: bool=False
+    ):
         """
         Builds the Lexicon. Processes input, adds neighbors, and saves results.
 
@@ -81,18 +89,57 @@ class Lexicon(ABC):
             reset (bool): Whether to reset the Lexicon before building
                 (default: True).
         """
+        if time:
+            time_method(
+                self.build_lexicon_helper,
+
+                input_filename,
+                output_filename,
+                reset,
+                time,
+                verbose,
+
+                n_repeats=n_repeats,
+                verbose=verbose,
+            )
+
+        else:
+            self.build_lexicon_helper(
+                input_filename=input_filename,
+                output_filename=output_filename,
+                reset=reset,
+                time=time,
+                verbose=verbose
+            )
+
+    def build_lexicon_helper(
+        self,
+        input_filename: str,
+        output_filename: str,
+        reset: bool=True,
+        time: bool=False,
+        verbose: bool=False
+    ):
+        funcs = [
+            FuncClass(self.read_data, 'Reading and inserting data...', input_filename),
+            FuncClass(self.populate_lists, 'Populating lists...'),
+            FuncClass(self.add_all_neighbours, 'Adding neighbours...'),
+            FuncClass(self.write_to_file, 'Writing to file...', output_filename)
+        ]
+
+        print(f'time={time} verbose={verbose}')
+
         if reset: self.reset()
 
-        print('Reading and inserting data...')
-        self.read_data(input_filename)
+        for f in funcs:
+            if time or verbose:
+                print(f.description)
 
-        print('Populating lists...')
-        self.populate_lists()
+            if time:
+                time_method(f.name, *f.args, **f.kwargs)
+            else:
+                f.name(*f.args, **f.kwargs)
 
-        print('Adding neighbours...')
-        self.add_all_neighbours()
-
-        print('Writing to file...')
-        self.write_to_file(output_filename)
-
-        print('Finished!\n')
+        # TODO: Print only if time != verbose
+        if time != verbose:
+            print('Finished!')
