@@ -133,9 +133,12 @@ def handle_args(args: argparse.Namespace):
         LexiconTuple(LexiconBenchmark, args.benchmark, '_benchmark')
     ]
 
+    none_counter: int = 0
+
     for lexicon_type in lexicon_types:
         match lexicon_type.filename:
             case None:
+                none_counter += 1
                 continue
             case '':
                 filename = args.output_file + lexicon_type.default
@@ -143,6 +146,10 @@ def handle_args(args: argparse.Namespace):
                 filename = lexicon_type.filename
 
         handle_build_lexicon(lexicon_type.type, filename, args)
+
+    # TODO: Could be nicer
+    if len(lexicon_types) == none_counter:
+        handle_build_lexicon(LexiconAVL, args.output_file, args)
 
 def main():
     parser = get_parser()
