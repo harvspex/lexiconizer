@@ -4,6 +4,8 @@
 Current args:
 input_file
 output_file
+
+avl-tree
 generate (control lexicon)
 compare
 slow

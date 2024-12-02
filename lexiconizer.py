@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 
 # TODO: Move to /src
+# TODO: Change name to cli.py or similar
+# TODO: Improve help descriptions
 
 # -t and -v interaction:
 #
@@ -35,18 +37,39 @@ def get_parser() -> argparse.ArgumentParser:
         'output_file',
         help='Output filename'
     )
-    # dict mode
+    # lexicon avl
     parser.add_argument(
-        '-d', '--dictionary', '--dict',
+        '-a', '--avl-tree', '--avl',
+        help='Generates lexicon using AVL Tree',
+        const='lexicon_avl.txt',
+        type=str,
+        nargs='?'
+    )
+    # lexicon dict
+    parser.add_argument(
+        '-d', '--dictionary', '--dict-test',
         help='Generates lexicon using dict',
-        action='store_true'
+        const='lexicon_dict.txt',
+        type=str,
+        nargs='?'
+    )
+    # lexicon benchmark
+    parser.add_argument(
+        # TODO: Add option to specify benchmark lexicon filename
+        '-b', '--benchmark',
+        help='Generate a benchmark lexicon',
+        const='lexicon_benchmark.txt',
+        type=str,
+        nargs='?'
     )
     # time
     parser.add_argument(
         # TODO: Take an int as num of repeats
         '-t', '--time',
         help='Shows runtime',
-        action='store_true'
+        const=1,
+        type=int,
+        nargs='?'
     )
     # verbose
     parser.add_argument(
@@ -54,19 +77,7 @@ def get_parser() -> argparse.ArgumentParser:
         help='Increases the amount of printed text',
         action='store_true'
     )
-    # gen benchmark lexicon
-    parser.add_argument(
-        # TODO: Add option to specify benchmark lexicon filename
-        '-b', '--benchmark',
-        help='Generate a benchmark lexicon',
-        action='store_true'
-    )
-    # parser.add_argument(
-    #     'benchmark_file',
-    #     nargs='?',
-    #     help='Optional filename for benchmark lexicon'
-    # )
-    # slow mode
+    # slow
     parser.add_argument(
         '-s', '--slow',
         help='Generates benchmark lexicon even slower',
@@ -74,40 +85,50 @@ def get_parser() -> argparse.ArgumentParser:
     )
     # compare
     parser.add_argument(
-        # TODO: Add option to specify benchmark lexicon filename
+        # TODO: Test
+        # NOTE: Stores [] if -c with no args
+        # Stores None if no -c
         '-c', '--compare', '--comp --cmp',
         help='Compares lexicon against benchmark lexicon',
-        action='store_true'
+        type=str,
+        nargs='*'
     )
 
     return parser
 
+def handle_build_lexicon(type: str, args: argparse.Namespace):
 
-def handle_args(args: argparse.Namespace):
+    match type:
+        case 'avl':
+            lexicon_type = LexiconAVL
+        case 'dict':
+            lexicon_type = LexiconDict
+        case 'benchmark':
+            lexicon_type = LexiconBenchmark
+        case _:
+            pass
+
+    lexicon = lexicon_type()
+
     # TODO: Ugly, fix
     if args.time and not args.verbose:
         lexicon_args = [args.input_file, args.output_file, args.verbose]
     else:
         lexicon_args = [args.input_file, args.output_file, args.time, args.verbose]
 
-    # TODO: This can now be improved, because LexiconBenchmark can be treated as a Lexicon
-
-    # Generate benchmark lexicon
-    if args.benchmark:
-        lexicon_benchmark = LexiconBenchmark(slow_mode=args.slow)
-        lexicon_benchmark.build_lexicon(*lexicon_args)
-
-    # Build lexicon
-    lexicon_type = LexiconDict if args.dictionary else LexiconAVL
-    lexicon = lexicon_type()
+    if lexicon_type == LexiconBenchmark:
+        lexicon_args.append(args.slow)
 
     if args.time:
         time_method(lexicon.build_lexicon, *lexicon_args) # TODO: add N repeats from args.time
     else:
         lexicon.build_lexicon(*lexicon_args)
 
-    if args.compare:
-        pass
+def handle_compare():
+    pass
+
+def handle_args(args: argparse.Namespace):
+    pass
 
 # Example use:
 #
