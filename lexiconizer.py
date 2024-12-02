@@ -18,12 +18,15 @@
 # If none of -a -b -d present: make an AVL
 
 import argparse
+# from collections import namedtuple
 from src.lexicon.lexicon_avl import LexiconAVL
 from src.lexicon.lexicon_dict import LexiconDict
 from src.lexicon.lexicon_benchmark import LexiconBenchmark
 from src.utils.test_utils import time_method
 
 def get_parser() -> argparse.ArgumentParser:
+    LEXICON_CONST = ''
+
     parser = argparse.ArgumentParser(
         description='Lexiconizer: Count words and find neighbours'
     )
@@ -34,6 +37,7 @@ def get_parser() -> argparse.ArgumentParser:
     )
     # outfile
     parser.add_argument(
+        # TODO Make optional? default='lexicon.txt'
         'output_file',
         help='Output filename'
     )
@@ -41,7 +45,7 @@ def get_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         '-a', '--avl-tree', '--avl',
         help='Generates lexicon using AVL Tree',
-        const='lexicon_avl.txt',
+        const=LEXICON_CONST,
         type=str,
         nargs='?'
     )
@@ -49,7 +53,7 @@ def get_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         '-d', '--dictionary', '--dict-test',
         help='Generates lexicon using dict',
-        const='lexicon_dict.txt',
+        const=LEXICON_CONST,
         type=str,
         nargs='?'
     )
@@ -58,7 +62,7 @@ def get_parser() -> argparse.ArgumentParser:
         # TODO: Add option to specify benchmark lexicon filename
         '-b', '--benchmark',
         help='Generate a benchmark lexicon',
-        const='lexicon_benchmark.txt',
+        const=LEXICON_CONST,
         type=str,
         nargs='?'
     )
@@ -79,6 +83,7 @@ def get_parser() -> argparse.ArgumentParser:
     )
     # slow
     parser.add_argument(
+        # TODO: throw error if no -b flag present
         '-s', '--slow',
         help='Generates benchmark lexicon even slower',
         action='store_true'
@@ -96,25 +101,15 @@ def get_parser() -> argparse.ArgumentParser:
 
     return parser
 
-def handle_build_lexicon(type: str, args: argparse.Namespace):
-
-    match type:
-        case 'avl':
-            lexicon_type = LexiconAVL
-        case 'dict':
-            lexicon_type = LexiconDict
-        case 'benchmark':
-            lexicon_type = LexiconBenchmark
-        case _:
-            pass
-
+# TODO: Ugly. Fix
+def handle_build_lexicon(lexicon_type: type, output_file: str, args: argparse.Namespace):
     lexicon = lexicon_type()
 
     # TODO: Ugly, fix
     if args.time and not args.verbose:
-        lexicon_args = [args.input_file, args.output_file, args.verbose]
+        lexicon_args = [args.input_file, output_file, args.verbose]
     else:
-        lexicon_args = [args.input_file, args.output_file, args.time, args.verbose]
+        lexicon_args = [args.input_file, output_file, args.time, args.verbose]
 
     if lexicon_type == LexiconBenchmark:
         lexicon_args.append(args.slow)
@@ -128,7 +123,15 @@ def handle_compare():
     pass
 
 def handle_args(args: argparse.Namespace):
-    pass
+    lexicon_types = {
+        LexiconAVL: args.avl_tree,
+        LexiconDict: args.dictionary,
+        LexiconBenchmark: args.benchmark
+    }
+
+    for lexicon_type, filename in lexicon_types.items():
+        if filename is not None:
+            handle_build_lexicon(lexicon_type, filename, args)
 
 # Example use:
 #
@@ -149,16 +152,6 @@ def main():
     parser = get_parser()
     args = parser.parse_args()
     handle_args(args)
-
-    # # Might be a way to individually parse -c, -g (etc.) first
-
-    # args = parser.parse_args(['input_file', 'output_file'])
-    # print(args)
-
-    # args = parser.parse_args()
-    # print(args)
-
-
 
 if __name__ == '__main__':
     main()

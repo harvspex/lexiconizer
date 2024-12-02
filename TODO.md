@@ -6,12 +6,12 @@ input_file
 output_file
 
 avl-tree
-generate (control lexicon)
-compare
-slow
 dictionary
+benchmark
 time
 verbose
+slow
+compare
 
 t + v = everything
 t = just build lexicon
