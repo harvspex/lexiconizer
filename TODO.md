@@ -2,9 +2,8 @@
 
 ## Notes
 Current args:
-input_file
-output_file
-
+input_file  (required)
+output_file (required: try to make optional)
 avl-tree
 dictionary
 benchmark
@@ -13,31 +12,15 @@ verbose
 slow
 compare
 
-t + v = everything
-t = just build lexicon
-v = ???
-_ = totally slient
-
-Here's how I want it to work:
--a -b -d: generates AVL, Benchmark, and Dict
--a filename -b filename -d filename: same but with custom filenames
-
-If none of -a -b -d present: make an AVL
+- If none of -a -b -d present: make an AVL
+- try to make output_file optional
+- Print lexicon type in verbose mode
 
 ## Lexicon
-- init with filename?
-    - for control lexicon too
-- add option to time individual methods
-- add verbose option
-- Handle IOError if files cannot be read
 - fix *args hacky thing
+- Handle IOError if files cannot be read
 
 ## CLI
-- Move main method stuff to lexiconizer
-    - Create CLI versions
-        - CLI flags (e.g. dict mode, AVL mode, flags for tests)
-    - Delete main.py
-    - Move timeit stuff somewhere else
 - Could make interactive CLI version if no args provided
 - add a "no reset" flag
 

@@ -18,7 +18,7 @@
 # If none of -a -b -d present: make an AVL
 
 import argparse
-# from collections import namedtuple
+from collections import namedtuple
 from src.lexicon.lexicon_avl import LexiconAVL
 from src.lexicon.lexicon_dict import LexiconDict
 from src.lexicon.lexicon_benchmark import LexiconBenchmark
@@ -119,34 +119,30 @@ def handle_build_lexicon(lexicon_type: type, output_file: str, args: argparse.Na
     else:
         lexicon.build_lexicon(*lexicon_args)
 
+# TODO: Complete
 def handle_compare():
     pass
 
 def handle_args(args: argparse.Namespace):
-    lexicon_types = {
-        LexiconAVL: args.avl_tree,
-        LexiconDict: args.dictionary,
-        LexiconBenchmark: args.benchmark
-    }
 
-    for lexicon_type, filename in lexicon_types.items():
-        if filename is not None:
-            handle_build_lexicon(lexicon_type, filename, args)
+    LexiconTuple = namedtuple('LexiconTuple', ['type', 'filename', 'default'])
 
-# Example use:
-#
-# lexiconizer in.txt out.txt -g out_control.txt -s -c -t 10 -v -d
-#
-# This should:
-#   - Read in.txt
-#   - Build a LexiconDict in verbose mode
-#   - Write to out.txt
-#   - Repeat the above 10 times, timing each method
-#
-# Then:
-#   - Build a control dict with slow, verbose, and timed modes (only once)
-#   - Write control dict to out_control.txt
-#   - compare out.txt to out_control.txt
+    lexicon_types = [
+        LexiconTuple(LexiconAVL, args.avl_tree, '_avl'),
+        LexiconTuple(LexiconDict, args.dictionary, '_dict'),
+        LexiconTuple(LexiconBenchmark, args.benchmark, '_benchmark')
+    ]
+
+    for lexicon_type in lexicon_types:
+        match lexicon_type.filename:
+            case None:
+                continue
+            case '':
+                filename = args.output_file + lexicon_type.default
+            case _:
+                filename = lexicon_type.filename
+
+        handle_build_lexicon(lexicon_type.type, filename, args)
 
 def main():
     parser = get_parser()
