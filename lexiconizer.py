@@ -22,7 +22,7 @@ from collections import namedtuple
 from src.lexicon.lexicon_avl import LexiconAVL
 from src.lexicon.lexicon_dict import LexiconDict
 from src.lexicon.lexicon_benchmark import LexiconBenchmark
-from src.utils.test_utils import time_method
+from src.utils.test_utils import time_method, compare
 
 def get_parser() -> argparse.ArgumentParser:
     LEXICON_CONST = ''
@@ -119,9 +119,24 @@ def handle_build_lexicon(lexicon_type: type, output_file: str, args: argparse.Na
     else:
         lexicon.build_lexicon(*lexicon_args)
 
-# TODO: Complete
-def handle_compare():
-    pass
+# TODO: Refactor/improve
+# TODO: Test behaviour for compare_filenames of length 0 and 1
+def handle_compare(compare_filenames: list[str]):
+    print('Comparing files...')
+    files_match: bool = True
+
+    for a in len(compare_filenames):
+        file_a = compare_filenames[a]
+
+        for b in len(a+1, compare_filenames):
+            file_b = compare_filenames[b]
+
+            if not compare(file_a, file_b):
+                files_match = False
+                print(f'File mismatch found:\n  {file_a}\n  {file_b}')
+
+    if files_match:
+        print('All files match.')
 
 def handle_args(args: argparse.Namespace):
 
@@ -134,6 +149,7 @@ def handle_args(args: argparse.Namespace):
     ]
 
     none_counter: int = 0
+    compare_filenames: list[str] = []
 
     for lexicon_type in lexicon_types:
         match lexicon_type.filename:
@@ -146,10 +162,15 @@ def handle_args(args: argparse.Namespace):
                 filename = lexicon_type.filename
 
         handle_build_lexicon(lexicon_type.type, filename, args)
+        compare_filenames.append(filename)
 
     # TODO: Could be nicer
     if len(lexicon_types) == none_counter:
         handle_build_lexicon(LexiconAVL, args.output_file, args)
+
+    # TODO: This doesn't seem to work
+    if args.compare:
+        handle_compare(compare_filenames)
 
 def main():
     parser = get_parser()
