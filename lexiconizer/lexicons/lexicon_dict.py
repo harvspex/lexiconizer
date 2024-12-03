@@ -1,4 +1,4 @@
-from lexicon.lexicon import Lexicon
+from lexicons.lexicon import Lexicon
 from shared.word import Word
 from utils.neighbours_utils import add_word_to_nested_list
 

@@ -1,4 +1,4 @@
-from lexicon.lexicon import Lexicon
+from lexicons.lexicon import Lexicon
 from data_structures.word_tree import WordTree
 
 # TODO: Rewrite docstrings

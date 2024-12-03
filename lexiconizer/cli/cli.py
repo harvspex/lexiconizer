@@ -4,10 +4,10 @@ import argparse
 from collections import namedtuple
 
 import cli.validation as validation
-from lexicon.lexicon import Lexicon
-from lexicon.lexicon_avl import LexiconAVL
-from lexicon.lexicon_dict import LexiconDict
-from lexicon.lexicon_benchmark import LexiconBenchmark
+from lexicons.lexicon import Lexicon
+from lexicons.lexicon_avl import LexiconAVL
+from lexicons.lexicon_dict import LexiconDict
+from lexicons.lexicon_benchmark import LexiconBenchmark
 from utils.test_utils import time_method, compare_files
 
 # TODO: Move to /src
