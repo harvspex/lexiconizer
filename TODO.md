@@ -1,6 +1,6 @@
 # TODO
 
-## Notes
+## CLI
 Current args:
 input_file  (required)
 output_file (required: try to make optional)
@@ -13,14 +13,18 @@ compare
 
 - Add .txt to files (unless user-defined without .txt)
 - Print lexicon type in verbose mode
+- Could make interactive CLI version if no args provided
+- add a "no reset" flag
+
+-t and -v interaction:
+t + v = everything
+t = just build lexicon
+v = just verbose
+_ = totally slient
 
 ## Lexicon
 - fix *args hacky thing
 - Handle IOError if files cannot be read
-
-## CLI
-- Could make interactive CLI version if no args provided
-- add a "no reset" flag
 
 ## Testing
 - Unit test cases (e.g. check neighbours)

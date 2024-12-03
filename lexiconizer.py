@@ -2,13 +2,14 @@
 
 import argparse
 from collections import namedtuple
+from src.lexicon.lexicon import Lexicon
 from src.lexicon.lexicon_avl import LexiconAVL
 from src.lexicon.lexicon_dict import LexiconDict
 from src.lexicon.lexicon_benchmark import LexiconBenchmark
 from src.utils.test_utils import time_method, compare_files
 
 # TODO: Move to /src
-# TODO: Change name to cli.py or similar
+# TODO: Move cli/argparse stuff to cli.py
 # TODO: Improve help descriptions
 
 def get_parser() -> argparse.ArgumentParser:
@@ -82,27 +83,52 @@ def get_parser() -> argparse.ArgumentParser:
 
     return parser
 
-def handle_build_lexicon(lexicon_type: type, output_file: str, args: argparse.Namespace):
-    lexicon = lexicon_type()
-
-    # TODO: Ugly, fix
-    if args.time and not args.verbose:
-        lexicon_args = [args.input_file, output_file, args.verbose]
-    else:
-        lexicon_args = [args.input_file, output_file, args.time, args.verbose]
-
-    if args.time:
-        verbose: bool = True if args.time > 1 else False
-        time_method(
-            lexicon.build_lexicon,
-            *lexicon_args,
-            n_repeats=args.time,
-            verbose=verbose
-        )
-    else:
-        lexicon.build_lexicon(*lexicon_args)
 
 def handle_args(args: argparse.Namespace):
+    if not validate_args(args):
+        return
+
+    filenames: list[str] = build_all_lexicons(args)
+
+    if args.compare is not None:
+        compare_files(filenames + args.compare)
+
+
+# TODO: Complete
+def validate_args(args: argparse.Namespace) -> bool:
+    if args.time is not None and args.time < 1:
+        return False
+
+    return True
+
+def build_lexicon(lexicon_type: type, output_file: str, args: argparse.Namespace):
+    #  -t and -v interaction:
+    #   t + v = just time individual step
+    #   t     = just time entire routine
+    #   v     = just print individual steps
+    #   _     = totally slient
+
+    lexicon: Lexicon = lexicon_type()
+    time: bool = (args.time is not None) # and (args.time > 0)
+    time_lexicon: bool = False if (time and not args.verbose) else time
+    lexicon_args = [args.input_file, output_file, args.verbose, time_lexicon]
+
+    if args.time is None:
+        lexicon.build_lexicon(*lexicon_args)
+        return
+
+    n_repeats: int = args.time if (lexicon_type is not LexiconBenchmark) else 1
+    print_average: bool = True if (n_repeats > 1) else False
+
+    time_method(
+        lexicon.build_lexicon,
+        *lexicon_args,
+        n_repeats=n_repeats,
+        verbose=print_average
+    )
+
+
+def build_all_lexicons(args: argparse.Namespace) -> list[str]:
 
     LexiconTuple = namedtuple('LexiconTuple', ['type', 'filename', 'default'])
 
@@ -125,20 +151,22 @@ def handle_args(args: argparse.Namespace):
             case _:
                 filename = lexicon_type.filename
 
-        handle_build_lexicon(lexicon_type.type, filename, args)
+        build_lexicon(lexicon_type.type, filename, args)
         filenames.append(filename)
 
     # TODO: Could be nicer
     if len(lexicon_types) == none_counter:
-        handle_build_lexicon(LexiconAVL, args.output_file, args)
+        build_lexicon(LexiconAVL, args.output_file, args)
+        filenames.append(args.output_file)
 
-    if args.compare is not None:
-        compare_files(filenames+args.compare)
+    return filenames
+
 
 def main():
     parser = get_parser()
     args = parser.parse_args()
     handle_args(args)
+
 
 if __name__ == '__main__':
     main()
