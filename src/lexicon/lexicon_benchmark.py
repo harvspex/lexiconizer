@@ -1,7 +1,7 @@
 from src.lexicon.lexicon_dict import LexiconDict
 from src.shared.func_class import FuncClass
 from src.shared.word import Word
-import src.utils.neighbours_utils as neighbour_utils
+import src.utils.neighbours_utils as nb_utils
 
 # TODO: Docstrings
 
@@ -42,36 +42,23 @@ class LexiconBenchmark(LexiconDict):
     @staticmethod
     def word_is_neighbours(word_a: Word, word_b: Word):
         if LexiconBenchmark.is_neighbours_candidate(word_a, word_b):
-            return neighbour_utils.word_is_neighbours(word_a, word_b)
+            return nb_utils.word_is_neighbours(word_a, word_b)
         return False
 
-    @staticmethod
-    def add_mutual_neighbours(word_a: Word, word_b: Word):
-        word_a.neighbours.append(word_b.spelling)
-        word_b.neighbours.append(word_a.spelling)
-
     def add_all_neighbours(self, slow_mode: int=False):
-        if slow_mode: self.add_all_neighbours_slow()
-        else: self.add_all_neighbours_fast()
+        len_sorted: int = len(self.sorted_list)
+        b_start: int = 0
 
-    def add_all_neighbours_fast(self):
-        keys = list(self.dictionary.keys())
-        len_keys = len(keys)
+        print(f'Slow mode: {slow_mode}')
 
-        for a in range(len_keys):
-            spelling_a = keys[a]
-            word_a = self.dictionary[spelling_a]
+        for a in range (len_sorted):
+            word_a = self.sorted_list[a]
 
-            for b in range(a+1, len_keys):
-                spelling_b = keys[b]
-                word_b = self.dictionary[spelling_b]
+            if not slow_mode:
+                b_start = a+1
+
+            for b in range(b_start, len_sorted):
+                word_b = self.sorted_list[b]
 
                 if LexiconBenchmark.word_is_neighbours(word_a, word_b):
-                    LexiconBenchmark.add_mutual_neighbours(word_a, word_b)
-
-    def add_all_neighbours_slow(self):
-        word_list: list[Word] = list(self.dictionary.values())
-        for word_a in word_list:
-            for word_b in word_list:
-                if LexiconBenchmark.word_is_neighbours(word_a, word_b):
-                    word_a.neighbours.append(word_b.spelling)
+                    nb_utils.add_mutual_neighbours(word_a, word_b)

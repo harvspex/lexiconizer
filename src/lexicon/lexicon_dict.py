@@ -17,11 +17,10 @@ class LexiconDict(Lexicon):
 
     def sort_dictionary(self):
         self.dictionary = dict(sorted(self.dictionary.items()))
+        self.sorted_list = list(self.dictionary.values())
 
     def populate_lists(self):
-        # self.dictionary = dict(sorted(self.dictionary.items()))
         self.sort_dictionary()
-        self.sorted_list = list(self.dictionary.values())
 
         for word in self.sorted_list:
             add_word_to_nested_list(word, self.nested_word_list, self.one_char_words)

@@ -105,14 +105,14 @@ def get_parser() -> argparse.ArgumentParser:
 def handle_build_lexicon(lexicon_type: type, output_file: str, args: argparse.Namespace):
     lexicon = lexicon_type()
 
+    if lexicon_type == LexiconBenchmark:
+        lexicon.slow_mode = args.slow
+
     # TODO: Ugly, fix
     if args.time and not args.verbose:
         lexicon_args = [args.input_file, output_file, args.verbose]
     else:
         lexicon_args = [args.input_file, output_file, args.time, args.verbose]
-
-    if lexicon_type == LexiconBenchmark:
-        lexicon_args.append(args.slow)
 
     if args.time:
         time_method(lexicon.build_lexicon, *lexicon_args) # TODO: add N repeats from args.time
