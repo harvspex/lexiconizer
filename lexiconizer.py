@@ -92,7 +92,13 @@ def handle_build_lexicon(lexicon_type: type, output_file: str, args: argparse.Na
         lexicon_args = [args.input_file, output_file, args.time, args.verbose]
 
     if args.time:
-        time_method(lexicon.build_lexicon, *lexicon_args) # TODO: add N repeats from args.time
+        verbose: bool = True if args.time > 1 else False
+        time_method(
+            lexicon.build_lexicon,
+            *lexicon_args,
+            n_repeats=args.time,
+            verbose=verbose
+        )
     else:
         lexicon.build_lexicon(*lexicon_args)
 
