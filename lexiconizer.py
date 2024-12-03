@@ -95,11 +95,15 @@ def positive_int(value):
 
 
 def build_lexicon(lexicon_type: type, output_file: str, args: argparse.Namespace):
+    # TODO: If verbose, print lexicon type (not running build_lexicon)
+
     #  -t and -v interaction:
     #   t + v = just time individual step
     #   t     = just time entire routine
     #   v     = just print individual steps
     #   _     = totally slient
+
+    # n_repeats is always 1 for LexiconBenchmark
 
     lexicon: Lexicon = lexicon_type()
     time: bool = (args.time is not None) # and (args.time > 0)
@@ -110,8 +114,11 @@ def build_lexicon(lexicon_type: type, output_file: str, args: argparse.Namespace
         lexicon.build_lexicon(*lexicon_args)
         return
 
-    n_repeats: int = args.time if (lexicon_type is not LexiconBenchmark) else 1
+    n_repeats: int = args.time
     print_average: bool = True if (n_repeats > 1) else False
+
+    if lexicon_type is LexiconBenchmark:
+        n_repeats = 1
 
     time_method(
         lexicon.build_lexicon,
