@@ -18,7 +18,7 @@ def find_key_length(lst):
     max_length = 0
 
     for string in lst:
-        string_length = len(string.spelling)
+        string_length = len(string)
         if string_length > max_length:
             max_length = string_length
 
@@ -79,11 +79,7 @@ def get_character_bucket_index(ch: str):
         raise ValueError(f'Error. Unsupported character: {ch}')
     return index
 
-def strip_whitespace(lst):
-    for word in lst:
-        word.spelling = word.spelling.strip()
-
-def radix_sort(lst):
+def radix_sort(lst: list[str]):
     """Sorts a list inplace using radix sort
 
     This operates inplace, meaning the list will be sorted after calling this function
@@ -104,7 +100,7 @@ def radix_sort(lst):
 
     # Right pad all strings with the space character (up to the key length)
     for string_idx in range(len(lst)):
-        lst[string_idx].spelling = pad_string(lst[string_idx].spelling, key_length)
+        lst[string_idx] = pad_string(lst[string_idx], key_length)
 
     # Perform radix sort passes. Number of passes = the key length
     for pass_num in range(1, key_length + 1):
@@ -114,7 +110,7 @@ def radix_sort(lst):
 
         # Put elements in buckets based on digit value
         for string in lst:
-            ch = extract_character_for_pass(string.spelling, pass_num)
+            ch = extract_character_for_pass(string, pass_num)
             bucket_idx = get_character_bucket_index(ch)
             buckets[bucket_idx].append(string)
 
@@ -130,4 +126,4 @@ def radix_sort(lst):
                 lst[idx] = string
                 idx += 1
 
-    strip_whitespace(lst)
+    return [word.strip() for word in lst]
