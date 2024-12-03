@@ -8,6 +8,7 @@
 *.txt
 
 /.venv
+/.vscode
 /sample_outputs
 /misc
 
