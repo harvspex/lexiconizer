@@ -1,22 +1,5 @@
 #!/usr/bin/env python3
 
-# TODO: Move to /src
-# TODO: Change name to cli.py or similar
-# TODO: Improve help descriptions
-
-# -t and -v interaction:
-#
-# t + v = everything
-# t = just build lexicon
-# v = ???
-# _ = totally slient
-#
-# Here's how I want it to work:
-# -a -b -d: generates AVL, Benchmark, and Dict
-# -a filename -b filename -d filename: same but with custom filenames
-#
-# If none of -a -b -d present: make an AVL
-
 import argparse
 from collections import namedtuple
 from src.lexicon.lexicon_avl import LexiconAVL
@@ -24,8 +7,13 @@ from src.lexicon.lexicon_dict import LexiconDict
 from src.lexicon.lexicon_benchmark import LexiconBenchmark
 from src.utils.test_utils import time_method, compare_files
 
+# TODO: Move to /src
+# TODO: Change name to cli.py or similar
+# TODO: Improve help descriptions
+
 def get_parser() -> argparse.ArgumentParser:
-    LEXICON_CONST = ''
+    LEXICON_CONST: str = 'lexicon'
+    LEXICON_TYPE_CONST: str = ''
 
     parser = argparse.ArgumentParser(
         description='Lexiconizer: Count words and find neighbours'
@@ -37,15 +25,18 @@ def get_parser() -> argparse.ArgumentParser:
     )
     # outfile
     parser.add_argument(
-        # TODO Make optional? default='lexicon.txt'
-        'output_file',
-        help='Output filename'
+        '-o', '--output-file', '--output',
+        help='Output filename',
+        default=LEXICON_CONST,
+        const=LEXICON_CONST,
+        type=str,
+        nargs='?'
     )
     # lexicon avl
     parser.add_argument(
         '-a', '--avl-tree', '--avl',
         help='Generates lexicon using AVL Tree',
-        const=LEXICON_CONST,
+        const=LEXICON_TYPE_CONST,
         type=str,
         nargs='?'
     )
@@ -53,7 +44,7 @@ def get_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         '-d', '--dictionary', '--dict-test',
         help='Generates lexicon using dict',
-        const=LEXICON_CONST,
+        const=LEXICON_TYPE_CONST,
         type=str,
         nargs='?'
     )
@@ -62,7 +53,7 @@ def get_parser() -> argparse.ArgumentParser:
         # TODO: Add option to specify benchmark lexicon filename
         '-b', '--benchmark',
         help='Generate a benchmark lexicon',
-        const=LEXICON_CONST,
+        const=LEXICON_TYPE_CONST,
         type=str,
         nargs='?'
     )
@@ -83,9 +74,6 @@ def get_parser() -> argparse.ArgumentParser:
     )
     # compare
     parser.add_argument(
-        # TODO: Test
-        # NOTE: Stores [] if -c with no args
-        # Stores None if no -c
         '-c', '--compare', '--comp --cmp',
         help='Compares lexicon against benchmark lexicon',
         type=str,
@@ -94,7 +82,6 @@ def get_parser() -> argparse.ArgumentParser:
 
     return parser
 
-# TODO: Ugly. Fix
 def handle_build_lexicon(lexicon_type: type, output_file: str, args: argparse.Namespace):
     lexicon = lexicon_type()
 
@@ -139,9 +126,8 @@ def handle_args(args: argparse.Namespace):
     if len(lexicon_types) == none_counter:
         handle_build_lexicon(LexiconAVL, args.output_file, args)
 
-    # TODO: Complete
     if args.compare is not None:
-        compare_files(filenames)
+        compare_files(filenames+args.compare)
 
 def main():
     parser = get_parser()

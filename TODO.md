@@ -11,8 +11,7 @@ time
 verbose
 compare
 
-- If none of -a -b -d present: make an AVL
-- try to make output_file optional
+- Add .txt to files (unless user-defined without .txt)
 - Print lexicon type in verbose mode
 
 ## Lexicon
