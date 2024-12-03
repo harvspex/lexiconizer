@@ -1,7 +1,7 @@
 from src.data_structures.avl_node import AVLNode
 from src.data_structures.avl_tree import AVLTree
-from src.shared.word import Word
 from src.utils.neighbours_utils import add_word_to_nested_list
+from src.shared.word import Word
 
 class WordTree(AVLTree):
     """

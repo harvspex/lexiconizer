@@ -2,6 +2,8 @@
 
 import argparse
 from collections import namedtuple
+
+import src.cli.validation as validation
 from src.lexicon.lexicon import Lexicon
 from src.lexicon.lexicon_avl import LexiconAVL
 from src.lexicon.lexicon_dict import LexiconDict
@@ -22,7 +24,8 @@ def get_parser() -> argparse.ArgumentParser:
     # infile
     parser.add_argument(
         'input_file',
-        help='Input filename'
+        help='Input filename',
+        type=validation.readable_file
     )
     # outfile
     parser.add_argument(
@@ -30,7 +33,7 @@ def get_parser() -> argparse.ArgumentParser:
         help='Output filename',
         default=LEXICON_CONST,
         const=LEXICON_CONST,
-        type=str,
+        type=validation.writeable_file,
         nargs='?'
     )
     # lexicon avl
@@ -38,7 +41,7 @@ def get_parser() -> argparse.ArgumentParser:
         '-a', '--avl-tree', '--avl',
         help='Generates lexicon using AVL Tree',
         const=LEXICON_TYPE_CONST,
-        type=str,
+        type=validation.writeable_file,
         nargs='?'
     )
     # lexicon dict
@@ -46,25 +49,23 @@ def get_parser() -> argparse.ArgumentParser:
         '-d', '--dictionary', '--dict-test',
         help='Generates lexicon using dict',
         const=LEXICON_TYPE_CONST,
-        type=str,
+        type=validation.writeable_file,
         nargs='?'
     )
     # lexicon benchmark
     parser.add_argument(
-        # TODO: Add option to specify benchmark lexicon filename
         '-b', '--benchmark',
         help='Generate a benchmark lexicon',
         const=LEXICON_TYPE_CONST,
-        type=str,
+        type=validation.writeable_file,
         nargs='?'
     )
     # time
     parser.add_argument(
-        # TODO: Take an int as num of repeats
         '-t', '--time',
         help='Shows runtime',
         const=1,
-        type=positive_int,
+        type=validation.positive_int,
         nargs='?'
     )
     # verbose
@@ -77,27 +78,11 @@ def get_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         '-c', '--compare', '--comp --cmp',
         help='Compares lexicon against benchmark lexicon',
-        type=str,
+        type=validation.readable_file,
         nargs='*'
     )
 
     return parser
-
-# TODO: Validation for other arguments
-
-def positive_int(value):
-    try:
-        ivalue = int(value)
-        if ivalue <= 0:
-            raise argparse.ArgumentTypeError(
-                f'Invalid value: {value}. Must be an integer greater than 0.'
-            )
-        return ivalue
-
-    except ValueError:
-        raise argparse.ArgumentTypeError(
-            f'Invalid value: {value}. Must be an integer.'
-        )
 
 
 def build_lexicon(lexicon_type: type, output_file: str, args: argparse.Namespace):
