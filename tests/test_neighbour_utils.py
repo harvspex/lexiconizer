@@ -1,5 +1,5 @@
-from lexiconizer.utils.neighbours_utils import *
-from lexiconizer.shared.word import Word
+from shared.word import Word
+from utils.neighbours_utils import word_is_neighbours
 
 def test_word_is_neighbours():
     get_word_list = lambda word_list: [Word(word) for word in word_list.split()]

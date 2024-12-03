@@ -1,4 +1,4 @@
-import lexiconizer.cli.cli as cli
+import cli.cli as cli
 
 def main():
     cli.main()

@@ -1,6 +1,6 @@
-import lexiconizer.utils.neighbours_utils as nb_utils
-from lexiconizer.lexicon.lexicon_dict import LexiconDict
-from lexiconizer.shared.word import Word
+import utils.neighbours_utils as nb_utils
+from lexicon.lexicon_dict import LexiconDict
+from shared.word import Word
 
 # TODO: Docstrings
 

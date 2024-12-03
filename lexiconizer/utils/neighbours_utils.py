@@ -1,4 +1,4 @@
-from lexiconizer.shared.word import Word
+from shared.word import Word
 from typing import Any
 """
 This module provides utility functions for finding and adding neighbors.

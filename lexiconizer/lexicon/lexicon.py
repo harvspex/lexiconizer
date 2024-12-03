@@ -1,11 +1,11 @@
 from abc import ABC, abstractmethod
 
-from lexiconizer.shared.word import Word
-from lexiconizer.shared.func_class import FuncClass
-import lexiconizer.utils.one_char_utils as one_char_utils
-import lexiconizer.utils.same_char_0_utils as same_char_0_utils
-import lexiconizer.utils.same_char_1_utils as same_char_1_utils
-from lexiconizer.utils.test_utils import time_method
+from shared.word import Word
+from shared.func_class import FuncClass
+import utils.one_char_utils as one_char_utils
+import utils.same_char_0_utils as same_char_0_utils
+import utils.same_char_1_utils as same_char_1_utils
+from utils.test_utils import time_method
 
 # TODO: Handle IOError if files cannot be read
 # TODO: Write docstrings

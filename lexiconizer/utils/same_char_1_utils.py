@@ -1,4 +1,4 @@
-import lexiconizer.utils.neighbours_utils as nb_utils
+import utils.neighbours_utils as nb_utils
 """
 Utility functions to add neighbors for words with same second letter (char 1).
 """

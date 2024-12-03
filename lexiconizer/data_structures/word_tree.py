@@ -1,7 +1,7 @@
-from lexiconizer.data_structures.avl_node import AVLNode
-from lexiconizer.data_structures.avl_tree import AVLTree
-from lexiconizer.utils.neighbours_utils import add_word_to_nested_list
-from lexiconizer.shared.word import Word
+from data_structures.avl_node import AVLNode
+from data_structures.avl_tree import AVLTree
+from utils.neighbours_utils import add_word_to_nested_list
+from shared.word import Word
 
 class WordTree(AVLTree):
     """

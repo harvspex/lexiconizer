@@ -1,5 +1,5 @@
-from lexiconizer.shared.word import Word
-import lexiconizer.utils.neighbours_utils as nb_utils
+from shared.word import Word
+import utils.neighbours_utils as nb_utils
 """
 This module implements `add_neighbours` method for one letter words.
 

@@ -1,5 +1,5 @@
-from lexiconizer.lexicon.lexicon import Lexicon
-from lexiconizer.data_structures.word_tree import WordTree
+from lexicon.lexicon import Lexicon
+from data_structures.word_tree import WordTree
 
 # TODO: Rewrite docstrings
 
