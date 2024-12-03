@@ -10,8 +10,6 @@ from lexicons.lexicon_dict import LexiconDict
 from lexicons.lexicon_benchmark import LexiconBenchmark
 from utils.test_utils import time_method, compare_files
 
-# TODO: Move to /src
-# TODO: Move cli/argparse stuff to cli.py
 # TODO: Improve help descriptions
 
 def get_parser() -> argparse.ArgumentParser:
@@ -97,11 +95,11 @@ def build_lexicon(lexicon_type: type, output_file: str, args: argparse.Namespace
     # n_repeats is always 1 for LexiconBenchmark
 
     lexicon: Lexicon = lexicon_type()
-    time: bool = (args.time is not None) # and (args.time > 0)
+    time: bool = args.time is not None
     time_lexicon: bool = False if (time and not args.verbose) else time
     lexicon_args = [args.input_file, output_file, args.verbose, time_lexicon]
 
-    if args.time is None:
+    if not time:
         lexicon.build_lexicon(*lexicon_args)
         return
 

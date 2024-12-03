@@ -89,8 +89,7 @@ def compare_words_same_list(word_list: list[Word], start: int=0, end: int=None):
         for b in range(a+1, end):
             word_b = word_list[b]
 
-            # TODO: Can end be passed into word_is_neighbours based on the
-            # index of the current list?
+            # TODO: Can end be passed into word_is_neighbours based on the index of the current list?
 
             if word_is_neighbours(word_a, word_b, start=1):
                 add_mutual_neighbours(word_a, word_b, inserting=False)

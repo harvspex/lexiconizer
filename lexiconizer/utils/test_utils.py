@@ -4,7 +4,6 @@ import filecmp
 
 # TODO: Docstrings
 
-# TODO: Handle invalid files
 def compare_files(filenames: list[str], shallow=False) -> bool:
     files_match: bool = True
     len_filenames = len(filenames)
@@ -26,7 +25,6 @@ def compare_files(filenames: list[str], shallow=False) -> bool:
     if files_match:
         print('All files match.')
 
-# TODO: Handle bad n_repeats value
 def time_method(
         method: Callable,
         *args,

@@ -48,8 +48,7 @@ def compare_words_different_lists(nested_list: list):
     Args:
         nested_list (list): The nested list of words.
     """
-    # TODO: Can end be passed into word_is_neighbours via the index of the
-    # current list?
+    # TODO: Can end be passed into word_is_neighbours via the index of the current list?
     for word_a, other_words in yield_lists(nested_list):
         for word_b in other_words:
 

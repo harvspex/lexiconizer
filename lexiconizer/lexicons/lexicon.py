@@ -7,7 +7,6 @@ import utils.same_char_0_utils as same_char_0_utils
 import utils.same_char_1_utils as same_char_1_utils
 from utils.test_utils import time_method
 
-# TODO: Handle IOError if files cannot be read
 # TODO: Write docstrings
 
 class Lexicon(ABC):

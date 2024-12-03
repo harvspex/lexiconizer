@@ -27,11 +27,6 @@ def readable_file(filepath):
         raise argparse.ArgumentTypeError(
             f'"{filepath}" is not readable.'
         )
-
-    # # Optional: Check if it's a text file (based on extension or other criteria)
-    # if not filepath.lower().endswith('.txt'):
-    #     raise argparse.ArgumentTypeError(f''{filepath}' is not a valid text file. Must have a '.txt' extension.')
-
     return filepath
 
 
