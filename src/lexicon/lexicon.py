@@ -93,14 +93,8 @@ class Lexicon(ABC):
 
         if reset: self.reset()
 
-        for f in funcs:
-            if time or verbose:
-                print(f.description)
-
-            if time:
-                time_method(f.name, *f.args, **f.kwargs)
-            else:
-                f.name(*f.args, **f.kwargs)
+        for func in funcs:
+            Lexicon.execute_func(func, verbose, time)
 
         if time or verbose:
             print('Finished!')
@@ -113,3 +107,13 @@ class Lexicon(ABC):
             FuncClass(self.write_to_file, 'Writing to file...', output_filename)
         ]
         return funcs
+
+    @staticmethod
+    def execute_func(func: FuncClass, verbose: bool, time: bool):
+        if time or verbose:
+            print(func.description)
+
+        if time:
+            time_method(func.name, *func.args, **func.kwargs)
+        else:
+            func.name(*func.args, **func.kwargs)
