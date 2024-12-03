@@ -88,10 +88,15 @@ def positive_int(value):
     try:
         ivalue = int(value)
         if ivalue <= 0:
-            raise argparse.ArgumentTypeError(f"Invalid value: {value}. Must be an integer greater than 0.")
+            raise argparse.ArgumentTypeError(
+                f'Invalid value: {value}. Must be an integer greater than 0.'
+            )
         return ivalue
+
     except ValueError:
-        raise argparse.ArgumentTypeError(f"Invalid value: {value}. Must be an integer.")
+        raise argparse.ArgumentTypeError(
+            f'Invalid value: {value}. Must be an integer.'
+        )
 
 
 def build_lexicon(lexicon_type: type, output_file: str, args: argparse.Namespace):
