@@ -16,7 +16,7 @@ setup(
     python_requires=">=3.10",
     entry_points={
         "console_scripts": [
-            "lexiconizer = src.lexiconizer:main",
+            "lexiconizer = lexiconizer.lexiconizer:main",
         ],
     },
 )

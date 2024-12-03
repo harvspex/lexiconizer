@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from src.data_structures.avl_node import AVLNode
+from lexiconizer.data_structures.avl_node import AVLNode
 
 class AVLTree(ABC):
     """

@@ -3,12 +3,12 @@
 import argparse
 from collections import namedtuple
 
-import src.cli.validation as validation
-from src.lexicon.lexicon import Lexicon
-from src.lexicon.lexicon_avl import LexiconAVL
-from src.lexicon.lexicon_dict import LexiconDict
-from src.lexicon.lexicon_benchmark import LexiconBenchmark
-from src.utils.test_utils import time_method, compare_files
+import lexiconizer.cli.validation as validation
+from lexiconizer.lexicon.lexicon import Lexicon
+from lexiconizer.lexicon.lexicon_avl import LexiconAVL
+from lexiconizer.lexicon.lexicon_dict import LexiconDict
+from lexiconizer.lexicon.lexicon_benchmark import LexiconBenchmark
+from lexiconizer.utils.test_utils import time_method, compare_files
 
 # TODO: Move to /src
 # TODO: Move cli/argparse stuff to cli.py
