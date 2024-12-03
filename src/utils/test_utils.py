@@ -4,6 +4,7 @@ import filecmp
 
 # TODO: Docstrings
 
+# TODO: Handle invalid files
 def compare_files(filenames: list[str], shallow=False) -> bool:
     files_match: bool = True
     len_filenames = len(filenames)
