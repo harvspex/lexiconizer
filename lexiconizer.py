@@ -81,13 +81,6 @@ def get_parser() -> argparse.ArgumentParser:
         help='Increases the amount of printed text',
         action='store_true'
     )
-    # slow
-    parser.add_argument(
-        # TODO: throw error if no -b flag present
-        '-s', '--slow',
-        help='Generates benchmark lexicon even slower',
-        action='store_true'
-    )
     # compare
     parser.add_argument(
         # TODO: Test
@@ -104,9 +97,6 @@ def get_parser() -> argparse.ArgumentParser:
 # TODO: Ugly. Fix
 def handle_build_lexicon(lexicon_type: type, output_file: str, args: argparse.Namespace):
     lexicon = lexicon_type()
-
-    if lexicon_type == LexiconBenchmark:
-        lexicon.slow_mode = args.slow
 
     # TODO: Ugly, fix
     if args.time and not args.verbose:

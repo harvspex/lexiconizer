@@ -108,7 +108,7 @@ class Lexicon(ABC):
     def get_build_lexicon_funcs(self, input_filename: str, output_filename: str,):
         funcs = [
             FuncClass(self.read_data, 'Reading and inserting data...', input_filename),
-            FuncClass(self.populate_lists, 'Populating lists...'),
+            FuncClass(self.populate_lists, 'Sorting lexicon...'),
             FuncClass(self.add_all_neighbours, 'Adding neighbours...'),
             FuncClass(self.write_to_file, 'Writing to file...', output_filename)
         ]
