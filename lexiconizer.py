@@ -64,7 +64,7 @@ def get_parser() -> argparse.ArgumentParser:
         '-t', '--time',
         help='Shows runtime',
         const=1,
-        type=int,
+        type=positive_int,
         nargs='?'
     )
     # verbose
@@ -84,22 +84,15 @@ def get_parser() -> argparse.ArgumentParser:
     return parser
 
 
-def handle_args(args: argparse.Namespace):
-    if not validate_args(args):
-        return
+def positive_int(value):
+    try:
+        ivalue = int(value)
+        if ivalue <= 0:
+            raise argparse.ArgumentTypeError(f"Invalid value: {value}. Must be an integer greater than 0.")
+        return ivalue
+    except ValueError:
+        raise argparse.ArgumentTypeError(f"Invalid value: {value}. Must be an integer.")
 
-    filenames: list[str] = build_all_lexicons(args)
-
-    if args.compare is not None:
-        compare_files(filenames + args.compare)
-
-
-# TODO: Complete
-def validate_args(args: argparse.Namespace) -> bool:
-    if args.time is not None and args.time < 1:
-        return False
-
-    return True
 
 def build_lexicon(lexicon_type: type, output_file: str, args: argparse.Namespace):
     #  -t and -v interaction:
@@ -128,7 +121,7 @@ def build_lexicon(lexicon_type: type, output_file: str, args: argparse.Namespace
     )
 
 
-def build_all_lexicons(args: argparse.Namespace) -> list[str]:
+def handle_args(args: argparse.Namespace) -> list[str]:
 
     LexiconTuple = namedtuple('LexiconTuple', ['type', 'filename', 'default'])
 
@@ -159,7 +152,8 @@ def build_all_lexicons(args: argparse.Namespace) -> list[str]:
         build_lexicon(LexiconAVL, args.output_file, args)
         filenames.append(args.output_file)
 
-    return filenames
+    if args.compare is not None:
+        compare_files(filenames + args.compare)
 
 
 def main():
