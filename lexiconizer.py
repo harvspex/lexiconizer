@@ -83,6 +83,7 @@ def get_parser() -> argparse.ArgumentParser:
 
     return parser
 
+# TODO: Validation for other arguments
 
 def positive_int(value):
     try:
