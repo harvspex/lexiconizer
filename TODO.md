@@ -9,7 +9,6 @@ dictionary
 benchmark
 time
 verbose
-slow
 compare
 
 - If none of -a -b -d present: make an AVL

@@ -2,11 +2,28 @@ from timeit import timeit
 from typing import Callable
 import filecmp
 
-# TODO: Docstring
-def compare(test_filename: str, control_filename: str, shallow=False) -> bool:
-    result = filecmp.cmp(test_filename, control_filename, shallow=shallow)
-    print(f'Files match: {result}')
-    return result
+# TODO: Docstrings
+
+def compare_files(filenames: list[str], shallow=False) -> bool:
+    files_match: bool = True
+    len_filenames = len(filenames)
+
+    if len_filenames < 2:
+        print('Can\'t compare less than 2 files.')
+        return
+
+    for a in range(len_filenames):
+        file_a = filenames[a]
+
+        for b in range(a+1, len_filenames):
+            file_b = filenames[b]
+
+            if not filecmp.cmp(file_a, file_b):
+                files_match = False
+                print(f'File mismatch found:\n  {file_a}\n  {file_b}')
+
+    if files_match:
+        print('All files match.')
 
 def time_method(
         method: Callable,
