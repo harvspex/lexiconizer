@@ -84,26 +84,28 @@ def build_one_lexicon(
     time_methods: bool = False if (time_lexicon and not verbose) else time_lexicon
     build_lexicon_args = [input_file, output_file, verbose, time_methods]
 
-    # Build lexicon without timing
-    if not time_lexicon:
-        lexicon.build_lexicon(*build_lexicon_args)
-        return
-
-    # Print average time if n_repeats > 1
-    print_average: bool = True if (n_repeats > 1) else False
-
-    # n_repeats is always 1 for LexiconBenchmark
-    if lexicon_type.lexicon_type is LexiconBenchmark: n_repeats = 1
-
     # Prepare print message
     print_message: str = lexicon_type.name.upper().replace("_", " ")
     print_message = f'Building {print_message} lexicon'
 
-    # Build lexicon and display time
-    time_method(
-        lexicon.build_lexicon,
-        *build_lexicon_args,
-        n_repeats=n_repeats,
-        verbose=print_average,
-        print_message=print_message
-    )
+    # Build lexicon with timing
+    if time_lexicon:
+        # n_repeats is always 1 for LexiconBenchmark
+        if lexicon_type.lexicon_type is LexiconBenchmark: n_repeats = 1
+
+        # Add repeats to print message
+        print_amount: str = f' {n_repeats} times...'
+        print_message += '...' if (n_repeats == 1) else print_amount
+        print(print_message)
+
+        # Build lexicon and display time
+        time_method(
+            lexicon.build_lexicon,
+            *build_lexicon_args,
+            n_repeats=n_repeats,
+            verbose=True
+        )
+
+    else:
+        if verbose: print(print_message)
+        lexicon.build_lexicon(*build_lexicon_args)
