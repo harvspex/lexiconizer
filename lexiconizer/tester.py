@@ -25,6 +25,7 @@ time_method(lexicon_radix.build_lexicon, 'in.txt', RADIX_CONST, *args, verbose=T
 
 compare_files([AVL_CONST, DICT_CONST, QUICK_CONST, RADIX_CONST])
 
+# # Results on windows
 # Running build_lexicon 20 times...
 # COMPLETE. Average execution time: 5.21s across 20 runs
 # Running build_lexicon 20 times...
@@ -33,4 +34,15 @@ compare_files([AVL_CONST, DICT_CONST, QUICK_CONST, RADIX_CONST])
 # COMPLETE. Average execution time: 3.05s across 20 runs
 # Running build_lexicon 20 times...
 # COMPLETE. Average execution time: 3.23s across 20 runs
+# All files match.
+
+# # Results on linux
+# Running build_lexicon 20 times...
+# COMPLETE. Average execution time: 2.69s across 20 runs
+# Running build_lexicon 20 times...
+# COMPLETE. Average execution time: 1.39s across 20 runs
+# Running build_lexicon 20 times...
+# COMPLETE. Average execution time: 1.40s across 20 runs
+# Running build_lexicon 20 times...
+# COMPLETE. Average execution time: 1.50s across 20 runs
 # All files match.
