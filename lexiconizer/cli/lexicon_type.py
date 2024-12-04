@@ -11,9 +11,9 @@ class LexiconType:
         self.lexicon_type: type = lexicon_type
         self.flags: list[str] = flags
         self.help: str = help
-        self.name: str = self.get_name(flags)
-        self.filename: str = self.name
         self.sorting_method: Callable = sorting_method
+        self.name: str = self.get_name(flags)
+        self.filename: str = None
 
     # TODO: Improve
     @staticmethod
@@ -22,7 +22,3 @@ class LexiconType:
         name_split = name_flag.split('-')
         name = '_'.join(_ for _ in name_split if _ != '')
         return name
-
-    # TODO: Delete
-    def __str__(self):
-        return f'{self.lexicon_type} {self.flags} {self.help} {self.name} {self.filename} {self.sorting_method}'
