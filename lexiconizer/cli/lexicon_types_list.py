@@ -17,32 +17,42 @@ Note that the order of the list is the order in which:
     - Lexicon flags are printed (when -h is used)
 """
 
+def get_help(sorting_method: str=None):
+    # Stop it. Get some help.
+    help_message: str = '(optional: filename or path for this lexicon)'
+
+    if sorting_method:
+        help_message = f'generate lexicon using {sorting_method} {help_message}'
+
+    return help_message
+
 LEXICON_TYPES = [
     LexiconType(
         lexicon_type=LexiconDict,
         flags=['-d', '--default'],
-        help='Generates lexicon using dictionary. Sorts with built-in method `sorted`'
+        # help='generate lexicon using dictionary and sort with built-in `sorted` method'
+        help=get_help('built-in `sorted` method')
     ),
     LexiconType(
         lexicon_type=LexiconDict,
         flags=['-q', '--quicksort', '--quick'],
-        help='Generates lexicon using dictionary. Sorts with quick sort',
+        help=get_help('quicksort'),
         sorting_method=quick_sort
     ),
     LexiconType(
         lexicon_type=LexiconDict,
         flags=['-r', '--radix-sort', '--radix'],
-        help='Generates lexicon using dictionary. Sorts with radix sort',
+        help=get_help('radix sort'),
         sorting_method=radix_sort
     ),
     LexiconType(
         lexicon_type=LexiconAVL,
         flags=['-a', '--avl-tree', '--avl'],
-        help='Generates lexicon using AVL Tree. Sorts with in-order traversal'
+        help=get_help('AVL tree')
     ),
     LexiconType(
         lexicon_type=LexiconBenchmark,
         flags=['-b', '--benchmark'],
-        help='Generate a benchmark lexicon. Uses minimal optimisations for adding neighbours'
+        help='generate a "benchmark" lexicon (has minimal optimisations for adding neighbours) '+get_help()
     )
 ]

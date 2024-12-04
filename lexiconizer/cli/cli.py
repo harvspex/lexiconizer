@@ -16,13 +16,13 @@ def get_parser(lexicon_types: list[LexiconType]) -> argparse.ArgumentParser:
     # infile
     parser.add_argument(
         'input_file',
-        help='Input filename',
+        help='filename or path of file to be lexiconized',
         type=validation.readable_file
     )
     # outfile
     parser.add_argument(
         '-o', '--output-file', '--output',
-        help='Output filename',
+        help='specify the filename or path for output lexicon/s',
         default=DEFAULT_FILENAME,
         const=DEFAULT_FILENAME,
         type=validation.writeable_file,
@@ -40,7 +40,7 @@ def get_parser(lexicon_types: list[LexiconType]) -> argparse.ArgumentParser:
     # time
     parser.add_argument(
         '-t', '--time',
-        help='Shows runtime',
+        help='show runtime (optional: number of times to repeat lexicon generation, for more accurate average runtime)',
         const=1,
         type=validation.positive_int,
         nargs='?'
@@ -48,13 +48,13 @@ def get_parser(lexicon_types: list[LexiconType]) -> argparse.ArgumentParser:
     # verbose
     parser.add_argument(
         '-v', '--verbose',
-        help='Increases the amount of printed text',
+        help='print the individual steps during lexicon generation (and its runtime if using `-t`)',
         action='store_true'
     )
     # compare
     parser.add_argument(
         '-c', '--compare', '--comp --cmp',
-        help='Compares lexicon against benchmark lexicon',
+        help='compare all generated lexicons (optional: any number of other filenames for comparison)',
         type=validation.readable_file,
         nargs='*'
     )
