@@ -7,8 +7,7 @@ setup(
     name="lexiconizer",
     version="1.0",
     description="Lexiconizer: Count words and find neighbours",
-    package_dir={"": "lexiconizer"},
-    packages=find_packages(where="lexiconizer"),
+    packages=find_packages(),
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/harvspex/lexiconizer",
@@ -16,7 +15,7 @@ setup(
     python_requires=">=3.10",
     entry_points={
         "console_scripts": [
-            "lexiconizer = lexiconizer:main",
+            "lexiconizer = lexiconizer.lexiconizer:main",
         ],
     },
 )
