@@ -1,14 +1,12 @@
 import argparse
-# from collections import namedtuple
-from dataclasses import dataclass, field
-from typing import Callable
+from dataclasses import dataclass
 
+import cli.cli_helpers as cli_helpers
 import cli.validation as validation
-from lexicons.lexicon import Lexicon
+from cli.lexicon_type import LexiconType
 from lexicons.lexicon_avl import LexiconAVL
 from lexicons.lexicon_dict import LexiconDict
 from lexicons.lexicon_benchmark import LexiconBenchmark
-from utils.test_utils import time_method, compare_files
 from sorting.quick_sort import quick_sort
 from sorting.radix_sort import radix_sort
 
@@ -92,13 +90,12 @@ def get_parser() -> argparse.ArgumentParser:
     return parser
 
 
-def handle_args(args: argparse.Namespace) -> list[str]:
-    @dataclass
-    class LexiconType:
-        type: type
-        filename: validation.writeable_file
-        default_name: str
-        sorting_method: Callable=None
+def handle_args(args: argparse.Namespace):
+    filenames: list[str] = handle_build_all_lexicons(args)
+    handle_compare(args, filenames)
+
+
+def handle_build_all_lexicons(args: argparse.Namespace):
 
     lexicon_types = [
         LexiconType(LexiconAVL, args.avl_tree, '_avl'),
@@ -107,78 +104,23 @@ def handle_args(args: argparse.Namespace) -> list[str]:
         LexiconType(LexiconDict, args.radix_sort, '_radix', radix_sort),
         LexiconType(LexiconBenchmark, args.benchmark, '_benchmark')
     ]
-
-    none_counter: int = 0
-    filenames: list[str] = []
-
-    for lexicon_type in lexicon_types:
-        match lexicon_type.filename:
-            case None:
-                none_counter += 1
-                continue
-            case '':
-                filename = args.output_file + lexicon_type.default_name
-            case _:
-                filename = lexicon_type.filename
-
-        build_lexicon(lexicon_type.type, filename, args, lexicon_type.sorting_method)
-        filenames.append(filename)
-
-    # TODO: Could be nicer
-    if len(lexicon_types) == none_counter:
-        build_lexicon(LexiconAVL, args.output_file, args)
-        filenames.append(args.output_file)
-
-    if args.compare is not None:
-        compare_files(filenames + args.compare)
-
-
-def build_lexicon(
-    lexicon_type: type,
-    output_file: str,
-    args: argparse.Namespace,
-    sorting_method: Callable=None
-):
-    # TODO: If verbose, print lexicon type (not running build_lexicon)
-
-    #  -t and -v interaction:
-    #   t + v = just time individual step
-    #   t     = just time entire routine
-    #   v     = just print individual steps
-    #   _     = totally slient
-
-    # n_repeats is always 1 for LexiconBenchmark
-
-    lexicon: Lexicon
-
-    if sorting_method is not None:
-        lexicon = lexicon_type(sorting_method)
-    else:
-        lexicon = lexicon_type()
-
-    time: bool = args.time is not None
-    time_lexicon: bool = False if (time and not args.verbose) else time
-    build_lexicon_args = [args.input_file, output_file, args.verbose, time_lexicon]
-
-    if not time:
-        lexicon.build_lexicon(*build_lexicon_args)
-        return
-
-    n_repeats: int = args.time
-    print_average: bool = True if (n_repeats > 1) else False
-
-    if lexicon_type is LexiconBenchmark:
-        n_repeats = 1
-
-    time_method(
-        lexicon.build_lexicon,
-        *build_lexicon_args,
-        n_repeats=n_repeats,
-        verbose=print_average
+    cli_helpers.build_all_lexicons(
+        input_file=args.input_file,
+        output_file=args.output_file,
+        time=args.time,
+        verbose=args.verbose,
+        lexicon_types=lexicon_types
     )
 
+def handle_compare(args: argparse.Namespace, filenames: list[str]):
+    if args.compare:
+        cli_helpers.compare_files(filenames)
 
 def main():
     parser = get_parser()
     args = parser.parse_args()
+
+    print(getattr(args, 'input_file'))
+    quit()
+
     handle_args(args)
