@@ -4,7 +4,7 @@ from typing import Callable
 from lexicons.lexicon import Lexicon
 from lexicons.lexicon_dict import LexiconDict
 from lexicons.lexicon_benchmark import LexiconBenchmark
-from utils.test_utils import time_method, compare_files
+from utils.test_utils import time_method
 from cli.lexicon_type import LexiconType
 
 
@@ -24,25 +24,25 @@ def build_all_lexicons(
     filenames: list[str] = []
 
     # Build each lexicon, adding filename to `filenames`
-    for lexicon_type in lexicon_types:
+    for l_type in lexicon_types:
         filename: str
 
-        match lexicon_type.filename:
+        match l_type.filename:
             case None:
                 continue
-            case '':
-                filename = f'{default_filename}_{lexicon_type.name}{extension}'
+            case l_type.name:
+                filename = f'{default_filename}_{l_type.name}{extension}'
             case _:
-                filename, sub_extension = os.path.splitext(lexicon_type.filename)
+                filename, sub_extension = os.path.splitext(l_type.filename)
                 filename += extension if sub_extension is None else sub_extension
 
         build_one_lexicon(
             input_file=input_file,
             filename=filename,
-            lexicon_type=lexicon_type.lexicon_type,
+            lexicon_type=l_type.lexicon_type,
             n_repeats=time,
             verbose=verbose,
-            sorting_method=lexicon_type.sorting_method
+            sorting_method=l_type.sorting_method
         )
         filenames.append(filename)
 
@@ -100,6 +100,3 @@ def build_one_lexicon(
         n_repeats=n_repeats,
         verbose=print_average
     )
-
-def compare_all_files(filenames: list[str]):
-    compare_files(filenames)
