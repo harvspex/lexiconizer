@@ -85,27 +85,31 @@ def build_one_lexicon(
     build_lexicon_args = [input_file, output_file, verbose, time_methods]
 
     # Prepare print message
-    print_message: str = lexicon_type.name.upper().replace("_", " ")
-    print_message = f'Building {print_message} lexicon'
+    lexicon_name: str = lexicon_type.name.upper().replace("_", " ")
+    print_message: str = f'Building {lexicon_name} lexicon'
+    ellipsis: str = '...'
 
-    # Build lexicon with timing
-    if time_lexicon:
-        # n_repeats is always 1 for LexiconBenchmark
-        if lexicon_type.lexicon_type is LexiconBenchmark: n_repeats = 1
-
-        # Add repeats to print message
-        print_amount: str = f' {n_repeats} times...'
-        print_message += '...' if (n_repeats == 1) else print_amount
-        print(print_message)
-
-        # Build lexicon and display time
-        time_method(
-            lexicon.build_lexicon,
-            *build_lexicon_args,
-            n_repeats=n_repeats,
-            verbose=True
-        )
-
-    else:
-        if verbose: print(print_message)
+    # Build lexicon without timing
+    if not time_lexicon:
+        if verbose:
+            print_message += ellipsis
+            print(print_message)
         lexicon.build_lexicon(*build_lexicon_args)
+        return
+
+    # n_repeats is always 1 for LexiconBenchmark
+    if lexicon_type.lexicon_type is LexiconBenchmark:
+        n_repeats = 1
+
+    # Add repeats to print message
+    print_amount: str = f' {n_repeats} times{ellipsis}'
+    print_message += ellipsis if (n_repeats == 1) else print_amount
+    print(print_message)
+
+    # Build lexicon and display time
+    time_method(
+        lexicon.build_lexicon,
+        *build_lexicon_args,
+        n_repeats=n_repeats,
+        verbose=True
+    )
