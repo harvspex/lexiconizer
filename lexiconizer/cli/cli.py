@@ -9,34 +9,13 @@ from lexicons.lexicon_dict import LexiconDict
 from lexicons.lexicon_benchmark import LexiconBenchmark
 from sorting.quick_sort import quick_sort
 from sorting.radix_sort import radix_sort
+from cli.lexicon_types import get_lexicon_types
 
 # TODO: Improve help descriptions
 
-def get_parser() -> argparse.ArgumentParser:
+def get_parser(lexicon_types: list[LexiconType]) -> argparse.ArgumentParser:
     LEXICON_CONST: str = 'lexicon'
     LEXICON_TYPE_CONST: str = ''
-
-    @dataclass
-    class LexiconFlag:
-        flags: list[str]
-        help: str
-
-    lexicon_flags = [
-        LexiconFlag(['-a', '--avl-tree', '--avl'],
-        help='Generates lexicon using AVL Tree'),
-
-        LexiconFlag(['-d', '--dictionary', '--dict'],
-        help='Generates lexicon using dict'),
-
-        LexiconFlag(['-q', '--quick-sort', '--quick'],
-        help='Generates lexicon using dictionary. Sorts with quick sort'),
-
-        LexiconFlag(['-r', '--radix-sort', '--radix'],
-        help='Generates lexicon using dictionary. Sorts with radix sort'),
-
-        LexiconFlag(['-b', '--benchmark'],
-        help='Generate a benchmark lexicon')
-    ]
 
     parser = argparse.ArgumentParser(
         description='Lexiconizer: Count words and find neighbours'
@@ -57,10 +36,10 @@ def get_parser() -> argparse.ArgumentParser:
         nargs='?'
     )
     # lexicons
-    for flag in lexicon_flags:
+    for l_type in lexicon_types:
         parser.add_argument(
-            *flag.flags,
-            help=flag.help,
+            *l_type.flags,
+            help=l_type.help,
             const=LEXICON_TYPE_CONST,
             type=validation.writeable_file,
             nargs='?'
@@ -90,21 +69,23 @@ def get_parser() -> argparse.ArgumentParser:
     return parser
 
 
-def handle_args(args: argparse.Namespace):
-    filenames: list[str] = handle_build_all_lexicons(args)
+def handle_args(args: argparse.Namespace, lexicon_types: list[LexiconType]):
+    filenames: list[str] = handle_build_all_lexicons(args, lexicon_types)
     handle_compare(args, filenames)
 
 
-def handle_build_all_lexicons(args: argparse.Namespace):
+def handle_build_all_lexicons(
+    args: argparse.Namespace,
+    lexicon_types: list[LexiconType]
+) -> list[str]:
 
-    lexicon_types = [
-        LexiconType(LexiconAVL, args.avl_tree, '_avl'),
-        LexiconType(LexiconDict, args.dictionary, '_dict'),
-        LexiconType(LexiconDict, args.quick_sort, '_quick', quick_sort),
-        LexiconType(LexiconDict, args.radix_sort, '_radix', radix_sort),
-        LexiconType(LexiconBenchmark, args.benchmark, '_benchmark')
-    ]
-    cli_helpers.build_all_lexicons(
+    # Match all lexicon args with corresponding LexiconType object.
+    # Set LexiconType.filename to lexicon arg value.
+    for l_type in lexicon_types:
+        l_type.filename = getattr(args, l_type.name)
+
+    # Build all lexicons
+    return cli_helpers.build_all_lexicons(
         input_file=args.input_file,
         output_file=args.output_file,
         time=args.time,
@@ -112,15 +93,14 @@ def handle_build_all_lexicons(args: argparse.Namespace):
         lexicon_types=lexicon_types
     )
 
+
 def handle_compare(args: argparse.Namespace, filenames: list[str]):
     if args.compare:
         cli_helpers.compare_files(filenames)
 
+
 def main():
-    parser = get_parser()
+    lexicon_types = get_lexicon_types()
+    parser = get_parser(lexicon_types)
     args = parser.parse_args()
-
-    print(getattr(args, 'input_file'))
-    quit()
-
-    handle_args(args)
+    handle_args(args, lexicon_types)
