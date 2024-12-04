@@ -16,7 +16,11 @@ More information under "Optimisations".
 
 
 ## How to use
-Lexiconizer can be run in "portable mode" by navigating to the lexiconizer/ directory and running `python lexiconizer [args]`
+### Portable mode
+Navigate to the root directory and run `python lexiconizer.py [options]` or `python -m lexiconizer [options]`
+
+### Install
+Run `pip install .` from the root directory. Then simply run `lexiconizer [options]`
 
 <!-- TODO: Complete. It can also be installed, using... -->
 
@@ -77,7 +81,7 @@ that lexicon. (e.g. `-d default_lexicon.txt`)
 ## Optimisation
 Many optimisations have been made, with some specific to just one of the available options. However, each option (aside from the benchmark) uses the same technique to check for neighbours. 
 
-Checking neighbours has a time complexity of O(n<sup>2</sup>) - that's not good! This is because each word needs to be checked against each other word, resulting in n(n-1)/2 operations (where n is the number of words). However, optimisations have reduced the impact so greatly, that for all tested inputs it beats the avl tree's insertion phase: O(n log n)
+Checking neighbours has a time complexity of O(n<sup>2</sup>) - that's not good! This is because each word needs to be checked against each other word, resulting in n(n-1)/2 operations (where n is the number of words). However, optimisations have reduced the impact so greatly, that for all tested inputs it's much faster than the avl tree's insertion phase: O(n log n)
 
 This was achieved by reducing the number of comparisons. A "neighbour" is defined as any other word of the same length, which differs by only one character. Therefore, another word cannot be neighbours if:
 - It is a different length
