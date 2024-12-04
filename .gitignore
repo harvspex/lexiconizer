@@ -9,8 +9,9 @@
 
 /.venv
 /.vscode
-/sample_outputs
+/build
 /misc
+/sample_outputs
 
 tester.py
 TODO.md
