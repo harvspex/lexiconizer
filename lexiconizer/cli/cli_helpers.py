@@ -18,7 +18,7 @@ def build_all_lexicons(
 
     # Prepare default filename and extension
     default_filename, extension = os.path.splitext(output_file)
-    if extension is None:
+    if extension == '':
         extension = '.txt'
 
     filenames: list[str] = []
@@ -38,7 +38,7 @@ def build_all_lexicons(
 
         build_one_lexicon(
             input_file=input_file,
-            output_file=output_file,
+            filename=filename,
             lexicon_type=lexicon_type.lexicon_type,
             n_repeats=time,
             verbose=verbose,
@@ -51,7 +51,7 @@ def build_all_lexicons(
         filename = default_filename + extension
         build_one_lexicon(
             input_file=input_file,
-            output_file=filename,
+            filename=filename,
             lexicon_type=LexiconDict,
             n_repeats=time,
             verbose=verbose
@@ -63,7 +63,7 @@ def build_all_lexicons(
 
 def build_one_lexicon(
     input_file: str,
-    output_file: str,
+    filename: str,
     lexicon_type: type,
     n_repeats: int,
     verbose: bool,
@@ -80,7 +80,7 @@ def build_one_lexicon(
 
     time_lexicon: bool = n_repeats is not None
     time_methods: bool = False if (time_lexicon and not verbose) else time_lexicon
-    build_lexicon_args = [input_file, output_file, verbose, time_methods]
+    build_lexicon_args = [input_file, filename, verbose, time_methods]
 
     # Build lexicon without timing
     if not time_lexicon:
