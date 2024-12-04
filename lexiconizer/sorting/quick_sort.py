@@ -1,4 +1,4 @@
-def quick_sort(word_list: list[str]):
+def quick_sort(word_list: list[str]) -> list[str]:
 
     def swap(lst: list, idx_a: int, idx_b: int):
         lst[idx_a], lst[idx_b] = lst[idx_b], lst[idx_a]
@@ -31,3 +31,5 @@ def quick_sort(word_list: list[str]):
         return left
 
     quick_sort_inner(word_list)
+
+    return word_list

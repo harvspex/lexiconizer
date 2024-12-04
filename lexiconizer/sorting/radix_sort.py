@@ -79,7 +79,7 @@ def get_character_bucket_index(ch: str):
         raise ValueError(f'Error. Unsupported character: {ch}')
     return index
 
-def radix_sort(lst: list[str]):
+def radix_sort(lst: list[str]) -> list[str]:
     """Sorts a list inplace using radix sort
 
     This operates inplace, meaning the list will be sorted after calling this function
