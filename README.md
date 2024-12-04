@@ -1,10 +1,10 @@
 # Lexiconizer
-A refactor of my solution for the following requirements. Given a text input:
+A refactor of my solution to the following programming puzzle. Given a text input:
 - Count the number of occurrences of each word.
 - Find each word's list of "neighbours". A neighbour is any other word of the same length, which differs by only one character.
 - Write this information to file. Both the lexicon and neighbour lists must each be in alphabetical order.
 - The goal is to get the fastest runtime possible.
-- To increase the difficulty, built-in sorting methods and data structures were not allowed. However, the optimisations still greatly enhance speed when using built-ins. A built-in version is provided for comparison.
+- To increase the difficulty, built-in sorting methods and data structures were not allowed. However, the optimisations still greatly enhance speed, even when using built-ins. Options using built-ins are provided for comparison.
 
 
 ## How it works
@@ -12,10 +12,15 @@ A refactor of my solution for the following requirements. Given a text input:
 - After (or sometimes during) sorting, words are categorized into sublists based on certain criteria
 - These sublists greatly minimize the number of comparisons needed to identify neighbours
 
-More information under "Optimisations"
+More information under "Optimisations".
 
 
 ## How to use
+Lexiconizer can be run in "portable mode" by navigating to the lexiconizer/ directory and running `python lexiconizer [args]`
+
+<!-- TODO: Complete. It can also be installed, using... -->
+
+### List of Options
 ```
 input_file            filename or path of file to be lexiconized
 
@@ -69,10 +74,6 @@ that lexicon. (e.g. `-d default_lexicon.txt`)
 *This only runs once because the benchmark lexicon is very slow, to highlight the effect of optimisations in other lexicons.
 
 
-## How to install
-Complete...
-
-
 ## Optimisation
 Many optimisations have been made, with some specific to just one of the available options. However, each option (aside from the benchmark) uses the same technique to check for neighbours. 
 
@@ -90,7 +91,7 @@ With these rules, we can avoid time-consuming comparisons between a large number
 To showcase the impact of these optimisations, an option to make a "benchmark" lexicon has been included. Rather than using sublists, it treats every subsequent word in the lexicon as a potential neighbour. The benchmark still:
 - Avoids re-checking any two words that have already been checked
 - Rejects words as quickly as possible (e.g. if their length is different, or neither of the first two letters match, the two words are not compared any further)
-- Uses built-in sorting methods to make everything else run as fast as possible
+- Uses built-in sorting methods to make everything else run as quickly as possible
 
 But even these small comparison adds up. A word of warning: the benchmark can be very slow (e.g. ~30s for a 4.5mb text file). For this reason, it only runs once, even if the `--time` option specifies a number greater than 1.
 
