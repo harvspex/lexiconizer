@@ -7,6 +7,14 @@ A refactor of my solution for the following requirements. Given a text input:
 - To increase the difficulty, built-in sorting methods and data structures were not allowed. However, the optimisations still greatly enhance speed when using built-ins. A built-in version is provided for comparison.
 
 
+## How it works
+- Word data is read and sorted using the specified method
+- After (or sometimes during) sorting, words are categorized into sublists based on certain criteria
+- These sublists greatly minimize the number of comparisons needed to identify neighbours
+
+More information under "Optimisations"
+
+
 ## How to use
 ```
 input_file            filename or path of file to be lexiconized
@@ -25,8 +33,8 @@ input_file            filename or path of file to be lexiconized
 -c, --compare         compare all generated lexicons (optional: any number of
                       other filenames for comparison)
 
-All lexicon methods [-d -q -r -a -b] optionally take the filename for that
-lexicon. (e.g. `-d default_lexicon.txt`)
+All lexicon methods [-d -q -r -a -b] optionally take a specific filename for
+that lexicon. (e.g. `-d default_lexicon.txt`)
 ```
 
 
@@ -65,86 +73,33 @@ lexicon. (e.g. `-d default_lexicon.txt`)
 Complete...
 
 
-## How it works
-- Data is inserted into an AVL Tree (or a dictionary in the built-in version).
-- The tree is traversed in order. Words are categorised based on length, and the first two letters.
-- These categories are used to greatly minimize the number of comparisons needed to identify neighbours. 
+## Optimisation
+Many optimisations have been made, with some specific to just one of the available options. However, each option (aside from the benchmark) uses the same technique to check for neighbours. 
 
+Checking neighbours has a time complexity of O(n<sup>2</sup>) - that's not good! This is because each word needs to be checked against each other word, resulting in n(n-1)/2 operations (where n is the number of words). However, optimisations have reduced the impact so greatly, that for all tested inputs it beats the avl tree's insertion phase: O(n log n)
 
-## Optimisations
-### AVL Tree
-Lexiconizer begins by inserting words into an [AVL tree](https://en.wikipedia.org/wiki/AVL_tree). If the word is already present, then its frequency counter is increased instead.
+This was achieved by reducing the number of comparisons. A "neighbour" is defined as any other word of the same length, which differs by only one character. Therefore, another word cannot be neighbours if:
+- It is a different length
+- Both the first and the second letters don't match (i.e. there are more than one differences)
 
-After all words have been counted, the tree is traversed inorder, creating an ordered list of words. During traversal, words are also sorted into sublists. These sublists are then used for checking if a word is "neighbours" with another word. The benefit of using sublists is that the number of comparisons between words is significantly reduced, resulting in a faster runtime.
+With these rules, we can avoid time-consuming comparisons between a large number of words. During sorting, words are appended to a deeply nested list, with an order corresponding to length, then the second letter, and finally the first letter. These these smaller subgroups greatly reduce the number of comparisons that need to be made. Additionally, the way that they are traversed:
+- Avoids re-checking any two words that have already been checked
+- Preserves alphabetical order for neighbour lists (no need for additional sorting!)
+- Begins checking from the first letter that may be different (e.g. the third letter, if we know that the second is the same)
 
+To showcase the impact of these optimisations, an option to make a "benchmark" lexicon has been included. Rather than using sublists, it treats every subsequent word in the lexicon as a potential neighbour. The benchmark still:
+- Avoids re-checking any two words that have already been checked
+- Rejects words as quickly as possible (e.g. if their length is different, or neither of the first two letters match, the two words are not compared any further)
+- Uses built-in sorting methods to make everything else run as fast as possible
 
-### Sublists
-The rationale behind using sublists is as follows:
-
-- For two words to be neighbours, they must be the same length
-- For words longer than 1 letter, they must also:
-    - Start with the same letter
-    - Or have the same 2<sup>nd</sup> letter
-
-If neither the 1<sup>st</sup> nor the 2<sup>nd</sup> letter match, then there are more than one different characters, meaning the words are not neighbours. Therefore, we can avoid time-consuming comparisons between a large number of words.
-
-The way these sublists are populated and used preserves alphabetical order, eliminating the need for additional sorting.
-
-
-### Time Complexity
-### (Note: big O notation requires correction. Or delete this section)
-- AVL insertion has a time complexity of O(log n) [n log n for n data points]
-- AVL traversal has a time complexity of O(n) [or is it O(log n) ???]
-- Checking neighbours has a time complexity of O(n(n-1)/2) [simplifies to O(n<sup>2</sup>)]
-
-<!-- Talk about why AVL insertion is worth it due to lack of need for sorting -->
-
-As checking neighbours has the largest time complexity, this is where the majority of optimisations occurred. These optimisations have resulted in insertion being the slowest part! Therefore, the overall, simplified time complexity is **O(log n)**
-
-By reducing the pool of candidate neighbour words as greatly as possible, the negative effects of quadratic time are greatly diminished. Consider a list of all 3 letter "words":
-
-`aaa aab aac ... zzx zzy zzz`
-
-There are 17576 words
-```
-  n(n-1)/2
-= 17576(17576−1)/2
-= 154449100 comparisons
-```
-But by checking within subgroups:
-- There are 676 words per subgroup with same first letter: `aaa aab aac ... azx azy azz`
-- There are 676 words per subgroup with same second letter: `aaa aab aac ... zax zay zaz`
-
-```
-  n(n-1)/2
-= 676(676−1)/2
-= 228150 comparisons per subgroup
-
-228150 * 52 subgroups = 11863800 comparisons
-```
-That's already 13 times fewer comparisons.
-
-In practice, this number is reduced **even further.** After the first pass (checking words with the same 1<sup>st</sup> letter), the second pass only checks words with the same 2<sup>nd</sup> letter, and a 1<sup>st</sup> letter after that of the word being checked.
-
-e.g. `abc` is checked against `bba, bbc, bbd ... zbx, zby, zbz`<br>
-But skips checking `aba, abb, abc ... abx, aby, abz`
-
-Also, as we already know that the first letter is different, and the second letter is the same, we only need to compare the remaining letters (until a difference is found). This reduces comparisons even further.
-
-
-### EAFP
-*"Easier to Ask for Forgiveness than Permission"*
-
-Lexiconizer frequently "asks for forgiveness" (using try/except blocks) rather than "permission" (using comparisons). This is done for conditional statements that are reached infrequently.
-
-Rather than running a comparison every time, Lexiconizer assumes the more likely condition, and manages the unlikely conditions handling the raised exception.
+But even these small comparison adds up. A word of warning: the benchmark can be very slow (e.g. ~30s for a 4.5mb text file). For this reason, it only runs once, even if the `--time` option specifies a number greater than 1.
 
 
 ## Refactor
 Compared to the original, the refactor:
-- Runs from CLI, with various options
-- Makes greater use of inheritance
-- Makes more efficient use of data/memory (i.e. the same nested list is used for checking neighbours at index 0 and index 1, with more sophisticated traversal routines)
-- Traversal of subgroups (for neighbour comparisons) have been reworked into concise recursive solutions
+- Can be installed, and runs from CLI with various options
+- Contains multiple ways of generating a lexicon, using various data structures or sorting algorithms
+- Makes more efficient use of memory (e.g. the nested list used for checking neighbours)
+- Traversal of subgroups (for neighbour comparisons) have been made more concise using recursion
 
-The core ideas and time complexity remain unchanged.
+The core ideas and approximate runtime remain unchanged.
