@@ -6,49 +6,69 @@ A refactor of my solution for the following requirements. Given a text input:
 - The goal is to get the fastest runtime possible.
 - To increase the difficulty, built-in sorting methods and data structures were not allowed. However, the optimisations still greatly enhance speed when using built-ins. A built-in version is provided for comparison.
 
-## How it works
-- Data is inserted into an AVL Tree (or a dictionary in the built-in version).
-- The tree is traversed in order. Words are categorised based on length, and the first two letters.
-- These categories are used to greatly minimize the number of comparisons needed to identify neighbours. 
 
 ## How to use
-`lexiconizer [filename]`: run lexiconizer on the specified filename or file path. Outputs to "lexicon.txt"
+```
+input_file            filename or path of file to be lexiconized
 
-Optional arguments:
-- `--output-file` / `-o` / `-o [filename]`: specify the filename for the lexicon output.
-- `--avl-tree` / `-a` / `-a [filename]`: generate using an AVL Tree (with optional output filename).
-- `--dictionary` / `-d` / `-d [filename]`: generate using a dict (with optional output filename).
-- `--benchmark` / `-b` / `-b [filename]`: generate a benchmark lexicon (with optional output filename).
-- `--time` / `-t` / `-t [int]`: displays runtime. If a number is specified, repeats the program that many times, and displays the average runtime.
-- `--verbose` / `-v`: Prints more information about specific steps being taken.
-- `--compare` / `-c` / `-c [filenames]` compares the generated lexicons, and any number of specified files.
+-o, --output-file     specify the filename or path for output lexicon/s
+-d, --default         generate lexicon using built-in `sorted` method
+-q, --quicksort       generate lexicon using quicksort
+-r, --radix-sort,     generate lexicon using radix sort
+-a, --avl-tree        generate lexicon using AVL tree
+-b, --benchmark       generate a "benchmark" lexicon (has minimal optimisations
+                      for adding neighbours)
+-t, --time            show runtime (optional: number of times to repeat lexicon
+                      generation, for more accurate average runtime)
+-v, --verbose         print the individual steps during lexicon generation (and
+                      its runtime if using `-t`)
+-c, --compare         compare all generated lexicons (optional: any number of
+                      other filenames for comparison)
+
+All lexicon methods [-d -q -r -a -b] optionally take the filename for that
+lexicon. (e.g. `-d default_lexicon.txt`)
+```
+
 
 ### Example Use:
+`lexiconizer meditations.txt`
+- Generates a default lexicon using "meditations.txt"
+- Saves to "lexicon.txt" (default filename)
 
-`lexiconizer infile.txt -o my_lexicon -a -d -b -t 15 -v -c file_a file_b`
+`lexiconizer "moby dick.txt" -o "moby dick lexicon.txt" -t -v`
+- Generates a default lexicon using "moby dict.txt"
+- `-v` prints individuals steps and `-t` prints their runtime
+- `-t` also prints the total runtime
+- `-o` saves output to "moby dick lexicon.txt"
 
-This will:
-- Generate an AVL lexicon 15 times
-  - Print each step
-  - Print average runtime
-  - Save to "my_lexicon_avl.txt"
-- Generate a dict lexicon 15 times
-  - Print each step
-  - Print the average runtime
-  - Save to "my_lexicon_dict.txt"
-- Generate a benchmark lexicon 1 time*
-  - Print each step
-  - Print the runtime
-  - Save to "my_lexicon_benchmark.txt"
-- Compare all of the above files, along with file_a and file_b
-  - Mismatched files will be printed to screen
-  - Otherwise, prints "All files match."
+`lexiconizer my_diary.txt -q diary_1.txt -r diary_2.txt -c diary_3.txt diary_4.txt`
+- `-q` generates a quicksort lexicon and saves to "diary_1.txt"
+- `-r` generates a radix sort lexicon and saves to "diary_2.txt"
+- `-c` compares the newly generated "diary_1.txt" and "diary_2.txt", and the specified "diary_3.txt" and "diary_4.txt"
+- `-c` prints "all files match" if so, otherwise prints mismatched files
 
-*This only runs once because the benchmark lexicon is very slow for large inputs. The benchmark lexicon is provided to showcase how slowly neighbours are added with minimal optimisations.
+`lexiconizer war_and_peace.txt -o my_lexicon.txt -d -a -b -t 15`
+- `-d` generates a default lexicon
+  - `-t` repeats this 15 times and prints the average runtime
+  - `-o` saves to "my_lexicon_default.txt" ("default" is automatically added to prevent overwriting)
+- `-a` generates an AVL lexicon 15 times
+  - `-t` repeats this 15 times and prints the average runtime
+  - `-o` saves to "my_lexicon_avl_tree.txt" ("avl_tree" is automatically added to prevent overwriting)
+- `-b` generates a benchmark lexicon
+  - `-t` repeats this 1 time* and prints the runtime
+  - `-o` saves to "my_lexicon_benchmark.txt" ("benchmark" is automatically added to prevent overwriting)
+
+*This only runs once because the benchmark lexicon is very slow, to highlight the effect of optimisations in other lexicons.
 
 
 ## How to install
 Complete...
+
+
+## How it works
+- Data is inserted into an AVL Tree (or a dictionary in the built-in version).
+- The tree is traversed in order. Words are categorised based on length, and the first two letters.
+- These categories are used to greatly minimize the number of comparisons needed to identify neighbours. 
 
 
 ## Optimisations
@@ -56,6 +76,7 @@ Complete...
 Lexiconizer begins by inserting words into an [AVL tree](https://en.wikipedia.org/wiki/AVL_tree). If the word is already present, then its frequency counter is increased instead.
 
 After all words have been counted, the tree is traversed inorder, creating an ordered list of words. During traversal, words are also sorted into sublists. These sublists are then used for checking if a word is "neighbours" with another word. The benefit of using sublists is that the number of comparisons between words is significantly reduced, resulting in a faster runtime.
+
 
 ### Sublists
 The rationale behind using sublists is as follows:
@@ -68,6 +89,7 @@ The rationale behind using sublists is as follows:
 If neither the 1<sup>st</sup> nor the 2<sup>nd</sup> letter match, then there are more than one different characters, meaning the words are not neighbours. Therefore, we can avoid time-consuming comparisons between a large number of words.
 
 The way these sublists are populated and used preserves alphabetical order, eliminating the need for additional sorting.
+
 
 ### Time Complexity
 ### (Note: big O notation requires correction. Or delete this section)
@@ -109,12 +131,14 @@ But skips checking `aba, abb, abc ... abx, aby, abz`
 
 Also, as we already know that the first letter is different, and the second letter is the same, we only need to compare the remaining letters (until a difference is found). This reduces comparisons even further.
 
+
 ### EAFP
 *"Easier to Ask for Forgiveness than Permission"*
 
 Lexiconizer frequently "asks for forgiveness" (using try/except blocks) rather than "permission" (using comparisons). This is done for conditional statements that are reached infrequently.
 
 Rather than running a comparison every time, Lexiconizer assumes the more likely condition, and manages the unlikely conditions handling the raised exception.
+
 
 ## Refactor
 Compared to the original, the refactor:
