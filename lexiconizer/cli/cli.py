@@ -72,7 +72,7 @@ def handle_build_all_lexicons(
     lexicon_types: list[LexiconType]
 ) -> list[str]:
 
-    # Match all lexicon args with corresponding LexiconType object.
+    # Match all LexiconType objects with corresponding arg in `args`.
     # Set LexiconType.filename to lexicon arg value.
     for l_type in lexicon_types:
         l_type.filename = getattr(args, l_type.name)

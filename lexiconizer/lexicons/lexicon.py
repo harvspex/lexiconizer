@@ -97,7 +97,7 @@ class Lexicon(ABC):
             Lexicon.execute_func(func, verbose, time)
 
         if time or verbose:
-            print('Finished!')
+            print('Finished!\n')
 
     def get_build_lexicon_funcs(self, input_filename: str, output_filename: str,):
         funcs = [

@@ -30,6 +30,7 @@ def time_method(
         *args,
         n_repeats: int=1,
         verbose: bool=False,
+        print_message: str=None,
         **kwargs
 ):
     """
@@ -50,6 +51,8 @@ def time_method(
         verbose (bool, optional): If `True`, prints detailed output, 
             including function name and average execution time. 
             (default: False).
+        print_message (str, optional): A message to print on completion.
+            (default: None, meaining "Running [method name]")
         **kwargs: Keyword arguments to be passed to `build_lexicon`.
 
     Prints:
@@ -65,10 +68,14 @@ def time_method(
         Running example_function 5 times...
         COMPLETE. Average execution time: 0.00s across 5 runs
     """
-    if verbose: print(f'Running {method.__name__} {n_repeats} times...')
+    if verbose:
+        if print_message is None:
+            print_message = f'Running {method.__name__}'
+
+        print(f'{print_message} {n_repeats} times...')
 
     total_execution_time = timeit(lambda: method(*args, **kwargs), number=n_repeats)
     average_time = f'{total_execution_time / n_repeats:.2f}s'
 
-    if verbose: print(f'COMPLETE. Average execution time: {average_time} across {n_repeats} runs')
+    if verbose: print(f'Finished with average runtime: {average_time}\n')
     else: print(average_time)

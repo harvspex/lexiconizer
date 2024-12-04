@@ -38,21 +38,25 @@ def build_all_lexicons(
 
         build_one_lexicon(
             input_file=input_file,
-            filename=filename,
-            lexicon_type=l_type.lexicon_type,
+            output_file=filename,
+            lexicon_type=l_type,
             n_repeats=time,
             verbose=verbose,
-            sorting_method=l_type.sorting_method
         )
         filenames.append(filename)
 
     # Build a default lexicon if none specified
     if not filenames:
-        filename = default_filename + extension
+        filename: str = default_filename + extension
+        l_type: LexiconType = next(
+            (lt for lt in lexicon_types if lt.name == 'default'),
+            lexicon_types[0]
+        )
+
         build_one_lexicon(
             input_file=input_file,
-            filename=filename,
-            lexicon_type=LexiconDict,
+            output_file=filename,
+            lexicon_type=l_type,
             n_repeats=time,
             verbose=verbose
         )
@@ -63,24 +67,22 @@ def build_all_lexicons(
 
 def build_one_lexicon(
     input_file: str,
-    filename: str,
-    lexicon_type: type,
+    output_file: str,
+    lexicon_type: LexiconType,
     n_repeats: int,
     verbose: bool,
-    sorting_method: Callable=None
 ):
-    # TODO: If verbose, print lexicon type (not "running build_lexicon")
-
+    # Create lexicon
     lexicon: Lexicon
-
-    if sorting_method is not None:
-        lexicon = lexicon_type(sorting_method)
+    if lexicon_type.sorting_method is not None:
+        lexicon = lexicon_type.lexicon_type(lexicon_type.sorting_method)
     else:
-        lexicon = lexicon_type()
+        lexicon = lexicon_type.lexicon_type()
 
+    # Prepare args for `lexicon.build_lexicon`
     time_lexicon: bool = n_repeats is not None
     time_methods: bool = False if (time_lexicon and not verbose) else time_lexicon
-    build_lexicon_args = [input_file, filename, verbose, time_methods]
+    build_lexicon_args = [input_file, output_file, verbose, time_methods]
 
     # Build lexicon without timing
     if not time_lexicon:
@@ -91,12 +93,17 @@ def build_one_lexicon(
     print_average: bool = True if (n_repeats > 1) else False
 
     # n_repeats is always 1 for LexiconBenchmark
-    if lexicon_type is LexiconBenchmark: n_repeats = 1
+    if lexicon_type.lexicon_type is LexiconBenchmark: n_repeats = 1
+
+    # Prepare print message
+    print_message: str = lexicon_type.name.upper().replace("_", " ")
+    print_message = f'Building {print_message} lexicon'
 
     # Build lexicon and display time
     time_method(
         lexicon.build_lexicon,
         *build_lexicon_args,
         n_repeats=n_repeats,
-        verbose=print_average
+        verbose=print_average,
+        print_message=print_message
     )
