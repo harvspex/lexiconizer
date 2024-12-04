@@ -88,8 +88,8 @@ def handle_build_all_lexicons(
 
 
 def handle_compare(args: argparse.Namespace, filenames: list[str]):
-    if args.compare:
-        compare_files(filenames)
+    if args.compare is not None:
+        compare_files(filenames + args.compare)
 
 
 def main():
