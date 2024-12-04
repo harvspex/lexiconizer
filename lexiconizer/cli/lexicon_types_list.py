@@ -2,8 +2,8 @@ from lexiconizer.cli.lexicon_type import LexiconType
 from lexiconizer.lexicons.lexicon_avl import LexiconAVL
 from lexiconizer.lexicons.lexicon_dict import LexiconDict
 from lexiconizer.lexicons.lexicon_benchmark import LexiconBenchmark
+from lexiconizer.lexicons.lexicon_radix import LexiconRadix
 from lexiconizer.sorting.quick_sort import quick_sort
-from lexiconizer.sorting.radix_sort import radix_sort
 """
 Contains the `LEXICON_TYPES` list, which facilitates adding new lexicon types.
 
@@ -40,10 +40,9 @@ LEXICON_TYPES = [
         sorting_method=quick_sort
     ),
     LexiconType(
-        lexicon_type=LexiconDict,
+        lexicon_type=LexiconRadix,
         flags=['-r', '--radix-sort', '--radix'],
         help=get_help('radix sort'),
-        sorting_method=radix_sort
     ),
     LexiconType(
         lexicon_type=LexiconAVL,

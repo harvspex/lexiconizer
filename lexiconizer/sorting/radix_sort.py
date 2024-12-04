@@ -1,31 +1,6 @@
-"""A quick demo of radix sort to sort a list of strings made from upper case letters and spaces
+PAD_CHARACTER = ' '
 
-Our buckets are:
-    Bucket 0: ' ' (space character)
-    Bucket 1-26: a-z (lower case characters)
-"""
-
-
-def find_key_length(lst):
-    """Given a list of strings, finds the length of the longest string
-
-    Args:
-        lst (list of str): The list of strings
-
-    Returns:
-        (int): The length of the longest string in the list
-    """
-    max_length = 0
-
-    for string in lst:
-        string_length = len(string)
-        if string_length > max_length:
-            max_length = string_length
-
-    return max_length
-
-
-def pad_string(string, key_length):
+def pad_string(string: str, key_length: int):
     """Right-pads a string with spaces up to a key length
 
     Args:
@@ -33,12 +8,10 @@ def pad_string(string, key_length):
         key_length (int): The length to pad the string to
 
     Returns:
-        (str): The string right-padded with spaces. The length of this string will = key_length
-            (unless the string was initially longer than key_length)
+        (str): The string right-padded with spaces, up to `key_length`
     """
-    for i in range(key_length - len(string)):
-        string += ' '
-    return string
+    pad_amount: int = key_length - len(string)
+    return f'{string}{PAD_CHARACTER * pad_amount}'
 
 
 def extract_character_for_pass(key, p):
@@ -71,7 +44,7 @@ def get_character_bucket_index(ch: str):
     Returns:
         (int): Index of the bucket the character belongs to
     """
-    if ch == ' ':
+    if ch == PAD_CHARACTER:
         index = 0
     elif ch.islower():
         index = 1 + (ord(ch) - ord('a'))
@@ -79,24 +52,16 @@ def get_character_bucket_index(ch: str):
         raise ValueError(f'Error. Unsupported character: {ch}')
     return index
 
-def radix_sort(lst: list[str]) -> list[str]:
+def radix_sort(lst: list[str], key_length: int) -> list[str]:
     """Sorts a list inplace using radix sort
-
-    This operates inplace, meaning the list will be sorted after calling this function
 
     Args:
         lst (list): The list to sort
+        key_length (int): The length of the longest word (key)
     """
-    # Create a list of 27 empty lists (used as our buckets)
-    buckets = []
-    for _ in range(27):
-        buckets.append([])
 
-    # Alternatively:
-    # buckets = [[] for _ in range(27)]
-
-    # Determine the length of the longest string, this is the key length
-    key_length = find_key_length(lst)
+    # Set up the buckets
+    buckets = [[] for _ in range(27)]
 
     # Right pad all strings with the space character (up to the key length)
     for string_idx in range(len(lst)):
@@ -113,11 +78,6 @@ def radix_sort(lst: list[str]) -> list[str]:
             ch = extract_character_for_pass(string, pass_num)
             bucket_idx = get_character_bucket_index(ch)
             buckets[bucket_idx].append(string)
-
-        # # Display buckets for inspection
-        # print(f'\nPass Number: {pass_num}')
-        # for bucket_idx, bucket in enumerate(buckets):
-        #     print(f'Bucket {bucket_idx}: {bucket}')
 
         # Copy elements back to list
         idx = 0
