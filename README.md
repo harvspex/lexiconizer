@@ -98,7 +98,7 @@ But even these small comparison adds up. A word of warning: the benchmark can be
 
 ## Refactor
 Compared to the original, the refactor:
-- Can be installed, and runs from CLI with various options
+- Can be installed, and runs from lexiconizer.cli with various options
 - Contains multiple ways of generating a lexicon, using various data structures or sorting algorithms
 - Makes more efficient use of memory (e.g. the nested list used for checking neighbours)
 - Traversal of subgroups (for neighbour comparisons) have been made more concise using recursion
