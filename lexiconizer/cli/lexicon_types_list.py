@@ -1,4 +1,4 @@
-from cli.lexicon_type import LexiconType
+from lexiconizer.cli.lexicon_type import LexiconType
 from lexiconizer.lexicons.lexicon_avl import LexiconAVL
 from lexiconizer.lexicons.lexicon_dict import LexiconDict
 from lexiconizer.lexicons.lexicon_benchmark import LexiconBenchmark
