@@ -25,7 +25,7 @@ LEXICON_TYPES = [
     ),
     LexiconType(
         lexicon_type=LexiconDict,
-        flags=['-q', '--quick-sort', '--quick'],
+        flags=['-q', '--quicksort', '--quick'],
         help='Generates lexicon using dictionary. Sorts with quick sort',
         sorting_method=quick_sort
     ),
