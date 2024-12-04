@@ -1,9 +1,9 @@
 from cli.lexicon_type import LexiconType
-from lexicons.lexicon_avl import LexiconAVL
-from lexicons.lexicon_dict import LexiconDict
-from lexicons.lexicon_benchmark import LexiconBenchmark
-from sorting.quick_sort import quick_sort
-from sorting.radix_sort import radix_sort
+from lexiconizer.lexicons.lexicon_avl import LexiconAVL
+from lexiconizer.lexicons.lexicon_dict import LexiconDict
+from lexiconizer.lexicons.lexicon_benchmark import LexiconBenchmark
+from lexiconizer.sorting.quick_sort import quick_sort
+from lexiconizer.sorting.radix_sort import radix_sort
 """
 Contains the `LEXICON_TYPES` list, which facilitates adding new lexicon types.
 

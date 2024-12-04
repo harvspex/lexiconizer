@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import cli.cli as cli
+import lexiconizer.cli.cli as cli
 
 def main():
     cli.main()

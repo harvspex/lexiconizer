@@ -1,8 +1,7 @@
 from typing import Callable
-
-from lexicons.lexicon import Lexicon
-from shared.word import Word
-from utils.neighbours_utils import add_word_to_nested_list
+from lexiconizer.lexicons.lexicon import Lexicon
+from lexiconizer.shared.word import Word
+from lexiconizer.utils.neighbours_utils import add_word_to_nested_list
 
 # TODO: Write docstrings
 

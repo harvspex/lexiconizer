@@ -1,9 +1,9 @@
 import argparse
-import cli.build_lexicons as build_lexicons
-import cli.validation as validation
-from cli.lexicon_type import LexiconType
-from cli.lexicon_types_list import LEXICON_TYPES
-from utils.test_utils import compare_files
+import lexiconizer.cli.build_lexicons as build_lexicons
+import lexiconizer.cli.validation as validation
+from lexiconizer.cli.lexicon_type import LexiconType
+from lexiconizer.cli.lexicon_types_list import LEXICON_TYPES
+from lexiconizer.utils.test_utils import compare_files
 
 # TODO: Improve help descriptions
 
