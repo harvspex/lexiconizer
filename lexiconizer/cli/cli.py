@@ -1,21 +1,14 @@
 import argparse
-from dataclasses import dataclass
-
-import cli.cli_helpers as cli_helpers
+import cli.build_lexicons as build_lexicons
 import cli.validation as validation
 from cli.lexicon_type import LexiconType
-from lexicons.lexicon_avl import LexiconAVL
-from lexicons.lexicon_dict import LexiconDict
-from lexicons.lexicon_benchmark import LexiconBenchmark
-from sorting.quick_sort import quick_sort
-from sorting.radix_sort import radix_sort
-from cli.lexicon_types import get_lexicon_types
+from cli.lexicon_types_list import LEXICON_TYPES
+from utils.test_utils import compare_files
 
 # TODO: Improve help descriptions
 
 def get_parser(lexicon_types: list[LexiconType]) -> argparse.ArgumentParser:
-    LEXICON_CONST: str = 'lexicon'
-    LEXICON_TYPE_CONST: str = ''
+    DEFAULT_FILENAME: str = 'lexicon'
 
     parser = argparse.ArgumentParser(
         description='Lexiconizer: Count words and find neighbours'
@@ -30,8 +23,8 @@ def get_parser(lexicon_types: list[LexiconType]) -> argparse.ArgumentParser:
     parser.add_argument(
         '-o', '--output-file', '--output',
         help='Output filename',
-        default=LEXICON_CONST,
-        const=LEXICON_CONST,
+        default=DEFAULT_FILENAME,
+        const=DEFAULT_FILENAME,
         type=validation.writeable_file,
         nargs='?'
     )
@@ -40,7 +33,7 @@ def get_parser(lexicon_types: list[LexiconType]) -> argparse.ArgumentParser:
         parser.add_argument(
             *l_type.flags,
             help=l_type.help,
-            const=LEXICON_TYPE_CONST,
+            const=l_type.name,
             type=validation.writeable_file,
             nargs='?'
         )
@@ -85,7 +78,7 @@ def handle_build_all_lexicons(
         l_type.filename = getattr(args, l_type.name)
 
     # Build all lexicons
-    return cli_helpers.build_all_lexicons(
+    return build_lexicons.build_all_lexicons(
         input_file=args.input_file,
         output_file=args.output_file,
         time=args.time,
@@ -96,11 +89,10 @@ def handle_build_all_lexicons(
 
 def handle_compare(args: argparse.Namespace, filenames: list[str]):
     if args.compare:
-        cli_helpers.compare_files(filenames)
+        compare_files(filenames)
 
 
 def main():
-    lexicon_types = get_lexicon_types()
-    parser = get_parser(lexicon_types)
+    parser = get_parser(LEXICON_TYPES)
     args = parser.parse_args()
-    handle_args(args, lexicon_types)
+    handle_args(args, LEXICON_TYPES)
