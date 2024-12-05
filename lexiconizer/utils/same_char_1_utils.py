@@ -12,6 +12,7 @@ def add_neighbours(nested_word_lists: list):
     TARGET_LEVEL: int  = 2
     recursive_explore(nested_word_lists, target_level=TARGET_LEVEL)
 
+
 def recursive_explore(nested_list: list, target_level: int, level: int=0):
     """
     Recursively explores a nested list to a specific depth.
@@ -55,23 +56,31 @@ def compare_words_different_lists(nested_list: list):
             if nb_utils.word_is_neighbours(word_a, word_b, start=2, diffs=1):
                 nb_utils.add_mutual_neighbours(word_a, word_b, inserting=True)
 
+
 def yield_lists(nested_list: list, start: int=0, end: int=None, recursive=True):
-    # TODO: Reword
     """
-    Yields a list and a list generator from a nested list.
+    Yields a sublist and a group of other sublists from a nested list.
+
+
+    This function traverses a nested list, yielding individual elements 
+    along with a generator for processing deeper levels of the list if
+    `recursive` is enabled. The traversal can be restricted to a specific
+    range of indices.
 
     Args:
         nested_list (list): The nested list to process.
-        start (int): The starting index (default: 0).
-        end (int): The ending index (default: None, meaning the end of the 
-            list).
-        recursive (bool): Whether to yield recursively through sublists 
-            (default: True).
+        start (int): The starting index of the outermost list to process
+            (default: 0).
+        end (int): The ending index (exclusive) of the outermost list to
+            process (default: None, meaning process to the end of the list).
+        recursive (bool): Whether to yield a generator for deeper levels of 
+            the nested list (default: True).
 
     Yields:
         tuple: A tuple containing:
-            - A single sublist
-            - A sublist generator
+            - An element from the current level of the nested list.
+            - A generator for iterating through deeper levels of the nested
+                list if `recursive` is True, otherwise None.
     """
     if end is None: end = len(nested_list)
 
