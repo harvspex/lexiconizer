@@ -1,8 +1,6 @@
 import argparse
 import os
 
-# TODO: Docstrings
-
 def positive_int(value):
     """
     Validates and converts a string value to a positive integer.

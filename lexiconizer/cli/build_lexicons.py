@@ -84,7 +84,6 @@ def build_one_lexicon(
     n_repeats: int,
     verbose: bool,
 ):
-
     """
     Builds one lexicon based on LexiconType and saves it to output file.
 
