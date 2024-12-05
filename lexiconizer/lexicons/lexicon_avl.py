@@ -5,26 +5,31 @@ from lexiconizer.data_structures.word_tree import WordTree
 
 class LexiconAVL(Lexicon):
     """
-    A class for managing a lexicon of words stored in an AVL Tree structure.
-
-    The Lexicon supports reading words from files, finding neighboring 
-    words, and saving results to an output file.
+    A lexicon implemented using an AVL Tree for word storage and management.
 
     Attributes:
-        word_tree (WordTree): The AVL Tree storing words.
-        sorted_list (list[Word]): A list of words in sorted order.
-        one_char_words (list[Word]): A sorted list of one-letter words.
-        nested_word_lists (list): A list of words nested by: word length,
-            then char 1, then char 0.
+        word_tree (WordTree): An AVL Tree for storing and managing words.
     """
     def __init__(self):
+        """
+        Initializes an AVL Tree-based lexicon.
+        """
         super().__init__()
         self.word_tree = WordTree()
 
     def insert_element(self, data: str):
+        """
+        Inserts a word into the AVL Tree.
+
+        Args:
+            data (str): The word to insert.
+        """
         self.word_tree.insert_element(data)
 
     def populate_lists(self):
+        """
+        Populates internal lists by traversing the AVL Tree in order.
+        """
         self.word_tree.traverse_inorder(
             self.word_tree.root,
             self.sorted_list,
@@ -33,6 +38,8 @@ class LexiconAVL(Lexicon):
         )
 
     def reset(self):
-        """Resets the LexiconAVL."""
+        """
+        Resets the AVL Tree and other internal lists.
+        """
         self.word_tree = WordTree()
         super().reset()
