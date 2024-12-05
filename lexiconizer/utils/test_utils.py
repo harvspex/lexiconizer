@@ -44,6 +44,7 @@ def compare_files(filenames: list[str], shallow=False) -> bool:
 
     return files_match
 
+
 def time_method(
         method: Callable,
         *args,

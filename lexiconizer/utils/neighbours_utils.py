@@ -46,6 +46,7 @@ def word_is_neighbours(
 
     return True
 
+
 def add_mutual_neighbours(word_a: Word, word_b: Word, inserting: bool=False):
     """
     Adds two words as mutual neighbors in their respective neighbor lists.
@@ -64,6 +65,7 @@ def add_mutual_neighbours(word_a: Word, word_b: Word, inserting: bool=False):
 
     else:
         word_b.neighbours.append(word_a.spelling)
+
 
 def compare_words_same_list(word_list: list[Word], start: int=0, end: int=None):
     """
@@ -94,6 +96,7 @@ def compare_words_same_list(word_list: list[Word], start: int=0, end: int=None):
             if word_is_neighbours(word_a, word_b, start=1):
                 add_mutual_neighbours(word_a, word_b, inserting=False)
 
+
 def add_word_to_nested_list(word: Word, nested_word_list: list, one_char_words: list):
     """
     Adds word to nested list, or to different list if word is one letter.
@@ -122,6 +125,7 @@ def add_word_to_nested_list(word: Word, nested_word_list: list, one_char_words: 
         if len(spelling) == 1: # Should always be true
             one_char_words.append(word)
 
+
 def get_index(c: str) -> int:
     """
     Calculates the alphabetical index of a character relative to 'a'
@@ -133,6 +137,7 @@ def get_index(c: str) -> int:
         int: The index of the character (0 for 'a', 1 for 'b', etc.)
     """
     return ord(c[0]) - ord('a')
+
 
 def add_to_nested_list(element: Any, lst: list, *n: int):
     """
