@@ -5,6 +5,25 @@ import filecmp
 # TODO: Docstrings
 
 def compare_files(filenames: list[str], shallow=False) -> bool:
+    """
+    Compares the contents of multiple files to check if they match.
+
+    This function iterates through pairs of files from the given list and 
+    compares their contents. If any mismatch is found, a message is printed 
+    indicating the files that differ. If all files match, a confirmation 
+    message is printed.
+
+    Prints error message if the number of files in the `filenames` is less 
+    than 2.
+
+    Args:
+        filenames (list[str]): A list of file paths to compare.
+        shallow (bool): Whether to perform a shallow comparison 
+            (Default: False).
+
+    Returns:
+        bool: True if all files match, False if any mismatch is found.
+    """
     files_match: bool = True
     len_filenames = len(filenames)
 
@@ -24,6 +43,8 @@ def compare_files(filenames: list[str], shallow=False) -> bool:
 
     if files_match:
         print('All files match.')
+
+    return files_match
 
 def time_method(
         method: Callable,
