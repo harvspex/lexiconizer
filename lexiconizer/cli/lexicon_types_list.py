@@ -30,7 +30,6 @@ LEXICON_TYPES = [
     LexiconType(
         lexicon_type=LexiconDict,
         flags=['-d', '--default'],
-        # help='generate lexicon using dictionary and sort with built-in `sorted` method'
         help=get_help('built-in `sorted` method')
     ),
     LexiconType(

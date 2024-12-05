@@ -5,13 +5,11 @@ from lexiconizer.cli.lexicon_type import LexiconType
 from lexiconizer.cli.lexicon_types_list import LEXICON_TYPES
 from lexiconizer.utils.test_utils import compare_files
 
-# TODO: Improve help descriptions
-
 def get_parser(lexicon_types: list[LexiconType]) -> argparse.ArgumentParser:
     DEFAULT_FILENAME: str = 'lexicon'
 
     parser = argparse.ArgumentParser(
-        description='Lexiconizer: Count words and find neighbours'
+        description='lexiconizer: count words and find neighbours'
     )
     # infile
     parser.add_argument(
@@ -63,7 +61,10 @@ def get_parser(lexicon_types: list[LexiconType]) -> argparse.ArgumentParser:
 
 
 def handle_args(args: argparse.Namespace, lexicon_types: list[LexiconType]):
+    # Build all lexicons and get filenames
     filenames: list[str] = handle_build_all_lexicons(args, lexicon_types)
+
+    # Compare filenames (if applicable)
     handle_compare(args, filenames)
 
 
@@ -72,8 +73,7 @@ def handle_build_all_lexicons(
     lexicon_types: list[LexiconType]
 ) -> list[str]:
 
-    # Match all LexiconType objects with corresponding arg in `args`.
-    # Set LexiconType.filename to lexicon arg value.
+    # Set each LexiconType.filename to corresponding lexicon arg value
     for l_type in lexicon_types:
         l_type.filename = getattr(args, l_type.name)
 
