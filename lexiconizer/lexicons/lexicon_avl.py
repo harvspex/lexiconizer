@@ -14,7 +14,8 @@ class LexiconAVL(Lexicon):
         word_tree (WordTree): The AVL Tree storing words.
         sorted_list (list[Word]): A list of words in sorted order.
         one_char_words (list[Word]): A sorted list of one-letter words.
-        nested_word_lists (list): A list of words nested by: word length, then char 1, then char 0.
+        nested_word_lists (list): A list of words nested by: word length,
+            then char 1, then char 0.
     """
     def __init__(self):
         super().__init__()
