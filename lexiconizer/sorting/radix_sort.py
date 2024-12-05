@@ -64,8 +64,7 @@ def radix_sort(lst: list[str], key_length: int) -> list[str]:
     buckets = [[] for _ in range(27)]
 
     # Right pad all strings with the space character (up to the key length)
-    for string_idx in range(len(lst)):
-        lst[string_idx] = pad_string(lst[string_idx], key_length)
+    lst = [pad_string(string, key_length) for string in lst]
 
     # Perform radix sort passes. Number of passes = the key length
     for pass_num in range(1, key_length + 1):
@@ -80,6 +79,7 @@ def radix_sort(lst: list[str], key_length: int) -> list[str]:
             buckets[bucket_idx].append(string)
 
         # Copy elements back to list
+        # TODO: Improve
         idx = 0
         for bucket in buckets:
             for string in bucket:
