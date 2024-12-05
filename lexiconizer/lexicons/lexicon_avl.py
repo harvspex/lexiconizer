@@ -1,8 +1,6 @@
 from lexiconizer.lexicons.lexicon import Lexicon
 from lexiconizer.data_structures.word_tree import WordTree
 
-# TODO: Rewrite docstrings
-
 class LexiconAVL(Lexicon):
     """
     A lexicon implemented using an AVL Tree for word storage and management.

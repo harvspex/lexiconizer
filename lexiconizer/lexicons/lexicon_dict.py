@@ -3,8 +3,6 @@ from lexiconizer.lexicons.lexicon import Lexicon
 from lexiconizer.shared.word import Word
 from lexiconizer.utils.neighbours_utils import add_word_to_nested_list
 
-# TODO: Write docstrings
-
 class LexiconDict(Lexicon):
     """
     A dictionary-based implementation of the Lexicon.

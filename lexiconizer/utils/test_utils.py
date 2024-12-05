@@ -2,8 +2,6 @@ from timeit import timeit
 from typing import Callable
 import filecmp
 
-# TODO: Docstrings
-
 def compare_files(filenames: list[str], shallow=False) -> bool:
     """
     Compares the contents of multiple files to check if they match.

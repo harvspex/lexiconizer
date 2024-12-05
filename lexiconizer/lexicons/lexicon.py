@@ -6,8 +6,6 @@ import lexiconizer.utils.one_char_utils as one_char_utils
 import lexiconizer.utils.same_char_0_utils as same_char_0_utils
 import lexiconizer.utils.same_char_1_utils as same_char_1_utils
 
-# TODO: Write docstrings
-
 class Lexicon(ABC):
     """
     Abstract base class for managing lexicons.

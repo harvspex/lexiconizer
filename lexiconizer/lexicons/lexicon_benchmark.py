@@ -2,8 +2,6 @@ import lexiconizer.utils.neighbours_utils as nb_utils
 from lexiconizer.lexicons.lexicon_dict import LexiconDict
 from lexiconizer.shared.word import Word
 
-# TODO: Docstrings
-
 class LexiconBenchmark(LexiconDict):
     """
     A dictionary-based lexicon used to benchmark neighbour optimisations.

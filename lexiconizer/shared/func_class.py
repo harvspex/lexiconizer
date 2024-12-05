@@ -1,6 +1,5 @@
 from typing import Callable
 
-# TODO: Docstring
 class FuncClass:
     """
     A class for encapsulating functions along with their descriptions and arguments.
