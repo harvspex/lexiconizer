@@ -1,11 +1,8 @@
 import os
-from typing import Callable
 from lexiconizer.lexicons.lexicon import Lexicon
-from lexiconizer.lexicons.lexicon_dict import LexiconDict
 from lexiconizer.lexicons.lexicon_benchmark import LexiconBenchmark
 from lexiconizer.utils.test_utils import time_method
 from lexiconizer.cli.lexicon_type import LexiconType
-
 
 def build_all_lexicons(
     input_file: str,
