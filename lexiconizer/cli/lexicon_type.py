@@ -15,10 +15,18 @@ class LexiconType:
         self.name: str = self.get_name(flags)
         self.filename: str = None
 
-    # TODO: Improve
     @staticmethod
     def get_name(flags: list[str]):
-        name_flag = flags[1]
+        name_flag = LexiconType.get_name_flag(flags)
         name_split = name_flag.split('-')
         name = '_'.join(_ for _ in name_split if _ != '')
         return name
+
+    @staticmethod
+    def get_name_flag(flags: list[str]):
+        for i in reversed(range(2)):
+            try:
+                return flags[i]
+            except IndexError:
+                continue
+        raise ValueError('Error: Flags is empty.')
