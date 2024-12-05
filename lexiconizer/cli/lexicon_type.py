@@ -11,8 +11,8 @@ class LexiconType:
         sorting_method (Callable): An optional sorting function for the
             lexicon.
         name (str): The name of the lexicon derived from its flags.
-        filename (str): The output filename for the lexicon, assigned
-            during runtime.
+        filename (str): The output filename for the lexicon, assigned during
+            runtime.
     """
     def __init__(
         self,
@@ -25,13 +25,11 @@ class LexiconType:
         Initializes a LexiconType instance.
 
         Args:
-            lexicon_type (type): Class type of the lexicon to be
-                generated.
-            flags (list[str]): The CLI flags associated with this
-                lexicon type.
+            lexicon_type (type): Class type of the lexicon to be generated.
+            flags (list[str]): The CLI flags associated with this lexicon type.
             help (str): The help text for the CLI flags.
-            sorting_method (Callable, optional): An optional sorting
-                function for the lexicon.
+            sorting_method (Callable, optional): An optional sorting function
+                for the lexicon.
         """
         self.lexicon_type: type = lexicon_type
         self.flags: list[str] = flags

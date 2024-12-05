@@ -15,8 +15,8 @@ def build_all_lexicons(
     Builds multiple lexicons and saves them to output files.
 
     Args:
-        input_file (str): Path to the input file containing text for 
-            lexicon generation.
+        input_file (str): Path to the input file containing text for lexicon
+            generation.
         output_file (str): Base name or path for the output files.
         time (int): Number of times to repeat the lexicon generation for
             timing.
@@ -85,18 +85,18 @@ def build_one_lexicon(
     verbose: bool,
 ):
     """
-    Builds one lexicon based on LexiconType and saves it to output file.
+Builds one lexicon based on LexiconType and saves it to output file.
 
-    Args:
-        input_file (str): Path to the input file containing text for 
-            lexicon generation.
-        output_file (str): Path to the output file where the lexicon 
-            will be saved.
-        lexicon_type (LexiconType): The type of lexicon to generate.
-        n_repeats (int): Number of times to repeat the lexicon 
-            generation for timing purposes.
-        verbose (bool): If True, prints detailed progress and timing 
-            information.
+Args:
+    input_file (str): Path to the input file containing text for lexicon
+        generation.
+    output_file (str): Path to the output file where the lexicon will be
+        saved.
+    lexicon_type (LexiconType): The type of lexicon to generate.
+    n_repeats (int): Number of times to repeat the lexicon generation
+        for timing purposes.
+    verbose (bool): If True, prints detailed progress and timing
+        information.
     """
     # Create lexicon
     lexicon: Lexicon

@@ -121,8 +121,7 @@ def handle_compare(args: argparse.Namespace, filenames: list[str]):
 
     Args:
         args (argparse.Namespace): The parsed CLI arguments.
-        filenames (list[str]): A list of filenames for the generated
-            lexicons.
+        filenames (list[str]): A list of filenames for the generated lexicons.
     """
     if args.compare is not None:
         compare_files(filenames + args.compare)

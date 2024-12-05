@@ -22,9 +22,8 @@ def get_help(sorting_method: str=None):
     Make a default help message.
 
     Args:
-        sorting_method (str, optional): the sorting method or data 
-            structure used to generate this type of lexicon.
-            (default=None)
+        sorting_method (str, optional): the sorting method or data structure
+            used to generate this type of lexicon. (default=None)
 
     Returns:
         help_message (str): A string containing a help message. If
