@@ -6,6 +6,16 @@ from lexiconizer.cli.lexicon_types_list import LEXICON_TYPES
 from lexiconizer.utils.test_utils import compare_files
 
 def get_parser(lexicon_types: list[LexiconType]) -> argparse.ArgumentParser:
+    """
+    Creates an argument parser for the lexiconizer CLI.
+
+    Args:
+        lexicon_types (list[LexiconType]): A list of LexiconType 
+            objects, each representing a type of lexicon to be generated
+
+    Returns:
+        argparse.ArgumentParser: The configured argument parser.
+    """
     DEFAULT_FILENAME: str = 'lexicon'
 
     parser = argparse.ArgumentParser(
@@ -61,6 +71,14 @@ def get_parser(lexicon_types: list[LexiconType]) -> argparse.ArgumentParser:
 
 
 def handle_args(args: argparse.Namespace, lexicon_types: list[LexiconType]):
+    """
+    Handles the parsed arguments by building lexicons and optionally comparing them.
+
+    Args:
+        args (argparse.Namespace): The parsed CLI arguments.
+        lexicon_types (list[LexiconType]): A list of LexiconType objects
+            representing the lexicons to be built.
+    """
     # Build all lexicons and get filenames
     filenames: list[str] = handle_build_all_lexicons(args, lexicon_types)
 
@@ -72,7 +90,17 @@ def handle_build_all_lexicons(
     args: argparse.Namespace,
     lexicon_types: list[LexiconType]
 ) -> list[str]:
+    """
+    Builds all specified lexicons based on CLI arguments.
 
+    Args:
+        args (argparse.Namespace): The parsed CLI arguments.
+        lexicon_types (list[LexiconType]): A list of LexiconType objects
+            representing the lexicons to be built.
+
+    Returns:
+        list[str]: A list of filenames for the generated lexicons.
+    """
     # Set each LexiconType.filename to corresponding lexicon arg value
     for l_type in lexicon_types:
         l_type.filename = getattr(args, l_type.name)
@@ -88,11 +116,23 @@ def handle_build_all_lexicons(
 
 
 def handle_compare(args: argparse.Namespace, filenames: list[str]):
+    """
+    Compares generated lexicons with additional files, if specified.
+
+    Args:
+        args (argparse.Namespace): The parsed CLI arguments.
+        filenames (list[str]): A list of filenames for the generated
+            lexicons.
+    """
     if args.compare is not None:
         compare_files(filenames + args.compare)
 
 
 def main():
+    """
+    Entry point for the lexiconizer CLI application. Parses arguments,
+    handles lexicon generation, and performs comparisons if requested.
+    """
     parser = get_parser(LEXICON_TYPES)
     args = parser.parse_args()
     handle_args(args, LEXICON_TYPES)

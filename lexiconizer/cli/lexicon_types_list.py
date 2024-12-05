@@ -18,7 +18,18 @@ Note that the order of the list is the order in which:
 """
 
 def get_help(sorting_method: str=None):
-    # Stop it. Get some help.
+    """
+    Make a default help message.
+
+    Args:
+        sorting_method (str, optional): the sorting method or data 
+            structure used to generate this type of lexicon.
+            (default=None)
+
+    Returns:
+        help_message (str): A string containing a help message. If
+            `sorting_method` is None, just returns the default message.
+    """
     help_message: str = '(optional: filename or path for this lexicon)'
 
     if sorting_method:

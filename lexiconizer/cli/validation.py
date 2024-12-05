@@ -4,6 +4,19 @@ import os
 # TODO: Docstrings
 
 def positive_int(value):
+    """
+    Validates and converts a string value to a positive integer.
+
+    Args:
+        value (str): The input value to validate.
+
+    Returns:
+        int: The validated positive integer.
+
+    Raises:
+        argparse.ArgumentTypeError: If the value is not a valid positive
+            integer.
+    """
     try:
         ivalue = int(value)
         if ivalue <= 0:
@@ -19,6 +32,19 @@ def positive_int(value):
 
 
 def readable_file(filepath):
+    """
+    Validates that the given filepath exists and is readable.
+
+    Args:
+        filepath (str): The path to the file.
+
+    Returns:
+        str: The filepath if it is valid and readable.
+
+    Raises:
+        argparse.ArgumentTypeError: If the file does not exist or is not
+            readable.
+    """
     if not os.path.isfile(filepath):
         raise argparse.ArgumentTypeError(
             f'"{filepath}" does not exist or is not a valid file.'
@@ -31,6 +57,19 @@ def readable_file(filepath):
 
 
 def writeable_file(filepath):
+    """
+    Validates that the given filepath is writable or can be created.
+
+    Args:
+        filepath (str): The path to the file.
+
+    Returns:
+        str: The filepath if it is valid and writable.
+
+    Raises:
+        argparse.ArgumentTypeError: If the file or its directory is not 
+            writable.
+    """
     # Check if the file exists
     if os.path.exists(filepath):
         if not os.path.isfile(filepath):
